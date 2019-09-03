@@ -1,0 +1,55 @@
+@import '../../node_modules/bootstrap/scss/functions';
+@import './helpers/variables';
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+ // 漸層函式
+  @mixin blue-gradual() {
+    background: -webkit-linear-gradient(left, $first, #10567b);
+    background: -o-linear-gradient(right, $first, #10567b);
+    background: -moz-linear-gradient(right, $first, #10567b);
+    background: linear-gradient(to right, $first, #10567b);
+  }
+  @mixin red-gradual() {
+    background: -webkit-linear-gradient(left, #ff5511, $red);
+    background: -o-linear-gradient(right, #ff5511, $red);
+    background: -moz-linear-gradient(right, #ff5511, $red);
+    background: linear-gradient(to right, #ff5511, $red);
+  }
+body {
+  .btn:focus,
+  .form-control:focus,
+  a:focus,
+  a:active,
+  .page-link:focus,
+  button:active,
+  button:focus,
+  input:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+
+  // background-color: $main;
+  // font-family:
+  //   // 系統預設字體 -apple-system, BlinkMacSystemFont,
+  //   // 已知的系統UI字體 "Segoe UI", "微軟正黑體",
+  //   "MicrosoftJhengHei", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+  //   // 備援的字體
+  //     "Helvetica Neue",
+  //   sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+  a:hover {
+    text-decoration: none;
+  }
+  .mainTouch {
+    //   transition-property: all;
+    //   transition-duration: 0.7s;
+    //   transition-timing-function: cubic-bezier(0.92, -0.19, 0.3, 1.13);
+    transition: transform 0.1s ease-out;
+    &:active {
+      //   &為當前對象，就像this
+      transform: scale(0.9);
+      // scale 為控制大小
+    }
+  }
+}
