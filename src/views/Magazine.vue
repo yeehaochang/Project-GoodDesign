@@ -163,7 +163,7 @@ export default {
 
 <style lang="scss" scoped>
 .wrap {
-  background-image: url(../../assets/bg-2.jpg);
+  background-image: url(../assets/bg-2.jpg);
   background-attachment: fixed;
   background-position: center center;
   background-size: cover;

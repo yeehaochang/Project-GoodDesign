@@ -332,7 +332,7 @@ del,strong {
   width: 37px;
   height: 54px;
   box-shadow: 1px 1px 1px $third;
-  background-image: url("../../assets/chevron-right-solid.svg");
+  background-image: url("../assets/chevron-right-solid.svg");
 }
 
 .swiper-container {
@@ -367,7 +367,7 @@ del,strong {
   width: 37px;
   height: 54px;
   box-shadow: 1px 1px 1px $third;
-  background-image: url("../../assets/chevron-left-solid.svg");
+  background-image: url("../assets/chevron-left-solid.svg");
 }
 .swiper-slide {
   justify-content: center;
