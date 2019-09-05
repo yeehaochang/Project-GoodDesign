@@ -136,69 +136,69 @@
 </template>
 
 <script>
-import $ from "jquery";
-import Alert from '../components/Alert';
+import $ from 'jquery'
+import Alert from '../components/Alert'
 
 export default {
-  components:{
-    Alert,
+  components: {
+    Alert
   },
-  data() {
+  data () {
     return {
       coupons: [],
       tempCoupon: {},
       isNew: false,
-      isLoading:false,
-    };
+      isLoading: false
+    }
   },
   methods: {
-    getCoupons(page = 1) {
-      this.isLoading = true;
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupons?page=${page}`;
-      const vm = this;
+    getCoupons (page = 1) {
+      this.isLoading = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupons?page=${page}`
+      const vm = this
       vm.$http.get(api).then(response => {
-        console.log(response);
-        vm.coupons = response.data.coupons;
-        if(!response.data.success){
-          this.$bus.$emit('message:push',response.data.message,'danger')
+        console.log(response)
+        vm.coupons = response.data.coupons
+        if (!response.data.success) {
+          this.$bus.$emit('message:push', response.data.message, 'danger')
         }
-        vm.isLoading = false;
-      });
+        vm.isLoading = false
+      })
     },
-    removeCoupon(id) {
-      this.isLoading = true;
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${id}`;
-      const vm = this;
+    removeCoupon (id) {
+      this.isLoading = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${id}`
+      const vm = this
       vm.$http.delete(api).then(response => {
-        console.log(response);
-        this.getCoupons();
-        vm.isLoading = false;
-        this.$bus.$emit('message:push',response.data.message,'main')
-      });
+        console.log(response)
+        this.getCoupons()
+        vm.isLoading = false
+        this.$bus.$emit('message:push', response.data.message, 'main')
+      })
     },
-    openModal(isNew, item) {
-        // isNew確定為新增或修改
-        // 並變更data的isNew判斷送出方式
+    openModal (isNew, item) {
+      // isNew確定為新增或修改
+      // 並變更data的isNew判斷送出方式
       if (isNew) {
-        this.tempCoupon = {};
-        this.isNew = true;
+        this.tempCoupon = {}
+        this.isNew = true
       } else {
-        this.tempCoupon = Object.assign({}, item);
+        this.tempCoupon = Object.assign({}, item)
         // 避開傳參考特性
-        this.isNew = false;
+        this.isNew = false
       }
-      $("#itemModal").modal("show");
+      $('#itemModal').modal('show')
     },
-    updateEdit() {
-        // 修改及送出方法
-      const vm = this;
-      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`;
-      let method = "";
+    updateEdit () {
+      // 修改及送出方法
+      const vm = this
+      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`
+      let method = ''
       if (vm.isNew) {
-        method = "post";
-        api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon`;
+        method = 'post'
+        api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon`
       } else {
-        method = "put";
+        method = 'put'
       }
       //   const coupondata = {
       //       title:vm.tempCoupon.title,
@@ -207,16 +207,16 @@ export default {
       //       due_date:vm.tempCoupon.due_date
       //   }
       vm.$http[method](api, { data: vm.tempCoupon }).then(response => {
-        console.log(response);
-        vm.editItem = {};
-        this.getCoupons();
-        this.$bus.$emit('message:push',response.data.message,'main')
-        $("#itemModal").modal("hide");
-      });
+        console.log(response)
+        vm.editItem = {}
+        this.getCoupons()
+        this.$bus.$emit('message:push', response.data.message, 'main')
+        $('#itemModal').modal('hide')
+      })
     }
   },
-  created() {
-    this.getCoupons();
+  created () {
+    this.getCoupons()
   }
-};
+}
 </script>

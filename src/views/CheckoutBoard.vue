@@ -9,21 +9,20 @@
 
 <script>
 // import "../assets/all.scss";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-import GoTop from "../components/GoTop";
-
+import Footer from '../components/Footer'
+import Navbar from '../components/Navbar'
+import GoTop from '../components/GoTop'
 
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
   components: {
     Footer,
     Navbar,
-    GoTop,
+    GoTop
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

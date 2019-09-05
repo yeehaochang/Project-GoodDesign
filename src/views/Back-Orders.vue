@@ -198,61 +198,61 @@
 </template>
 
 <script>
-import $ from "jquery";
-import Alert from '../components/Alert';
+import $ from 'jquery'
+import Alert from '../components/Alert'
 
 export default {
-  components:{
-    Alert,
+  components: {
+    Alert
   },
-  data() {
+  data () {
     return {
       orderList: [],
       tempCheck: {
         user: {}
       },
       isLoading: false
-    };
-  },
-  methods: {
-    getOrders(page = 1) {
-      const vm = this;
-      vm.isLoading = true;
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/orders?page=${page}`;
-      vm.$http.get(api).then(response => {
-        vm.orderList = response.data.orders;
-        console.log(response);
-        if(!response.data.success){
-          this.$bus.$emit('message:push',response.data.message,'danger')
-        }
-        vm.isLoading = false;
-      });
-    },
-    openCheck(item) {
-      console.log(item);
-      this.tempCheck = Object.assign({}, item);
-      $("#checkModal").modal("show");
-    },
-    updateCheck(id) {
-      const vm = this;
-      vm.isLoading = true;
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/order/${id}`;
-      vm.$http.put(api, { data: vm.tempCheck }).then(response => {
-        console.log(response.data);
-        vm.tempCheck = {
-          user: {}
-        };
-        $("#checkModal").modal("hide");
-        vm.getOrders();
-        vm.isLoading = false;
-        this.$bus.$emit('message:push',response.data.message,'main')
-      });
     }
   },
-  created() {
-    this.getOrders();
+  methods: {
+    getOrders (page = 1) {
+      const vm = this
+      vm.isLoading = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/orders?page=${page}`
+      vm.$http.get(api).then(response => {
+        vm.orderList = response.data.orders
+        console.log(response)
+        if (!response.data.success) {
+          this.$bus.$emit('message:push', response.data.message, 'danger')
+        }
+        vm.isLoading = false
+      })
+    },
+    openCheck (item) {
+      console.log(item)
+      this.tempCheck = Object.assign({}, item)
+      $('#checkModal').modal('show')
+    },
+    updateCheck (id) {
+      const vm = this
+      vm.isLoading = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/order/${id}`
+      vm.$http.put(api, { data: vm.tempCheck }).then(response => {
+        console.log(response.data)
+        vm.tempCheck = {
+          user: {}
+        }
+        $('#checkModal').modal('hide')
+        vm.getOrders()
+        vm.isLoading = false
+        this.$bus.$emit('message:push', response.data.message, 'main')
+      })
+    }
+  },
+  created () {
+    this.getOrders()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

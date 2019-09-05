@@ -8,7 +8,9 @@
         @click.prevent="goSlide"
       >2019 限塑新政策！</a>
       <a href="3" class="scoll-top text-general rounded p-1 m-2" @click.prevent="goSlide">單身又怎樣？</a>
-      <small class="mt-3 text-first"><i class="fas fa-mouse-pointer mr-1"></i>點擊他們來導航</small >
+      <small class="mt-3 text-first">
+        <i class="fas fa-mouse-pointer mr-1"></i>點擊他們來導航
+      </small>
     </div>
     <!-- 1 -->
     <div class="magbg" v-for="item in magData" :key="item.num" id="1">
@@ -82,83 +84,78 @@
 </template>
 
 <script>
-import $ from "jquery";
-import attr from "jquery";
+import $ from 'jquery'
+// import attr from 'jquery'
 
 export default {
-  data() {
+  data () {
     return {
       magData: [
         {
           num: 0,
           title:
-            "禮物包裝是種禮儀！英國達人超簡易圖解５種包裝技法，手笨一族也學得會",
+            '禮物包裝是種禮儀！英國達人超簡易圖解５種包裝技法，手笨一族也學得會',
           imgurl:
-            "https://image.cache.storm.mg/styles/smg-800x533-fp/s3/media/image/2017/12/11/20171211-014607_U10834_M357286_3000.jpg?itok=uruUT31h",
+            'https://image.cache.storm.mg/styles/smg-800x533-fp/s3/media/image/2017/12/11/20171211-014607_U10834_M357286_3000.jpg?itok=uruUT31h',
           content:
-            "禮物包裝的第一步是挑選適合收禮者的主題包裝紙，不同主題的包裝紙裝載著各式各樣想要表達的情緒；接下來是挑選適合的緞帶、吊牌甚至各種裝飾物。"
+            '禮物包裝的第一步是挑選適合收禮者的主題包裝紙，不同主題的包裝紙裝載著各式各樣想要表達的情緒；接下來是挑選適合的緞帶、吊牌甚至各種裝飾物。'
         }
       ],
-      Position:'',
-      scrollPos:'',
-      windowHeight:'',
+      Position: '',
+      scrollPos: '',
+      windowHeight: '',
       fullHeight: document.documentElement.clientHeight
-    };
+    }
   },
   methods: {
-    goSlide(event) {
-      let el = event.currentTarget;
-      let target = $(el).attr("href");
-      let pos = document.getElementById(target);
-      let targetPos = pos.getBoundingClientRect().top;
-      this.targetPosition = targetPos;
-      console.log(target,targetPos);
-      $("html, body").animate({ scrollTop: targetPos }, 1000);
+    goSlide (event) {
+      let el = event.currentTarget
+      let target = $(el).attr('href')
+      let pos = document.getElementById(target)
+      let targetPos = pos.getBoundingClientRect().top
+      this.targetPosition = targetPos
+      console.log(target, targetPos)
+      $('html, body').animate({ scrollTop: targetPos }, 1000)
     },
-    getWindow(){
-      $(window).scroll(function(){
-      let scrollPos = $(window).scrollTop();
-      let windowHeight = $(window).height();
-      // console.log(scrollPos, windowHeight);
-
-      $('#1').each(function(){
-        let a = document.getElementById('1');
-        let targetPos = a.getBoundingClientRect().top;
-        if( scrollPos >= targetPos ){
-          $('#content-1').addClass('fadeIn');
-          $('#title-1').addClass('fadeIn');
-        }
-      });
-      $('#2').each(function(){
-        let a = document.getElementById('2');
-        let targetPos = a.getBoundingClientRect().top;
-        if( scrollPos >= targetPos ){
-          $('#content-2').addClass('fadeIn');
-          $('#title-2').addClass('fadeIn');
-        }
-      });
-      $('#3').each(function(){
-        let a = document.getElementById('3');
-        let targetPos = a.getBoundingClientRect().top;
-        if( scrollPos >= targetPos ){
-          $('#content-3').addClass('fadeIn');
-          $('#title-3').addClass('fadeIn');
-        }
-      });
-
-    });
-    },
-    
+    getWindow () {
+      $(window).scroll(function () {
+        let scrollPos = $(window).scrollTop()
+        // let windowHeight = $(window).height()
+        // console.log(scrollPos, windowHeight);
+        $('#1').each(function () {
+          let a = document.getElementById('1')
+          let targetPos = a.getBoundingClientRect().top
+          if (scrollPos >= targetPos) {
+            $('#content-1').addClass('fadeIn')
+            $('#title-1').addClass('fadeIn')
+          }
+        })
+        $('#2').each(function () {
+          let a = document.getElementById('2')
+          let targetPos = a.getBoundingClientRect().top
+          if (scrollPos >= targetPos) {
+            $('#content-2').addClass('fadeIn')
+            $('#title-2').addClass('fadeIn')
+          }
+        })
+        $('#3').each(function () {
+          let a = document.getElementById('3')
+          let targetPos = a.getBoundingClientRect().top
+          if (scrollPos >= targetPos) {
+            $('#content-3').addClass('fadeIn')
+            $('#title-3').addClass('fadeIn')
+          }
+        })
+      })
+    }
   },
-  computed: {
-  },
-  mounted() {
-  },
-  created(){
-    this.getWindow();
+  computed: {},
+  mounted () {},
+  created () {
+    this.getWindow()
     // console.log(this.$refs)
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -217,20 +214,22 @@ p {
 // animated
 .animated {
   opacity: 0;
-  transition: all 1.0s;
+  transition: all 1s;
   transform: translateY(50px);
 }
 .animated-top {
   opacity: 0;
-  transition: all 1.0s;
+  transition: all 1s;
   transform: translateY(-50px);
 }
 .fadeIn {
   opacity: 1;
   transform: translateY(0);
 }
-#content-1,#content-2,#content-3{
-  @media (max-width:768px) {
+#content-1,
+#content-2,
+#content-3 {
+  @media (max-width: 768px) {
     display: none;
   }
 }

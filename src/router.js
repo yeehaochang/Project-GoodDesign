@@ -1,36 +1,34 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from 'vue'
+import Router from 'vue-router'
 
-import CustomBoard from '../src/views/CustomBoard.vue';
-import Home from '../src/views/Home.vue';
-import Products from '../src/views/Products.vue';
-import Magazine from '../src/views/Magazine.vue';
-import ProductPage from '../src/views/ProductPage.vue';
-import CheckoutBoard from '../src/views/CheckoutBoard.vue';
-import Cart from '../src/views/Cart.vue';
-import Checkout1 from '../src/views/Checkout-1.vue';
-import Checkout2 from '../src/views/Checkout-2.vue';
-import ImageWall from '../src/views/ImageWall.vue';
+import CustomBoard from '../src/views/CustomBoard.vue'
+import Home from '../src/views/Home.vue'
+import Products from '../src/views/Products.vue'
+import Magazine from '../src/views/Magazine.vue'
+import ProductPage from '../src/views/ProductPage.vue'
+import CheckoutBoard from '../src/views/CheckoutBoard.vue'
+import Cart from '../src/views/Cart.vue'
+import Checkout1 from '../src/views/Checkout-1.vue'
+import Checkout2 from '../src/views/Checkout-2.vue'
+import ImageWall from '../src/views/ImageWall.vue'
 // 後台
-import Dashboard from '../src/views/Dashboard.vue';
-import BackProducts from '../src/views/Back-Products.vue';
-import BackCoupons from '../src/views/Back-Coupons.vue';
-import BackOrders from '../src/views/Back-Orders.vue';
+import Dashboard from '../src/views/Dashboard.vue'
+import BackProducts from '../src/views/Back-Products.vue'
+import BackCoupons from '../src/views/Back-Coupons.vue'
+import BackOrders from '../src/views/Back-Orders.vue'
 // 組件
-
-
-
 Vue.use(Router)
 
 export default new Router({
+  // mode: 'history',
   routes: [
     {
       path: '/',
-      redirect: '/home',
+      redirect: '/home'
     },
     {
       path: '*',
-      redirect: 'Home',
+      redirect: 'Home'
     },
     {
       path: '/',
@@ -40,28 +38,28 @@ export default new Router({
         {
           path: '/home',
           name: 'Home',
-          component: Home,
+          component: Home
         },
         {
           path: '/products',
           name: 'Products',
-          component: Products,
+          component: Products
         },
         {
           path: '/magazine',
           name: 'Magazine',
-          component: Magazine,
+          component: Magazine
         },
         {
           path: '/productpage',
           name: 'ProductPage',
-          component: ProductPage,
+          component: ProductPage
         },
         {
           path: '/imagewall',
           name: 'ImageWall',
-          component: ImageWall,
-        },
+          component: ImageWall
+        }
       ]
     },
     {
@@ -72,18 +70,18 @@ export default new Router({
         {
           path: '/cart',
           name: 'Cart',
-          component: Cart,
+          component: Cart
         },
         {
           path: '/checkout-1',
           name: 'Checkout-1',
-          component: Checkout1,
+          component: Checkout1
         },
         {
           path: '/checkout-2/:orderId',
           name: 'Checkout-2',
-          component: Checkout2,
-        },
+          component: Checkout2
+        }
       ]
     },
     {
@@ -109,7 +107,7 @@ export default new Router({
           name: 'BackOrders',
           component: BackOrders,
           meta: { requiresAuth: true }
-        },
+        }
       ]
     }
   ]

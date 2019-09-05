@@ -73,81 +73,81 @@
 </template>
 
 <script>
-import Progress from "../components/Progress";
+import Progress from '../components/Progress'
 
 export default {
-  data() {
+  data () {
     return {
       isLoading: false,
       cart: []
       // getTotal: ""
-    };
+    }
   },
   components: {
     Progress
   },
   methods: {
-    getCart() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
-      const vm = this;
-      vm.isLoading = true;
+    getCart () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const vm = this
+      vm.isLoading = true
       this.$http.get(api).then(response => {
-        vm.cart = response.data.data.carts;
+        vm.cart = response.data.data.carts
         // vm.getTotal = response.data.data.total;
-        console.log(response);
-        vm.isLoading = false;
-      });
+        console.log(response)
+        vm.isLoading = false
+      })
     },
-    removeProduct(id) {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`;
-      const vm = this;
-      vm.isLoading = true;
+    removeProduct (id) {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
+      const vm = this
+      vm.isLoading = true
       this.$http.delete(api).then(response => {
-        console.log(response);
-        vm.getCart();
-        vm.isLoading = false;
-      });
+        console.log(response)
+        vm.getCart()
+        vm.isLoading = false
+      })
     },
-    openProduct(id) {
-      let params = { title: "test" };
+    openProduct (id) {
+      // let params = { title: 'test' }
       let routerPush = this.$router.resolve({
-        path: "/productpage",
+        path: '/productpage',
         query: { id: id }
-      });
-      window.open(routerPush.href, "_blank");
-      console.log(routerPush);
+      })
+      window.open(routerPush.href, '_blank')
+      console.log(routerPush)
     },
-    changeqty(item, qty) {
-      item.qty = parseInt(qty);
-      item.final_total = parseInt(item.product.price) * parseInt(item.qty);
-      item.total = parseInt(item.product.price) * parseInt(item.qty);
+    changeqty (item, qty) {
+      item.qty = parseInt(qty)
+      item.final_total = parseInt(item.product.price) * parseInt(item.qty)
+      item.total = parseInt(item.product.price) * parseInt(item.qty)
     },
-    gocheckout() {
-      if(this.cart.length !== 0){
+    gocheckout () {
+      if (this.cart.length !== 0) {
         this.$router.push({
-        path: "/checkout-1"
-      });
-      }else{
-        this.$bus.$emit("message:push", '購物車尚無商品，無法進行結帳', "danger");
+          path: '/checkout-1'
+        })
+      } else {
+        this.$bus.$emit('message:push', '購物車尚無商品，無法進行結帳', 'danger')
       }
     }
   },
   computed: {
-    getProductLength() {
-      return this.cart.length;
+    getProductLength () {
+      return this.cart.length
     },
-    getTotal() {
-      let value = 0;
-      this.cart.forEach(function(item) {
-        value += item.final_total;
-      });
-      return value;
+    getTotal () {
+      let value = 0
+      this.cart.forEach(function (item) {
+        value += item.final_total
+      })
+      return value
     }
   },
-  created() {
-    this.getCart();
+  created () {
+    this.getCart()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

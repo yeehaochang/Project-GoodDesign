@@ -151,120 +151,116 @@
 </template>
 
 <script>
-import $ from "jquery";
-import Progress from "../components/Progress";
+// import $ from 'jquery'
+import Progress from '../components/Progress'
 
 export default {
-  data() {
+  data () {
     return {
       isLoading: false,
       cart: [],
-      // getTotal: "",
+      // getTotal: ',
       checkInfor: {
-        name: "",
-        email: "",
-        tel: "",
-        address: ""
+        name: '',
+        email: '',
+        tel: '',
+        address: ''
       },
-      recentCoupon: "",
-      checkMessage: "",
-      finalpay: "",
-      getTotal: ""
-    };
+      recentCoupon: '',
+      checkMessage: '',
+      finalpay: '',
+      getTotal: ''
+    }
   },
   components: {
     Progress
   },
   methods: {
-    getCart() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
-      const vm = this;
-      vm.isLoading = true;
+    getCart () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const vm = this
+      vm.isLoading = true
       this.$http.get(api).then(response => {
-        vm.cart = response.data.data.carts;
-        vm.getTotal = response.data.data.total;
-        console.log("這是購物車", response);
-        vm.isLoading = false;
-      });
-
-      this.cart = this.$route.query.object;
-      vm.isLoading = false;
+        vm.cart = response.data.data.carts
+        vm.getTotal = response.data.data.total
+        console.log('這是購物車', response)
+        vm.isLoading = false
+      })
+      this.cart = this.$route.query.object
+      vm.isLoading = false
     },
-    checkOrder() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`;
-      const vm = this;
+    checkOrder () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`
+      const vm = this
       const postInfor = {
         user: vm.checkInfor,
         message: vm.checkMessage
-      };
+      }
       this.$validator.validate().then(valid => {
         if (valid) {
           // do stuff if not valid.
           this.$http.post(api, { data: postInfor }).then(response => {
-            console.log("建立訂單", response);
-            vm.getCart();
+            console.log('建立訂單', response)
+            vm.getCart()
             if (response.data.success) {
-              this.$bus.$emit("message:push", response.data.message, "main");
+              this.$bus.$emit('message:push', response.data.message, 'main')
               this.$router.push({
                 path: `/checkout-2/${response.data.orderId}`
-              });
+              })
             } else {
-              this.$bus.$emit("message:push", response.data.message, "danger");
+              this.$bus.$emit('message:push', response.data.message, 'danger')
             }
-          });
+          })
         } else {
-          console.log("欄位不完整");
-          this.$bus.$emit("message:push", "欄位不完整", "danger");
+          console.log('欄位不完整')
+          this.$bus.$emit('message:push', '欄位不完整', 'danger')
         }
-      });
+      })
     },
-    getOrders(page = 1) {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/orders?page=${page}`;
-      const vm = this;
+    getOrders (page = 1) {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/orders?page=${page}`
       this.$http.get(api).then(response => {
-        console.log("這是訂單列表", response);
-      });
+        console.log('這是訂單列表', response)
+      })
     },
-    openProduct(id) {
-      let params = { title: "test" };
+    openProduct (id) {
+      // let params = { title: 'test' }
       let routerPush = this.$router.resolve({
-        path: "/productpage",
+        path: '/productpage',
         query: { id: id }
-      });
-      window.open(routerPush.href, "_blank");
-      console.log(routerPush);
+      })
+      window.open(routerPush.href, '_blank')
+      console.log(routerPush)
     },
-    checkCounpon() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`;
-      const vm = this;
-      vm.isLoading = true;
+    checkCounpon () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`
+      const vm = this
+      vm.isLoading = true
       this.$http
         .post(api, { data: { code: vm.recentCoupon } })
         .then(response => {
-          console.log("優惠券", response);
-          vm.finalpay = response.data.data.final_total;
-          this.$bus.$emit("message:push", response.data.message, "main");
-          vm.isLoading = false;
-        });
+          console.log('優惠券', response)
+          vm.finalpay = response.data.data.final_total
+          this.$bus.$emit('message:push', response.data.message, 'main')
+          vm.isLoading = false
+        })
     }
   },
   computed: {
-    getFinalTotal() {
-      let value = 0;
-      this.cart.forEach(function(item) {
-        value += item.final_total;
-      });
-      this.getTotal = value;
-    }
+    // getFinalTotal () {
+    //   let value = 0
+    //   this.cart.forEach(function (item) {
+    //     value += item.final_total
+    //   })
+    //   this.getTotal = value
+    // }
   },
-  created() {
-    this.getCart();
-    this.getOrders();
+  created () {
+    this.getCart()
+    this.getOrders()
   }
-};
+}
 </script>
-
-
 
 <style lang="scss" scoped>
 .back {

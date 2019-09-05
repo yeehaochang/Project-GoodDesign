@@ -10,7 +10,7 @@
             <div class="d-flex mr-auto align-items-center">
               <!-- 回首頁 -->
               <router-link class="btn text-general mr-md-4 p-0" to="/home" style="min-width:80px;">
-                <i class="fas fa-home fa-2x pt-1"></i> 
+                <i class="fas fa-home fa-2x pt-1"></i>
                 <small>HOME</small>
               </router-link>
               <!-- 登入紐 -->
@@ -143,79 +143,77 @@
   </div>
 </template>
 
-
-
 <script>
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import GoTop from "../components/GoTop";
-import $on from "jquery";
-import Message from '../components/Message';
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import GoTop from '../components/GoTop'
+// import $on from 'jquery'
+import Message from '../components/Message'
 
 export default {
-  name: "customboard",
-  data() {
+  name: 'customboard',
+  data () {
     return {
-      cartNum: "",
-      searchText: "",
-      msg: "Welcome to Your Vue.js App",
+      cartNum: '',
+      searchText: '',
       favoProduct: [],
-      heartNum: ""
-    };
+      heartNum: ''
+    }
   },
   methods: {
-    goSearch(text) {
+    goSearch (text) {
       this.$router.push({
-        path: "/products",
+        path: '/products',
         query: {
           t: text
         }
-      });
-      this.$bus.$emit('getFilterProducts');
+      })
+      this.$bus.$emit('getFilterProducts')
     },
-    getCartNum() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
-      const vm = this;
+    getCartNum () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const vm = this
       vm.$http.get(api).then(response => {
         // console.log(response)
-        vm.cartNum = response.data.data.carts.length;
+        vm.cartNum = response.data.data.carts.length
         // console.log("購物車數量", vm.cartNum);
-      });
+      })
     },
-    setFavorite() {
-      let stringdata = JSON.stringify(this.favoProduct);
-      localStorage.setItem("myFavorite", stringdata);
+    setFavorite () {
+      let stringdata = JSON.stringify(this.favoProduct)
+      localStorage.setItem('myFavorite', stringdata)
     },
-    getFavorite() {
-      this.favoProduct === this.favoProduct || [];
-      this.favoProduct = JSON.parse(localStorage.getItem("myFavorite"));
+    getFavorite () {
+      // this.favoProduct === this.favoProduct || []
+      this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
       // console.log(JSON.parse(localStorage.getItem("myFavorite")))
       if (this.favoProduct === null) {
-        this.heartNum === 0;
+        // this.heartNum === 0
+        // 尚未修改
       } else {
-        this.heartNum = this.favoProduct.length;
+        this.heartNum = this.favoProduct.length
       }
       // console.log("我的最愛", JSON.parse(localStorage.getItem("myFavorite")));
     },
-    addFavor(e) {
-      const vm = this;
-      vm.favoProduct = vm.favoProduct || [];
-      e.isFavor = false;
-      vm.favoProduct.forEach(function(item, index, array) {
+    addFavor (e) {
+      const vm = this
+      vm.favoProduct = vm.favoProduct || []
+      e.isFavor = false
+      vm.favoProduct.forEach(function (item, index, array) {
         if (item.title === e.title) {
-          array.splice(index, 1);
+          array.splice(index, 1)
         }
-      });
-      vm.setFavorite();
-      vm.getFavorite();
+      })
+      vm.setFavorite()
+      vm.getFavorite()
     },
-    openProduct(id) {
-      let params = { title: "test" };
+    openProduct (id) {
+      // let params = { title: 'test' }
       let routerPush = this.$router.push({
-        path: "/productpage",
+        path: '/productpage',
         query: { id: id }
-      });
-      console.log(routerPush);
+      })
+      console.log(routerPush)
     }
   },
   components: {
@@ -224,14 +222,13 @@ export default {
     GoTop,
     Message
   },
-  
-  created() {
-    this.getCartNum();
-    this.getFavorite();
-    this.$bus.$on("addCart", this.getCartNum);
-    this.$bus.$on("addHeart", this.getFavorite);
+  created () {
+    this.getCartNum()
+    this.getFavorite()
+    this.$bus.$on('addCart', this.getCartNum)
+    this.$bus.$on('addHeart', this.getFavorite)
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

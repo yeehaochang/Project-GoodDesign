@@ -86,47 +86,46 @@
   </div>
 </template>
 
-
 <script>
-import $ from "jquery";
-import Alert from "../components/Alert";
+import $ from 'jquery'
+import Alert from '../components/Alert'
 
 export default {
   components: {
     Alert
   },
-  data() {
+  data () {
     return {
       user: {
-        username: "",
-        password: ""
+        username: '',
+        password: ''
       }
-    };
+    }
   },
   methods: {
-    signin() {
-      const api = `${process.env.APIPATH}/admin/signin`;
-      const vm = this;
+    signin () {
+      const api = `${process.env.APIPATH}/admin/signin`
+      const vm = this
       vm.$validator.validate().then((valid) => {
         if (valid) {
           vm.$http.post(api, vm.user).then(response => {
             if (response.data.success) {
-              console.log(response.data);
-              $("#signin").modal("hide");
-              vm.$bus.$emit("message:push", response.data.message, "main");
+              console.log(response.data)
+              $('#signin').modal('hide')
+              vm.$bus.$emit('message:push', response.data.message, 'main')
             } else {
-              console.log(response.data);
-              vm.$bus.$emit("message:push", response.data.message, "danger");
+              console.log(response.data)
+              vm.$bus.$emit('message:push', response.data.message, 'danger')
             }
-          });
+          })
         } else {
-          vm.$bus.$emit("message:push","帳號或密碼不得為空", "danger");
-          console.log("帳號或密碼不得為空");
+          vm.$bus.$emit('message:push', '帳號或密碼不得為空', 'danger')
+          console.log('帳號或密碼不得為空')
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

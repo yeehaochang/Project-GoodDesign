@@ -29,59 +29,58 @@
 </template>
 
 <script>
-import VueEasyLightbox from "vue-easy-lightbox";
+import VueEasyLightbox from 'vue-easy-lightbox'
 
 export default {
   components: {
     VueEasyLightbox
   },
-  data() {
+  data () {
     return {
-      imgs: "", // Img Url , string or Array
+      imgs: '', // Img Url , string or Array
       visible: false,
       index: 0, // default
       imgArray: []
-    };
-  },
-  methods: {
-    showSingle(url) {
-      this.imgs = url;
-      this.show();
-    },
-    showMultiple() {
-      this.imgs = this.imgArray;
-      this.index = 1; // index of imgList
-      this.show();
-    },
-    show() {
-      this.visible = true;
-    },
-    handleHide() {
-      this.visible = false;
-    },
-    getAllProducts() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`;
-      const vm = this;
-      vm.isLoading = true;
-      this.$http.get(api).then(response => {
-        let newProd = response.data.products;
-        vm.imgArray = newProd.map(function(item) {
-          return item.imageUrl;
-        });
-      });
     }
   },
-  created() {
-    this.getAllProducts();
-    this.imgs = "";
+  methods: {
+    showSingle (url) {
+      this.imgs = url
+      this.show()
+    },
+    showMultiple () {
+      this.imgs = this.imgArray
+      this.index = 1 // index of imgList
+      this.show()
+    },
+    show () {
+      this.visible = true
+    },
+    handleHide () {
+      this.visible = false
+    },
+    getAllProducts () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
+      const vm = this
+      vm.isLoading = true
+      this.$http.get(api).then(response => {
+        let newProd = response.data.products
+        vm.imgArray = newProd.map(function (item) {
+          return item.imageUrl
+        })
+      })
+    }
+  },
+  created () {
+    this.getAllProducts()
+    this.imgs = ''
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
     img:hover{
         opacity: 0.8;
-       
     }
     .bg_wall{
         background-image: url(../assets/wall.jpg);
@@ -89,4 +88,5 @@ export default {
         background-position: center center;
         background-size: cover;
     }
+
 </style>

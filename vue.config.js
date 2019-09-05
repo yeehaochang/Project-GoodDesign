@@ -7,5 +7,16 @@ module.exports = {
                                         `
                         }
                 }
+        },
+        publicPath: '/',
+        outputDir: 'dist',
+        assetsDir: 'assets',
+        lintOnSave: false,
+        devServer: {
+                open: true,
+                host: 'localhost',
+                port: 8080,
+                https: false,
+                hotOnly: false
         }
-};
+}

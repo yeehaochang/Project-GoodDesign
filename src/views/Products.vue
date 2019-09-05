@@ -96,26 +96,26 @@
 </template>
 
 <script>
-import $ from "jquery";
-import Sidebar from "../components/Sidebar";
-import Pagination from "../components/Pagination";
-import Alert from "../components/Alert";
+// import $ from 'jquery'
+import Sidebar from '../components/Sidebar'
+import Pagination from '../components/Pagination'
+import Alert from '../components/Alert'
 
 export default {
-  props: ["info"],
-  data() {
+  props: ['info'],
+  data () {
     return {
       products: [],
       categoryList: [],
-      categoryValue: "",
+      categoryValue: '',
       filterdata: {},
       pagination: {},
       isLoading: false,
       favoProduct: [],
-      searchText: "",
+      searchText: '',
       isFavorite: false,
-      sortvalue: ""
-    };
+      sortvalue: ''
+    }
   },
   components: {
     Alert,
@@ -124,239 +124,238 @@ export default {
   },
   methods: {
     // 取得產品列表(含page)
-    getProducts(page = 1) {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products?page=${page}`;
-      const vm = this;
-      vm.isLoading = true;
+    getProducts (page = 1) {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products?page=${page}`
+      const vm = this
+      vm.isLoading = true
       this.$http.get(api).then(response => {
-        let newProd = response.data.products;
+        let newProd = response.data.products
         //
-        vm.putFavorite(newProd);
-        vm.products = newProd;
-
-        let newList = newProd.map(function(item) {
-          return item.category;
-        });
-        vm.categoryList = newList.filter(function(item, index, array) {
-          return array.indexOf(item) === index;
-        });
+        vm.putFavorite(newProd)
+        vm.products = newProd
+        let newList = newProd.map(function (item) {
+          return item.category
+        })
+        vm.categoryList = newList.filter(function (item, index, array) {
+          return array.indexOf(item) === index
+        })
         // 價格篩選過濾
         // if (vm.filterdata.maxprice) {
         //   vm.products === vm.filterMethod(vm.products);
         // }
-
-        vm.pagination = Object.assign({}, response.data.pagination);
-        vm.isLoading = false;
-      });
+        vm.pagination = Object.assign({}, response.data.pagination)
+        vm.isLoading = false
+      })
     },
     // 開啟單一產品頁面
-    openProduct(id) {
-      let params = { title: "test" };
+    openProduct (id) {
+      // let params = { title: 'test' }
       let routerPush = this.$router.push({
-        path: "/productpage",
+        path: '/productpage',
         query: { id: id }
-      });
-      console.log(routerPush);
+      })
+      console.log(routerPush)
     },
     // 該商品加入購物車
-    addCart(id) {
-      const vm = this;
-      vm.isLoading = true;
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
+    addCart (id) {
+      const vm = this
+      vm.isLoading = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
       const pushProduct = {
         product_id: id,
-        qty: "1"
-      };
+        qty: '1'
+      }
       vm.$http.post(api, { data: pushProduct }).then(response => {
-        vm.$bus.$emit("addCart");
-        vm.$bus.$emit("message:push", response.data.message, "main");
-        vm.isLoading = false;
-      });
+        vm.$bus.$emit('addCart')
+        vm.$bus.$emit('message:push', response.data.message, 'main')
+        vm.isLoading = false
+      })
     },
-    //取得過濾後產品列表方法
-    getFilterProducts(value = this.categoryValue) {
+    //  取得過濾後產品列表方法
+    getFilterProducts (value = this.categoryValue) {
       // 參數為sidebar透過emit傳進的選定商品分類
-      this.categoryValue = value;
-      const text = this.$route.query.t;
-      this.searchText = this.$route.query.t;
-      // this.$route.query.t = "";
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`;
-      const vm = this;
-      vm.isLoading = true;
+      this.categoryValue = value
+      const text = this.$route.query.t
+      this.searchText = this.$route.query.t
+      // this.$route.query.t = ';
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
+      const vm = this
+      vm.isLoading = true
       this.$http.get(api).then(response => {
-        let newProd = response.data.products;
-        vm.putFavorite(newProd);
+        let newProd = response.data.products
+        vm.putFavorite(newProd)
         // 透過點擊傳進來的value篩選出商品分類結果
-        if (this.categoryValue != "") {
-          newProd = newProd.filter(function(item) {
-            return item.category === value;
-          });
+        if (this.categoryValue !== '') {
+          newProd = newProd.filter(function (item) {
+            return item.category === value
+          })
         }
-        // console.log("過濾完分類", newProd);
+        // console.log('過濾完分類', newProd);
         // 價格篩選過濾
         if (vm.filterdata.maxprice) {
-          newProd = vm.filterMethod(newProd);
+          newProd = vm.filterMethod(newProd)
         }
-        // console.log("過濾完金額", newProd);
-        if (text != "") {
-          newProd = newProd.filter(function(item) {
-            return item.title.match(text);
-          });
+        // console.log('過濾完金額', newProd);
+        if (text !== '') {
+          newProd = newProd.filter(function (item) {
+            return item.title.match(text)
+          })
         }
-        // console.log("過濾完關鍵字", newProd);
+        // console.log('過濾完關鍵字', newProd);
         if (vm.isFavorite === true) {
-          newProd = newProd.filter(function(item) {
-            return item.isFavor === true;
-          });
+          newProd = newProd.filter(function (item) {
+            return item.isFavor === true
+          })
         }
-        if (vm.sortvalue != "") {
-          newProd = vm.sortMethod(newProd);
+        if (vm.sortvalue !== '') {
+          newProd = vm.sortMethod(newProd)
         }
-        // console.log("過濾完我的最愛", newProd);
-        vm.products = newProd;
-
-        let len = vm.products.length;
+        // console.log('過濾完我的最愛', newProd);
+        vm.products = newProd
+        let len = vm.products.length
         // 寫入分頁
         vm.pagination = {
           current_page: 1,
           has_next: len > 10,
           has_pre: false,
           total_pages: Math.floor((len - 1) / 10 + 1)
-        };
-        vm.isLoading = false;
-      });
+        }
+        vm.isLoading = false
+      })
     },
     // 價格篩選過濾的方法
-    filterMethod(data) {
-      const vm = this;
+    filterMethod (data) {
+      const vm = this
       // console.log('在此過濾資料',data,vm.filterdata.minprice,vm.filterdata.maxprice)
-      let newdata = data.filter(function(item) {
+      let newdata = data.filter(function (item) {
         return (
           parseInt(item.price) >= parseInt(vm.filterdata.minprice) &&
           parseInt(item.price) < parseInt(vm.filterdata.maxprice)
-        );
-      });
-      return newdata;
-      // console.log("過濾完成");
+        )
+      })
+      return newdata
+      // console.log('過濾完成');
       // vm.products = data;
       // console.log(newdata);
     },
-    getfilter(data) {
-      const vm = this;
-      vm.filterdata === vm.filterdata || [];
-      vm.filterdata = data;
-      vm.getFilterProducts(vm.categoryValue);
+    getfilter (data) {
+      const vm = this
+      vm.getFilterProducts(vm.categoryValue)
+      if (vm.filterdata) {
+        //  尚未確認
+        return vm.filterdata === data
+      } else {
+        return ''
+      }
       // console.log(2);
     },
     // 加入我的最愛
-    addFavor(e) {
-      const vm = this;
-      vm.favoProduct = vm.favoProduct || [];
+    addFavor (e) {
+      const vm = this
+      vm.favoProduct = vm.favoProduct || []
       if (e.isFavor) {
-        e.isFavor = false;
-        vm.favoProduct.forEach(function(item, index, array) {
+        e.isFavor = false
+        vm.favoProduct.forEach(function (item, index, array) {
           if (item.title === e.title) {
-            array.splice(index, 1);
+            array.splice(index, 1)
           }
-        });
-        vm.setFavorite();
+        })
+        vm.setFavorite()
       } else {
-        vm.$set(e, "isFavor", true);
-        vm.favoProduct.push(e);
-        vm.setFavorite();
+        vm.$set(e, 'isFavor', true)
+        vm.favoProduct.push(e)
+        vm.setFavorite()
       }
-      vm.$bus.$emit("addHeart");
-      vm.getFavorite();
+      vm.$bus.$emit('addHeart')
+      vm.getFavorite()
     },
-    setFavorite() {
-      let stringdata = JSON.stringify(this.favoProduct);
-      localStorage.setItem("myFavorite", stringdata);
+    setFavorite () {
+      let stringdata = JSON.stringify(this.favoProduct)
+      localStorage.setItem('myFavorite', stringdata)
     },
-    getFavorite() {
-      this.favoProduct = JSON.parse(localStorage.getItem("myFavorite"));
-      // console.log("我的最愛", JSON.parse(localStorage.getItem("myFavorite")));
+    getFavorite () {
+      this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
+      // console.log('我的最愛', JSON.parse(localStorage.getItem('myFavorite')));
     },
-    putFavorite(data) {
+    putFavorite (data) {
       // 過濾data中包含localstorage的資料並重新set:isfavor
-      const vm = this;
-      vm.favoProduct = vm.favoProduct || [];
-      let titledata = vm.favoProduct.map(function(item) {
-        return item.title;
-      });
-      data.forEach(function(item, index, array) {
+      const vm = this
+      vm.favoProduct = vm.favoProduct || []
+      let titledata = vm.favoProduct.map(function (item) {
+        return item.title
+      })
+      data.forEach(function (item, index, array) {
         if (titledata.includes(item.title)) {
-          vm.$set(item, "isFavor", true);
+          vm.$set(item, 'isFavor', true)
         }
-      });
+      })
     },
     // 移除過濾標籤
-    removeText() {
-      const vm = this;
-      vm.searchText = "";
-      vm.$route.query.t = "";
-      vm.getFilterProducts();
+    removeText () {
+      const vm = this
+      vm.searchText = ''
+      vm.$route.query.t = ''
+      vm.getFilterProducts()
     },
-    removeCategory() {
-      const vm = this;
-      vm.categoryValue = "";
-      vm.getFilterProducts();
+    removeCategory () {
+      const vm = this
+      vm.categoryValue = ''
+      vm.getFilterProducts()
     },
-    removeFilter() {
-      const vm = this;
-      vm.filterdata = "";
-      vm.getFilterProducts();
+    removeFilter () {
+      const vm = this
+      vm.filterdata = ''
+      vm.getFilterProducts()
     },
-    removeSort() {
-      const vm = this;
-      vm.sortvalue = "";
-      vm.getFilterProducts();
+    removeSort () {
+      const vm = this
+      vm.sortvalue = ''
+      vm.getFilterProducts()
     },
-
     // 切換是否顯示我的最愛
-    showFavorite() {
-      this.isFavorite = !this.isFavorite;
-      this.getFilterProducts();
+    showFavorite () {
+      this.isFavorite = !this.isFavorite
+      this.getFilterProducts()
     },
     // 將參數值傳到資料上
-    sortType(event) {
-      const vm = this;
-      let value = event.currentTarget.id;
-      console.log(value);
-      if ((value = "price")) {
-        vm.sortvalue = value;
-        vm.getFilterProducts();
+    sortType (event) {
+      const vm = this
+      let value = event.currentTarget.id
+      console.log(value)
+      if (value === 'price') {
+        vm.sortvalue = value
+        vm.getFilterProducts()
       }
     },
     // 排序過濾方法
-    sortMethod(data) {
-      const vm = this;
+    sortMethod (data) {
+      const vm = this
       // console.log(data)
-      if (vm.sortvalue === "price") {
-        data = data.sort(function(a, b) {
-          return a.price - b.price;
-        });
+      if (vm.sortvalue === 'price') {
+        data = data.sort(function (a, b) {
+          return a.price - b.price
+        })
       }
       // console.log(data)
-      return data;
+      return data
     }
   },
   watch: {
-    checkProductsPage(){
-      const vm = this;
-      vm.products = vm.products.length / 10 
+    checkProductsPage () {
+      const vm = this
+      vm.products = vm.products.length / 10
     }
   },
-  created() {
-    this.$bus.$on("getFilterProducts", this.getFilterProducts);
-    this.getFavorite();
-    this.getProducts();
-    this.$route.query.t = "";
-    this.filterdata = {};
-    this.categoryValue = "";
+  created () {
+    this.$bus.$on('getFilterProducts', this.getFilterProducts)
+    this.getFavorite()
+    this.getProducts()
+    this.$route.query.t = ''
+    this.filterdata = {}
+    this.categoryValue = ''
   }
-};
+}
 </script>
-
 
 <style lang="scss" scoped>
 .card-img-top {

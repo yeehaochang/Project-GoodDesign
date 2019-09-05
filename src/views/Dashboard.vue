@@ -17,20 +17,19 @@
   </div>
 </template>
 
-
 <script>
-import BackNavbar from "../components/Back-Navbar";
-import BackSidebar from "../components/Back-Sidebar";
-import GoTop from "../components/GoTop";
+import BackNavbar from '../components/Back-Navbar'
+import BackSidebar from '../components/Back-Sidebar'
+import GoTop from '../components/GoTop'
 
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
   components: {
     BackNavbar,
     BackSidebar,
     GoTop
   }
-};
+}
 </script>

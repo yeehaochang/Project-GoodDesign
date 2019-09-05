@@ -157,51 +157,51 @@
 </template>
 
 <script>
-import Progress from "../components/Progress";
-import Alert from "../components/Alert";
+import Progress from '../components/Progress'
+import Alert from '../components/Alert'
 
 export default {
   components: {
     Progress,
     Alert
   },
-  data() {
+  data () {
     return {
       isLoading: false,
-      orderId: "",
+      orderId: '',
       recentOrder: {}
-    };
-  },
-  methods: {
-    getOrders() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order/${this.$route.params.orderId}`;
-      const vm = this;
-      vm.isLoading = true;
-      this.$http.get(api).then(response => {
-        console.log("這是該筆訂單", response);
-        vm.recentOrder = response.data.order;
-        vm.isLoading = false;
-      });
-    },
-    payment() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/pay/${this.recentOrder.id}`;
-      const vm = this;
-      vm.isLoading = true;
-      vm.$http.post(api, vm.recentOrder.id).then(response => {
-        this.$bus.$emit("message:push", response.data.message, "main");
-        console.log("結帳付款", response);
-        vm.isLoading = false;
-      });
-      vm.getOrders();
     }
   },
-  created() {
-    this.getOrders();
+  methods: {
+    getOrders () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order/${this.$route.params.orderId}`
+      const vm = this
+      vm.isLoading = true
+      this.$http.get(api).then(response => {
+        console.log('這是該筆訂單', response)
+        vm.recentOrder = response.data.order
+        vm.isLoading = false
+      })
+    },
+    payment () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/pay/${this.recentOrder.id}`
+      const vm = this
+      vm.isLoading = true
+      vm.$http.post(api, vm.recentOrder.id).then(response => {
+        this.$bus.$emit('message:push', response.data.message, 'main')
+        console.log('結帳付款', response)
+        vm.isLoading = false
+      })
+      vm.getOrders()
+    }
+  },
+  created () {
+    this.getOrders()
   }
-};
+}
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .back {
   font-size: 16px;
   font-weight: bold;

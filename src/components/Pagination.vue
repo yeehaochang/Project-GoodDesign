@@ -30,22 +30,20 @@
 
 <script>
 export default {
-  props: ["propspage"],
-  data() {
+  props: ['propspage'],
+  data () {
     return {
-        pagination:{},
-    };
+      pagination: {}
+    }
   },
   methods: {
-    changePage(num) {
-      this.$emit("emitpage", num);
-    },
-  },
-};
+    changePage (num) {
+      this.$emit('emitpage', num)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-
-
 // .disabled { pointer-events: none; }
 </style>

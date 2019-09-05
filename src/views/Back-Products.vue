@@ -26,7 +26,7 @@
           <!-- <th>原價</th> -->
           <th width="80">定價</th>
           <th>數量</th>
-          <th >單位</th>
+          <th>單位</th>
 
           <th></th>
         </tr>
@@ -38,7 +38,9 @@
               <i class="fas fa-trash-alt"></i>
             </a>
           </td>
-          <td  class="d-none d-md-block"><img :src="item.imageUrl" class="bg-cover" alt="" width="100px" height="100px" srcset=""></td>
+          <td class="d-none d-md-block">
+            <img :src="item.imageUrl" class="bg-cover" alt width="100px" height="100px" srcset />
+          </td>
           <td>{{item.title}}</td>
           <td>{{item.category}}</td>
           <!-- <td>{{item.content}}</td> -->
@@ -119,17 +121,38 @@
                 </div>
                 <div class="form-group col-6">
                   <label for="price">定價 price</label>
-                  <input type="number" v-model="tempProduct.price" class="form-control" id="price" v-validate="'required'" name="price"/>
+                  <input
+                    type="number"
+                    v-model="tempProduct.price"
+                    class="form-control"
+                    id="price"
+                    v-validate="'required'"
+                    name="price"
+                  />
                   <small class="text-danger" v-if="errors.has('price')">此欄位不得為空</small>
                 </div>
                 <div class="form-group col-3">
                   <label for="num">數量 num</label>
-                  <input type="number" v-model="tempProduct.num" class="form-control" id="num" v-validate="'required'" name="num"/>
+                  <input
+                    type="number"
+                    v-model="tempProduct.num"
+                    class="form-control"
+                    id="num"
+                    v-validate="'required'"
+                    name="num"
+                  />
                   <small class="text-danger" v-if="errors.has('num')">此欄位不得為空</small>
                 </div>
                 <div class="form-group col-3">
                   <label for="unit">單位 unit</label>
-                  <input type="text" v-model="tempProduct.unit" class="form-control" id="unit" v-validate="'required'" name="unit"/>
+                  <input
+                    type="text"
+                    v-model="tempProduct.unit"
+                    class="form-control"
+                    id="unit"
+                    v-validate="'required'"
+                    name="unit"
+                  />
                   <small class="text-danger" v-if="errors.has('unit')">此欄位不得為空</small>
                 </div>
 
@@ -179,7 +202,6 @@
                     :true-value="1"
                     :false-value="0"
                     id="is_enabled"
-                    
                     name="isenabled"
                   />
                   <!-- <small class="text-danger" v-if="errors.has('isenabled')">此欄位不得為空</small> -->
@@ -219,14 +241,14 @@
 </template>
 
 <script>
-import $ from "jquery";
-import Alert from '../components/Alert';
+import $ from 'jquery'
+import Alert from '../components/Alert'
 
 export default {
-  components:{
-    Alert,
+  components: {
+    Alert
   },
-  data() {
+  data () {
     return {
       products: [],
       tempProduct: {
@@ -245,63 +267,65 @@ export default {
       },
       isLoading: false,
       isFileLoading: false,
-      isNew:false,
-    };
+      isNew: false
+    }
   },
   methods: {
-    getProducts() {
-      const vm = this;
-      vm.isLoading = true;
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/products/all`;
+    getProducts () {
+      const vm = this
+      vm.isLoading = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/products/all`
       this.$http.get(api).then(response => {
-        vm.products = response.data.products;
-        console.log('這是所有商品',response);
-        if(!response.data.success){
-          this.$bus.$emit('message:push',response.data.message,'danger')
+        vm.products = response.data.products
+        console.log('這是所有商品', response)
+        if (!response.data.success) {
+          this.$bus.$emit('message:push', response.data.message, 'danger')
         }
-        vm.isLoading = false;
-      });
-    },
-    openModal(isNew, item) {
-      if (isNew) {
-        this.isNew = true;
-        this.tempProduct = {};
-      } else {
-        this.isNew = false;
-        this.tempProduct = Object.assign({}, item);
-      }
-      $("#productModal").modal("show");
-    },
-    updateImage() {
-      console.log(this);
-      const vm = this;
-      vm.isFileLoading = true;
-      const updatedFile = vm.$refs.files.files[0];
-      const formdata = new FormData();
-      formdata.append('file-to-upload',updatedFile);
-      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/upload`;
-      vm.$http.post(api,formdata,{
-        // 為將格式改成formdata格式故寫入此header
-        headers:{
-          'Content-Type':'multipart/form-data',
-        }
-      }).then(response =>{
-        // vm.tempProduct.imageUrl = response.data.imageUrl;
-        console.log(response.data);
-        console.log(vm.tempProduct);
-        if(response.data.success){
-          vm.$set(vm.tempProduct,'imageUrl',response.data.imageUrl);
-          vm.$bus.$emit('message:push','圖片上傳成功','main')
-        }else{
-          vm.$bus.$emit('message:push','圖片上傳失敗','danger')
-        }
-        // this.tempProduct.$set()
-        vm.isFileLoading = false;
+        vm.isLoading = false
       })
+    },
+    openModal (isNew, item) {
+      if (isNew) {
+        this.isNew = true
+        this.tempProduct = {}
+      } else {
+        this.isNew = false
+        this.tempProduct = Object.assign({}, item)
+      }
+      $('#productModal').modal('show')
+    },
+    updateImage () {
+      console.log(this)
+      const vm = this
+      vm.isFileLoading = true
+      const updatedFile = vm.$refs.files.files[0]
+      const formdata = new FormData()
+      formdata.append('file-to-upload', updatedFile)
+      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/upload`
+      vm.$http
+        .post(api, formdata, {
+          // 為將格式改成formdata格式故寫入此header
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(response => {
+          // vm.tempProduct.imageUrl = response.data.imageUrl;
+          console.log(response.data)
+          console.log(vm.tempProduct)
+          if (response.data.success) {
+            vm.$set(vm.tempProduct, 'imageUrl', response.data.imageUrl)
+            vm.$bus.$emit('message:push', '圖片上傳成功', 'main')
+          } else {
+            vm.$bus.$emit('message:push', '圖片上傳失敗', 'danger')
+          }
+          // this.tempProduct.$set()
+          vm.isFileLoading = false
+        })
       // this.isFileLoading = true;
       // const file = event.target.files.item(0); //取得file物件
       // const reader = new FileReader(); //建立fileReader 監聽 load 事件
-      // reader.addEventListener("load", this.imageLoader);
+      // reader.addEventListener('load', this.imageLoader);
       // reader.readAsDataURL(file);
       // 在Vue實體中，於methods建立fileSelected方法，當檔案按鈕觸發change事件時，
       // 會取得file物件，此時利用FileReader監聽 Load事件，取得圖檔被轉成Base64格式的URL
@@ -311,45 +335,46 @@ export default {
     //   this.tempProduct.image = e.target.result;
     //   this.isFileLoading = false;
     // },
-    updateEdit() {
-      const vm = this;
-      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product`;
-      let method = "";
+    updateEdit () {
+      const vm = this
+      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product`
+      let method = ''
       if (vm.isNew) {
-        method = "post";
+        method = 'post'
       } else {
-        api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${vm.tempProduct.id}`;
-        method = "put";
+        api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${vm.tempProduct.id}`
+        method = 'put'
       }
-      this.$http[method](api, {data:vm.tempProduct}).then(response => {
-        console.log(response);
-        this.getProducts();
-        this.tempProduct = {};
-        $("#productModal").modal("hide");
-        this.$bus.$emit('message:push',response.data.message,'main')
-      });
+      this.$http[method](api, { data: vm.tempProduct }).then(response => {
+        console.log(response)
+        this.getProducts()
+        this.tempProduct = {}
+        $('#productModal').modal('hide')
+        this.$bus.$emit('message:push', response.data.message, 'main')
+      })
     },
-    removeProduct(id) {
-      const vm = this;
-      vm.isLoading = true;
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${id}`;
+    removeProduct (id) {
+      const vm = this
+      vm.isLoading = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${id}`
       this.$http.delete(api).then(response => {
-        console.log(response);
-        this.getProducts();
-        vm.isLoading = false;
-        this.$bus.$emit('message:push',response.data.message,'main')
-      });
+        console.log(response)
+        this.getProducts()
+        vm.isLoading = false
+        this.$bus.$emit('message:push', response.data.message, 'main')
+      })
     }
   },
-  created() {
-    this.getProducts();
+  created () {
+    this.getProducts()
   }
-};
+}
 </script>
 
-
 <style lang="scss" scoped>
-  td,img,div{
-    vertical-align: middle;
-  }
+td,
+img,
+div {
+  vertical-align: middle;
+}
 </style>

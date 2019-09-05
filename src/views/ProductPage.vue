@@ -90,128 +90,125 @@
   </div>
 </template>
 
-
 <script>
-import Alert from "../components/Alert";
-import VueEasyLightbox from "vue-easy-lightbox";
+import Alert from '../components/Alert'
+import VueEasyLightbox from 'vue-easy-lightbox'
 
 export default {
   components: {
     Alert,
     VueEasyLightbox
   },
-  data() {
+  data () {
     return {
-      productId: "",
+      productId: '',
       product: {},
-      total: "",
+      total: '',
       favoProduct: [],
-      imgs: "",
+      imgs: '',
       visible: false,
       index: 0
-    };
+    }
   },
   methods: {
-    getProduct() {
-      const vm = this;
-      vm.isLoading = true;
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/product/${vm.productId}`;
+    getProduct () {
+      const vm = this
+      vm.isLoading = true
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/product/${vm.productId}`
       this.$http.get(api).then(response => {
-        vm.product = response.data.product;
-        this.putPageFavorite(vm.product);
-        vm.product.qty = 1;
-        console.log(response);
-        vm.isLoading = false;
-      });
+        vm.product = response.data.product
+        this.putPageFavorite(vm.product)
+        vm.product.qty = 1
+        console.log(response)
+        vm.isLoading = false
+      })
     },
-    addCart() {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`;
-      const vm = this;
-      vm.isLoading = true;
+    addCart () {
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const vm = this
+      vm.isLoading = true
       const pushProduct = {
         product_id: vm.product.id,
         qty: vm.product.qty
-      };
+      }
       vm.$http.post(api, { data: pushProduct }).then(response => {
-        this.$bus.$emit("addCart");
-        this.$bus.$emit("message:push", response.data.message, "main");
-        vm.isLoading = false;
-        console.log("新增至購物車", response);
-      });
+        this.$bus.$emit('addCart')
+        this.$bus.$emit('message:push', response.data.message, 'main')
+        vm.isLoading = false
+        console.log('新增至購物車', response)
+      })
     },
-    gettotal() {
-      this.total = parseInt(this.product.qty) * parseInt(this.product.price);
+    gettotal () {
+      this.total = parseInt(this.product.qty) * parseInt(this.product.price)
     },
-    getFavorite() {
-      this.favoProduct = JSON.parse(localStorage.getItem("myFavorite"));
-      console.log("我的最愛", JSON.parse(localStorage.getItem("myFavorite")));
+    getFavorite () {
+      this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
+      console.log('我的最愛', JSON.parse(localStorage.getItem('myFavorite')))
     },
-    setFavorite() {
-      let stringdata = JSON.stringify(this.favoProduct);
-      localStorage.setItem("myFavorite", stringdata);
+    setFavorite () {
+      let stringdata = JSON.stringify(this.favoProduct)
+      localStorage.setItem('myFavorite', stringdata)
     },
-    putPageFavorite(e) {
-      this.favoProduct = JSON.parse(localStorage.getItem("myFavorite"));
-      console.log("我的最愛", JSON.parse(localStorage.getItem("myFavorite")));
-      const vm = this;
-      vm.favoProduct = vm.favoProduct || [];
-      let titledata = vm.favoProduct.map(function(item) {
-        return item.title;
-      });
+    putPageFavorite (e) {
+      this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
+      console.log('我的最愛', JSON.parse(localStorage.getItem('myFavorite')))
+      const vm = this
+      vm.favoProduct = vm.favoProduct || []
+      let titledata = vm.favoProduct.map(function (item) {
+        return item.title
+      })
       if (titledata.includes(e.title)) {
-        vm.$set(e, "isFavor", true);
+        vm.$set(e, 'isFavor', true)
       }
     },
-    addFavor() {
-      const vm = this;
-      vm.favoProduct = vm.favoProduct || [];
+    addFavor () {
+      const vm = this
+      vm.favoProduct = vm.favoProduct || []
       if (vm.product.isFavor) {
-        vm.product.isFavor = false;
-        vm.favoProduct.forEach(function(item, index, array) {
+        vm.product.isFavor = false
+        vm.favoProduct.forEach(function (item, index, array) {
           if (item.title === vm.product.title) {
-            array.splice(index, 1);
+            array.splice(index, 1)
           }
-        });
-        vm.setFavorite();
+        })
+        vm.setFavorite()
       } else {
-        vm.$set(vm.product, "isFavor", true);
-        vm.favoProduct.push(vm.product);
-        vm.setFavorite();
+        vm.$set(vm.product, 'isFavor', true)
+        vm.favoProduct.push(vm.product)
+        vm.setFavorite()
       }
-      vm.$bus.$emit("addHeart");
-      vm.getFavorite();
+      vm.$bus.$emit('addHeart')
+      vm.getFavorite()
     },
     // 燈箱效果
-    showSingle(url) {
-      this.imgs = url;
-      this.show();
+    showSingle (url) {
+      this.imgs = url
+      this.show()
     },
-    showMultiple() {
-      this.imgs = this.imgArray;
-      this.index = 1; // index of imgList
-      this.show();
+    showMultiple () {
+      this.imgs = this.imgArray
+      this.index = 1 // index of imgList
+      this.show()
     },
-    show() {
-      this.visible = true;
+    show () {
+      this.visible = true
     },
-    handleHide() {
-      this.visible = false;
+    handleHide () {
+      this.visible = false
     }
   },
-
-  created() {
-    this.productId = this.$route.query.id;
-    this.getProduct();
-    this.gettotal();
+  created () {
+    this.productId = this.$route.query.id
+    this.getProduct()
+    this.gettotal()
   },
   computed: {
-    firstGetTotal() {
-      this.total = parseInt(this.product.qty) * parseInt(this.product.price);
-    }
+    // firstGetTotal () {
+    //   this.total = parseInt(this.product.qty) * parseInt(this.product.price) || ''
+    // }
   }
-};
+}
 </script>
-
 
 <style lang="scss" scoped>
 img {

@@ -100,77 +100,77 @@
   </div>
 </template>
 
-
 <script>
 export default {
-  props: ["categorybar"],
-  data() {
+  props: ['categorybar'],
+  data () {
     return {
       checkvalue: {},
       priceType: {
-        minprice: "",
-        maxprice: ""
+        minprice: '',
+        maxprice: ''
       },
-      isFavorite:false
-    };
+      isFavorite: false
+    }
   },
   methods: {
-    chooseFavorite(){
-      this.isFavorite =! this.isFavorite;
-      this.$emit("recentFavorite");
+    chooseFavorite () {
+      // this.isFavorite === !this.isFavorite
+      this.$emit('recentFavorite')
     },
-    chooseCategory(item) {
-      this.$emit("recentCategory", item);
+    chooseCategory (item) {
+      this.$emit('recentCategory', item)
     },
-    chooseFilter() {
-      this.checkType();
-      if(this.priceType.maxprice >= this.priceType.minprice){
-        this.$emit("recentfilter", this.priceType);
-      }else{
-        this.$bus.$emit("message:push", '最高金額不得低於起始金額', "danger");
+    chooseFilter () {
+      this.checkType()
+      if (this.priceType.maxprice >= this.priceType.minprice) {
+        this.$emit('recentfilter', this.priceType)
+      } else {
+        this.$bus.$emit('message:push', '最高金額不得低於起始金額', 'danger')
       }
       // console.log(this.checkvalue);
       // console.log(this.priceType);
-    },
-    checkType() {
-      switch (this.checkvalue) {
-        case "0":
-          this.priceType.minprice = 0;
-          this.priceType.maxprice = 500;
-          break;
-        case "1":
-          this.priceType.minprice = 500;
-          this.priceType.maxprice = 1000;
-          break;
-        case "2":
-          this.priceType.minprice = 1000;
-          this.priceType.maxprice = 10000;
-          break;
-      }
-    },
-    refresh() {
-      this.checkvalue = "";
     }
+    // checkType () {
+    //   switch (this.checkvalue) {
+    //     case '0':
+    //       this.priceType.minprice === 0
+    //       this.priceType.maxprice === 500
+    //       break
+    //     case '1':
+    //       this.priceType.minprice === 500
+    //       this.priceType.maxprice === 1000
+    //       break
+    //     case '2':
+    //       this.priceType.minprice === 1000
+    //       this.priceType.maxprice === 10000
+    //       break
+    //   }
+    // },
+    // refresh () {
+    //   this.checkvalue === ''
+    // }
   },
   computed: {
-    checkTypeComputed() {
-      switch (this.checkvalue) {
-        case "0":
-          this.priceType.minprice = 0;
-          this.priceType.maxprice = 500;
-          break;
-        case "500":
-          this.priceType.minprice = 500;
-          this.priceType.maxprice = 1000;
-          break;
-        case "1000":
-          this.priceType.minprice = 1000;
-          this.priceType.maxprice = 10000;
-          break;
-      }
-    }
+    // checkTypeComputed () {
+    //   switch (this.checkvalue) {
+    //     case '0':
+    //       this.priceType.minprice === 0
+    //       this.priceType.maxprice === 500
+    //       break
+    //     case '500':
+    //       this.priceType.minprice === 500
+    //       this.priceType.maxprice === 1000
+    //       break
+    //     case '1000':
+    //       this.priceType.minprice === 1000
+    //       this.priceType.maxprice === 10000
+    //       break
+    //   }
+    //   return ''
+    // }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

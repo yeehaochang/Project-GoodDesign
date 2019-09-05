@@ -39,15 +39,15 @@
 
 <script>
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
-  methods:{
-    back(){
-      this.$router.back();
+  methods: {
+    back () {
+      this.$router.back()
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

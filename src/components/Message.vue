@@ -43,60 +43,60 @@
 </template>
 
 <script>
-import $ from "jquery";
+import $ from 'jquery'
 
 export default {
-  data() {
+  data () {
     return {
-      ScoreType: "",
-    };
-  },
-  methods: {
-    showMessage() {
-      $("#message").toggleClass('fadeIn');
-      // $(".message-body").fadeToggle(200);
-      $('.message-footer').hide();
-    },
-    selectScore(event) {
-      let e = event.currentTarget.id;
-        this.ScoreType = '';
-      $("#" + e)
-        .addClass("fa-2x")
-        .removeClass("opacity")
-        .siblings()
-        .removeClass("fa-2x")
-        .addClass("opacity");
-      $('#'+ e).children('.scoretext').removeClass('d-none');
-    },
-    outScore(event) {
-      let e = event.currentTarget.id;
-      $("#" + e)
-        .removeClass("fa-2x")
-        .siblings()
-        .removeClass("opacity");
-        $('#'+ e).children('.scoretext').addClass('d-none');
-    },
-    Score(event){
-        let e = event.currentTarget.id;
-        this.ScoreType = e;
-        console.log(e)
-        // let stringE = JSON.stringify(e)
-        localStorage.setItem('score',e);
-        $('#'+e).addClass('fa-2x');
-        $('.message-footer').show();
-        $('#message').removeClass('fadeIn');
-        // $(".message-body").fadeToggle(500);
-        this.getScore();
-    },
-    getScore(){
-        let value = localStorage.getItem('score');
-        this.ScoreType = value;
+      ScoreType: ''
     }
   },
-  created() {
-      this.getScore();
+  methods: {
+    showMessage () {
+      $('#message').toggleClass('fadeIn')
+      // $('.message-body').fadeToggle(200);
+      $('.message-footer').hide()
+    },
+    selectScore (event) {
+      let e = event.currentTarget.id
+      this.ScoreType = ''
+      $('#' + e)
+        .addClass('fa-2x')
+        .removeClass('opacity')
+        .siblings()
+        .removeClass('fa-2x')
+        .addClass('opacity')
+      $('#' + e).children('.scoretext').removeClass('d-none')
+    },
+    outScore (event) {
+      let e = event.currentTarget.id
+      $('#' + e)
+        .removeClass('fa-2x')
+        .siblings()
+        .removeClass('opacity')
+      $('#' + e).children('.scoretext').addClass('d-none')
+    },
+    Score (event) {
+      let e = event.currentTarget.id
+      this.ScoreType = e
+      console.log(e)
+      // let stringE = JSON.stringify(e)
+      localStorage.setItem('score', e)
+      $('#' + e).addClass('fa-2x')
+      $('.message-footer').show()
+      $('#message').removeClass('fadeIn')
+      // $(".message-body").fadeToggle(500);
+      this.getScore()
+    },
+    getScore () {
+      let value = localStorage.getItem('score')
+      this.ScoreType = value
+    }
   },
-};
+  created () {
+    this.getScore()
+  }
+}
 </script>
 
 <style lang="scss" scoped>
