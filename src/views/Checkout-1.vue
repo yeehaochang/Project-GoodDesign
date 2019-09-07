@@ -177,7 +177,7 @@ export default {
   },
   methods: {
     getCart () {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
       const vm = this
       vm.isLoading = true
       this.$http.get(api).then(response => {
@@ -190,7 +190,7 @@ export default {
       vm.isLoading = false
     },
     checkOrder () {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`
       const vm = this
       const postInfor = {
         user: vm.checkInfor,
@@ -212,19 +212,16 @@ export default {
             }
           })
         } else {
-          console.log('欄位不完整')
           this.$bus.$emit('message:push', '欄位不完整', 'danger')
         }
       })
     },
     getOrders (page = 1) {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/orders?page=${page}`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/orders?page=${page}`
       this.$http.get(api).then(response => {
-        console.log('這是訂單列表', response)
       })
     },
     openProduct (id) {
-      // let params = { title: 'test' }
       let routerPush = this.$router.resolve({
         path: '/productpage',
         query: { id: id }
@@ -233,7 +230,7 @@ export default {
       console.log(routerPush)
     },
     checkCounpon () {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`
       const vm = this
       vm.isLoading = true
       this.$http
@@ -245,15 +242,6 @@ export default {
           vm.isLoading = false
         })
     }
-  },
-  computed: {
-    // getFinalTotal () {
-    //   let value = 0
-    //   this.cart.forEach(function (item) {
-    //     value += item.final_total
-    //   })
-    //   this.getTotal = value
-    // }
   },
   created () {
     this.getCart()

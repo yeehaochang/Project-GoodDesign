@@ -218,10 +218,9 @@ export default {
     getOrders (page = 1) {
       const vm = this
       vm.isLoading = true
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/orders?page=${page}`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`
       vm.$http.get(api).then(response => {
         vm.orderList = response.data.orders
-        console.log(response)
         if (!response.data.success) {
           this.$bus.$emit('message:push', response.data.message, 'danger')
         }
@@ -229,16 +228,14 @@ export default {
       })
     },
     openCheck (item) {
-      console.log(item)
       this.tempCheck = Object.assign({}, item)
       $('#checkModal').modal('show')
     },
     updateCheck (id) {
       const vm = this
       vm.isLoading = true
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/order/${id}`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${id}`
       vm.$http.put(api, { data: vm.tempCheck }).then(response => {
-        console.log(response.data)
         vm.tempCheck = {
           user: {}
         }

@@ -6,7 +6,9 @@
       <div class="col-sm-2 col-0">
         <Sidebar
           @recentCategory="getFilterProducts"
+          @recentDesigner="getDesigner"
           :categorybar="categoryList"
+          :designerbar="designerlist"
           @recentfilter="getfilter"
           @recentFavorite="showFavorite"
         ></Sidebar>
@@ -15,9 +17,9 @@
         <div class="bg-second text-main p-2 mx-2">商品列表</div>
         <div class="p-3 d-flex">
           <!-- 過濾標籤 -->
-          <span class="border rounded p-2 mx-1" v-if="categoryValue">
+          <span class="border rounded p-2 mx-1" v-if="recentCategory">
             <i class="fas fa-times mr-1" @click.prevent="removeCategory"></i>
-            {{categoryValue}}
+            {{recentCategory}}
           </span>
           <span class="border rounded p-2 mx-1" v-if="filterdata.maxprice">
             <i class="fas fa-times mr-1" @click.prevent="removeFilter"></i>
@@ -26,6 +28,10 @@
           <span class="border rounded p-2 mx-1" v-if="searchText != ''">
             <i class="fas fa-times mr-1" @click.prevent="removeText"></i>
             {{searchText}}
+          </span>
+          <span class="border rounded p-2 mx-1" v-if="recentDesigner != ''">
+            <i class="fas fa-times mr-1" @click.prevent="removeDesigner"></i>
+            {{recentDesigner}}
           </span>
           <span class="border rounded p-2 mx-1" v-if="sortvalue != ''">
             <i class="fas fa-times mr-1" @click.prevent="removeSort"></i>
@@ -43,17 +49,11 @@
             >選擇排序方式</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a id="price" class="dropdown-item" href="#" @click.prevent="sortType">依金額排序</a>
-              <!-- <a class="dropdown-item" href="#">依名稱</a> -->
-              <!-- <a class="dropdown-item" href="#">Something else here</a> -->
             </div>
           </div>
-          <!-- <span class="border rounded p-2 mx-1" v-if="isFavorite">
-            <i class="fas fa-times mr-1" @click.prevent="showFavorite"></i>
-            <i class="fas fa-heart text-first"></i>
-          </span>-->
         </div>
         <div class="row no-gutters px-2">
-          <span class="col-12" v-if="products.length === 0">目前尚無符合搜尋結果的商品</span>
+          <span class="col-12" v-if="products.length === 0">目前尚無符合搜尋結果的商品。</span>
           <div
             class="col-lg-3 col-md-4 col-sm-6 col-12 card p-2 border border-shadow"
             v-for="item in products"
@@ -96,7 +96,6 @@
 </template>
 
 <script>
-// import $ from 'jquery'
 import Sidebar from '../components/Sidebar'
 import Pagination from '../components/Pagination'
 import Alert from '../components/Alert'
@@ -107,7 +106,9 @@ export default {
     return {
       products: [],
       categoryList: [],
-      categoryValue: '',
+      designerlist: [],
+      recentCategory: '',
+      recentDesigner: '',
       filterdata: {},
       pagination: {},
       isLoading: false,
@@ -125,7 +126,7 @@ export default {
   methods: {
     // 取得產品列表(含page)
     getProducts (page = 1) {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products?page=${page}`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`
       const vm = this
       vm.isLoading = true
       this.$http.get(api).then(response => {
@@ -133,16 +134,19 @@ export default {
         //
         vm.putFavorite(newProd)
         vm.products = newProd
-        let newList = newProd.map(function (item) {
+        let newcategoryList = newProd.map(function (item) {
           return item.category
         })
-        vm.categoryList = newList.filter(function (item, index, array) {
+        vm.categoryList = newcategoryList.filter(function (item, index, array) {
           return array.indexOf(item) === index
         })
-        // 價格篩選過濾
-        // if (vm.filterdata.maxprice) {
-        //   vm.products === vm.filterMethod(vm.products);
-        // }
+
+        let newdesignerList = newProd.map(function (item) {
+          return item.description
+        })
+        vm.designerlist = newdesignerList.filter(function (item, index, array) {
+          return array.indexOf(item) === index
+        })
         vm.pagination = Object.assign({}, response.data.pagination)
         vm.isLoading = false
       })
@@ -160,7 +164,7 @@ export default {
     addCart (id) {
       const vm = this
       vm.isLoading = true
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
       const pushProduct = {
         product_id: id,
         qty: '1'
@@ -172,51 +176,57 @@ export default {
       })
     },
     //  取得過濾後產品列表方法
-    getFilterProducts (value = this.categoryValue) {
+    getFilterProducts (value = this.recentCategory) {
       // 參數為sidebar透過emit傳進的選定商品分類
-      this.categoryValue = value
+      this.recentCategory = value
       const text = this.$route.query.t
       this.searchText = this.$route.query.t
       // this.$route.query.t = ';
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`
       const vm = this
       vm.isLoading = true
       this.$http.get(api).then(response => {
         let newProd = response.data.products
         vm.putFavorite(newProd)
         // 透過點擊傳進來的value篩選出商品分類結果
-        if (this.categoryValue !== '') {
+        if (this.recentCategory !== '') {
           newProd = newProd.filter(function (item) {
             return item.category === value
           })
         }
-        // console.log('過濾完分類', newProd);
         // 價格篩選過濾
         if (vm.filterdata.maxprice) {
           newProd = vm.filterMethod(newProd)
         }
-        // console.log('過濾完金額', newProd);
+        // 過濾搜尋關鍵字
         if (text !== '') {
           newProd = newProd.filter(function (item) {
             return item.title.match(text)
           })
         }
-        // console.log('過濾完關鍵字', newProd);
+        // 過濾我的最愛
         if (vm.isFavorite === true) {
           newProd = newProd.filter(function (item) {
             return item.isFavor === true
           })
         }
+        // 過濾搜尋金額順序
         if (vm.sortvalue !== '') {
           newProd = vm.sortMethod(newProd)
         }
-        // console.log('過濾完我的最愛', newProd);
+        // 過濾設計師
+        if (vm.recentDesigner !== '') {
+          newProd = newProd.filter(function (item) {
+            return item.description === vm.recentDesigner
+          })
+        }
         vm.products = newProd
+
         let len = vm.products.length
         // 寫入分頁
         vm.pagination = {
           current_page: 1,
-          has_next: len > 10,
+          has_next: (len > 10),
           has_pre: false,
           total_pages: Math.floor((len - 1) / 10 + 1)
         }
@@ -230,24 +240,19 @@ export default {
       let newdata = data.filter(function (item) {
         return (
           parseInt(item.price) >= parseInt(vm.filterdata.minprice) &&
-          parseInt(item.price) < parseInt(vm.filterdata.maxprice)
-        )
+          parseInt(item.price) < parseInt(vm.filterdata.maxprice))
       })
       return newdata
-      // console.log('過濾完成');
-      // vm.products = data;
-      // console.log(newdata);
     },
     getfilter (data) {
       const vm = this
-      vm.getFilterProducts(vm.categoryValue)
-      if (vm.filterdata) {
-        //  尚未確認
-        return vm.filterdata === data
-      } else {
-        return ''
-      }
-      // console.log(2);
+      vm.filterdata = data
+      vm.getFilterProducts(vm.recentCategory)
+    },
+    getDesigner (item) {
+      const vm = this
+      vm.recentDesigner = item
+      vm.getFilterProducts(vm.recentCategory)
     },
     // 加入我的最愛
     addFavor (e) {
@@ -275,7 +280,6 @@ export default {
     },
     getFavorite () {
       this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
-      // console.log('我的最愛', JSON.parse(localStorage.getItem('myFavorite')));
     },
     putFavorite (data) {
       // 過濾data中包含localstorage的資料並重新set:isfavor
@@ -291,6 +295,11 @@ export default {
       })
     },
     // 移除過濾標籤
+    removeDesigner () {
+      const vm = this
+      vm.recentDesigner = ''
+      vm.getFilterProducts()
+    },
     removeText () {
       const vm = this
       vm.searchText = ''
@@ -299,7 +308,7 @@ export default {
     },
     removeCategory () {
       const vm = this
-      vm.categoryValue = ''
+      vm.recentCategory = ''
       vm.getFilterProducts()
     },
     removeFilter () {
@@ -330,20 +339,12 @@ export default {
     // 排序過濾方法
     sortMethod (data) {
       const vm = this
-      // console.log(data)
       if (vm.sortvalue === 'price') {
         data = data.sort(function (a, b) {
           return a.price - b.price
         })
       }
-      // console.log(data)
       return data
-    }
-  },
-  watch: {
-    checkProductsPage () {
-      const vm = this
-      vm.products = vm.products.length / 10
     }
   },
   created () {
@@ -352,7 +353,7 @@ export default {
     this.getProducts()
     this.$route.query.t = ''
     this.filterdata = {}
-    this.categoryValue = ''
+    this.recentCategory = ''
   }
 }
 </script>

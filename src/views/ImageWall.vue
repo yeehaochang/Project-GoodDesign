@@ -2,8 +2,7 @@
   <div>
     <div class="my-2 p-2 bg_wall">
       <div class="py-2">
-        <!-- <span class="text-second">#點選觀看圖片細節</span> -->
-        <a href="#" class="btn btn-second text-general" @click.prevent="showMultiple"><strong>依序瀏覽模式</strong></a>
+        <a href="#" class="btn btn-second text-general" @click.prevent="showMultiple"><strong>點我依序觀看</strong></a>
       </div>
 
       <span v-for="item in imgArray" :key="item">
@@ -13,18 +12,6 @@
       </span>
     </div>
     <VueEasyLightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide"></VueEasyLightbox>
-    <!-- <button @click="showSingle">Show single picture.</button>
-    <button @click="showMultiple">Show a group of pictures.</button>-->
-    <!-- <VueEasyLightbox :visible="visible" :imgs="item" :index="index" @hide="handleHide"></VueEasyLightbox> -->
-
-    <!-- Component name: 'vue-easy-lightbox' -->
-
-    <!-- <vue-easy-lightbox
-        :visible="visible"
-        :imgs="imgs"
-        :index="index"
-        @hide="handleHide"
-    ></vue-easy-lightbox>-->
   </div>
 </template>
 
@@ -60,7 +47,7 @@ export default {
       this.visible = false
     },
     getAllProducts () {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`
       const vm = this
       vm.isLoading = true
       this.$http.get(api).then(response => {

@@ -104,23 +104,20 @@ export default {
   },
   methods: {
     signin () {
-      const api = `${process.env.APIPATH}/admin/signin`
+      const api = `${process.env.VUE_APP_APIPATH}/admin/signin`
       const vm = this
       vm.$validator.validate().then((valid) => {
         if (valid) {
           vm.$http.post(api, vm.user).then(response => {
             if (response.data.success) {
-              console.log(response.data)
               $('#signin').modal('hide')
               vm.$bus.$emit('message:push', response.data.message, 'main')
             } else {
-              console.log(response.data)
               vm.$bus.$emit('message:push', response.data.message, 'danger')
             }
           })
         } else {
           vm.$bus.$emit('message:push', '帳號或密碼不得為空', 'danger')
-          console.log('帳號或密碼不得為空')
         }
       })
     }

@@ -37,12 +37,12 @@
               <span class="h2">{{product.title}}</span>
 
               <i
-                class="far fa-heart fa-2x mr-1 text-first"
+                class="far fa-heart ml-1 fa-2x text-first"
                 v-if="product.isFavor != true"
                 @click.prevent="addFavor()"
               ></i>
               <i
-                class="fas fa-heart mr-1 fa-2x text-first"
+                class="fas fa-heart ml-1 fa-2x text-first"
                 v-if="product.isFavor === true"
                 @click.prevent="addFavor()"
               ></i>
@@ -114,17 +114,17 @@ export default {
     getProduct () {
       const vm = this
       vm.isLoading = true
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/product/${vm.productId}`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${vm.productId}`
       this.$http.get(api).then(response => {
         vm.product = response.data.product
         this.putPageFavorite(vm.product)
         vm.product.qty = 1
-        console.log(response)
         vm.isLoading = false
+        vm.total = vm.product.price
       })
     },
     addCart () {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
       const vm = this
       vm.isLoading = true
       const pushProduct = {
@@ -135,7 +135,6 @@ export default {
         this.$bus.$emit('addCart')
         this.$bus.$emit('message:push', response.data.message, 'main')
         vm.isLoading = false
-        console.log('新增至購物車', response)
       })
     },
     gettotal () {
@@ -143,7 +142,6 @@ export default {
     },
     getFavorite () {
       this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
-      console.log('我的最愛', JSON.parse(localStorage.getItem('myFavorite')))
     },
     setFavorite () {
       let stringdata = JSON.stringify(this.favoProduct)
@@ -151,7 +149,6 @@ export default {
     },
     putPageFavorite (e) {
       this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
-      console.log('我的最愛', JSON.parse(localStorage.getItem('myFavorite')))
       const vm = this
       vm.favoProduct = vm.favoProduct || []
       let titledata = vm.favoProduct.map(function (item) {
@@ -200,12 +197,9 @@ export default {
   created () {
     this.productId = this.$route.query.id
     this.getProduct()
-    this.gettotal()
   },
-  computed: {
-    // firstGetTotal () {
-    //   this.total = parseInt(this.product.qty) * parseInt(this.product.price) || ''
-    // }
+  mounted () {
+    this.gettotal()
   }
 }
 </script>

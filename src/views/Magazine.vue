@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap mt-2">
     <div class="scoll-top-list">
       <a href="1" class="scoll-top text-general rounded p-1 m-2" @click.prevent="goSlide">禮物包裝是種禮儀！</a>
       <a
@@ -85,7 +85,6 @@
 
 <script>
 import $ from 'jquery'
-// import attr from 'jquery'
 
 export default {
   data () {
@@ -121,7 +120,6 @@ export default {
       $(window).scroll(function () {
         let scrollPos = $(window).scrollTop()
         // let windowHeight = $(window).height()
-        // console.log(scrollPos, windowHeight);
         $('#1').each(function () {
           let a = document.getElementById('1')
           let targetPos = a.getBoundingClientRect().top
@@ -153,7 +151,6 @@ export default {
   mounted () {},
   created () {
     this.getWindow()
-    // console.log(this.$refs)
   }
 }
 </script>

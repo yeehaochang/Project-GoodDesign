@@ -171,12 +171,10 @@ export default {
       this.$bus.$emit('getFilterProducts')
     },
     getCartNum () {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
       const vm = this
       vm.$http.get(api).then(response => {
-        // console.log(response)
         vm.cartNum = response.data.data.carts.length
-        // console.log("購物車數量", vm.cartNum);
       })
     },
     setFavorite () {
@@ -184,16 +182,12 @@ export default {
       localStorage.setItem('myFavorite', stringdata)
     },
     getFavorite () {
-      // this.favoProduct === this.favoProduct || []
       this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
-      // console.log(JSON.parse(localStorage.getItem("myFavorite")))
       if (this.favoProduct === null) {
-        // this.heartNum === 0
-        // 尚未修改
+        this.heartNum = 0
       } else {
         this.heartNum = this.favoProduct.length
       }
-      // console.log("我的最愛", JSON.parse(localStorage.getItem("myFavorite")));
     },
     addFavor (e) {
       const vm = this
@@ -208,7 +202,6 @@ export default {
       vm.getFavorite()
     },
     openProduct (id) {
-      // let params = { title: 'test' }
       let routerPush = this.$router.push({
         path: '/productpage',
         query: { id: id }

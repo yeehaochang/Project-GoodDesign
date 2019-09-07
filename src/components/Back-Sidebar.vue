@@ -18,10 +18,10 @@ export default {
 
 <style lang="scss" scoped>
 a {
-  color: #39393e;
+  color: $general;
 }
 a:focus {
-  background-color: #39393e;
+  background-color: $general;
   color: white;
 }
 </style>

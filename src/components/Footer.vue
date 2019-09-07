@@ -32,32 +32,7 @@
 
         <div class="d-none d-md-block col-md-2"></div>
 
-        <!-- <div class="col-4 col-md-4">
-          <div class="h6 text-left">留言給我們</div>
-          <form>
-            <div class="form-group">
-              <label for="formGroupExampleInput">Email</label>
-              <input
-                type="text"
-                class="form-control"
-                id="formGroupExampleInput"
-                placeholder="Example input"
-              />
-            </div>
-            <div class="form-group">
-              <label for="formGroupExampleInput2">留言</label>
-              <input
-                type="text"
-                class="form-control"
-                id="formGroupExampleInput2"
-                placeholder="Another input"
-              />
-            </div>
-          </form>
-        </div> -->
-
       </div>
-      <!-- <div class="border-bottom pt-5"></div> -->
       <div class="border-top  mt-2">
         <small class>copyright © 2019 GoodDesign</small>
       </div>

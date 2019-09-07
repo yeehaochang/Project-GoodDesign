@@ -15,6 +15,7 @@
     <!-- youtube -->
     <div id="videoboard">
       <div id="video" class="video bg-second py-4 my-2 rounded d-none d-md-block">
+        <span class="ml-auto text-main d-block">每周小分享：</span>
         <button type="button" class="close text-main" @click.prevent="closetv">
           <span aria-hidden="true" class="pr-2">&times;</span>
         </button>
@@ -73,16 +74,55 @@
         </div>
       </swiper>
     </div>
+    <!--  -->
+    <div class="bg-second py-4 rounded">
+        <strong class="text-general coupon_pop_1">W h a t !! </strong>
+        <strong class="text-general coupon_pop_2">拿到 G o o d d e s i g n 新開幕折扣竟然只需要幾秒鐘 !!</strong>
+        <a href="#" class="btn btn-first m-2 rounded-pill coupon_pop_3" @click.prevent="getCoupon">請點我</a>
+    </div>
     <!-- 特色介紹區塊 -->
     <div class="row no-gutters aboutus">
-      <!-- <div class="col-12"><span class="text-first">品牌理念</span></div> -->
-      <div class="col-12 col-md-4 p-2" v-for="item in aboutUsImg" :key="item.key">
-        <img :src="item.url" width="150" alt />
-        <div class="title">{{item.title}}</div>
-        <div class="content">{{item.content}}</div>
+      <div class="col-12 col-md-4 p-2 animated" v-for="item in aboutUsImg" :key="item.key" :id="item.key">
+        <div class="aboutus_card">
+          <img :src="item.url" width="150" alt />
+          <div class="title">{{item.title}}</div>
+          <div class="content">{{item.content}}</div>
+        </div>
       </div>
     </div>
     <div class="border-bottom"></div>
+    <!-- Modal -->
+    <div class="modal fade" id="getCoupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-second text-main">
+            <h5 class="modal-title" id="exampleModalCenterTitle">恭喜你獲得本周優惠</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td class="border-0">優惠券：</td>
+                  <td class="text-left border-0">{{coupopforcustom.title}}</td>
+                </tr>
+                <tr>
+                  <td class="border-0">折扣碼：</td>
+                  <td class="text-left border-0">{{coupopforcustom.code}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <ins class="text-success">限會員享用九折優惠，優惠期間不限次數使用，祝您購物愉快</ins>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-general" data-dismiss="modal">關閉</button>
+            <router-link class="btn btn-main" to="/products" data-dismiss="modal">購物去</router-link>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -94,6 +134,11 @@ import Alert from '../components/Alert'
 export default {
   data () {
     return {
+      coupopforcustom: {
+        code: 'gooddesign',
+        title: '限時顧客回饋優惠',
+        percent: '90'
+      },
       fullWidth: '',
       favoProduct: [],
       videoId: '34qHK_fUgUs',
@@ -130,21 +175,21 @@ export default {
           title: '集結世界各地好設計',
           content:
             'Gathering good designers everywhere in the world,includes so many kinds of art and handmade culture.',
-          key: 1
+          key: 'card-1'
         },
         {
           url: require('../assets/img-2.png'),
           title: '富含創意的高品質設計',
           content:
             'After our team review and choice , we do our best to give what you guys deserve the good design.',
-          key: 2
+          key: 'card-2'
         },
         {
           url: require('../assets/img-3.png'),
           title: '設計師與顧客的保障',
           content:
             'Be a good bridge between designer and customers,good buy for good life.',
-          key: 3
+          key: 'card-3'
         }
       ],
       SwiperImgs: [
@@ -192,6 +237,43 @@ export default {
     swiperSlide
   },
   methods: {
+    getWindow () {
+      $(window).scroll(function () {
+        let scrollPos = $(window).scrollTop()
+        // console.log(scrollPos)
+        $('.aboutus').each(function () {
+          let card = document.getElementById('card-1')
+          let cardPos = card.getBoundingClientRect().top
+          if (scrollPos >= cardPos) {
+            $('.coupon_pop_1').addClass('fadeIn')
+            setTimeout(() => {
+              $('.coupon_pop_2').addClass('fadeIn')
+            }, 1000)
+            setTimeout(() => {
+              $('.coupon_pop_3').addClass('fadeIn')
+            }, 2000)
+            $('#card-1').addClass('fadeIn')
+            setTimeout(() => {
+              $('#card-2').addClass('fadeIn')
+            }, 750)
+            setTimeout(() => {
+              $('#card-3').addClass('fadeIn')
+            }, 1500)
+          }
+        })
+      })
+    },
+    getCoupon () {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/user/check`
+      vm.$http.post(api).then(response => {
+        if (response.data.success) {
+          $('#getCoupon').modal('show')
+        } else {
+          vm.$bus.$emit('message:push', response.data.message, 'danger')
+        }
+      })
+    },
     playVideo () {
       this.player.playVideo()
     },
@@ -199,7 +281,7 @@ export default {
       console.log('o/ we are watching!!!')
     },
     getProducts (page = 1) {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`
       const vm = this
       this.$http.get(api).then(response => {
         let newProd = response.data.products
@@ -210,7 +292,6 @@ export default {
       })
     },
     openProduct (id) {
-      // let params = { title: 'test' }
       let routerPush = this.$router.push({
         path: '/productpage',
         query: { id: id }
@@ -220,7 +301,7 @@ export default {
     addCart (id) {
       const vm = this
       vm.isLoading = true
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
       const pushProduct = {
         product_id: id,
         qty: '1'
@@ -283,6 +364,7 @@ export default {
   created () {
     this.getFavorite()
     this.getProducts()
+    this.getWindow()
   }
 }
 </script>
@@ -296,6 +378,11 @@ del,strong {
   font-size: 26px;
 }
 .aboutus {
+  padding:20px;
+  .aboutus_card {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    min-height: 365px;
+  }
   img {
     width: 120px;
     margin: 40px 0px;
@@ -393,4 +480,31 @@ del,strong {
     }
   }
 }
+@mixin couponpop{
+  opacity: 0;
+  transition: all 2s;
+}
+.coupon_pop_1 ,.coupon_pop_2,.coupon_pop_3{
+  @include couponpop;
+}
+// .easeOut {
+//   opacity: 1;
+//   transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+// }
+// animated
+.animated {
+  opacity: 0;
+  transition: all 1s;
+  transform: translateY(50px);
+}
+.animated-top {
+  opacity: 0;
+  transition: all 1s;
+  transform: translateY(-50px);
+}
+.fadeIn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 </style>

@@ -112,7 +112,7 @@ export default {
   height: 150px;
   width: 300px;
   background-color: white;
-  box-shadow: 1px 1px 5px $general;
+  box-shadow: 0px 0px 3px $general;
   z-index: 10;
 }
 .message-button {

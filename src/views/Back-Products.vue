@@ -251,20 +251,7 @@ export default {
   data () {
     return {
       products: [],
-      tempProduct: {
-        // category: "",
-        // content: "",
-        // description: "",
-        // // id: "",
-        // image: "",
-        // is_enabled: "",
-        // origin_price: "",
-        // price: "",
-        // title: "",
-        // unit: "",
-        // num: "",
-        // imageUrl: ""
-      },
+      tempProduct: {},
       isLoading: false,
       isFileLoading: false,
       isNew: false
@@ -274,7 +261,7 @@ export default {
     getProducts () {
       const vm = this
       vm.isLoading = true
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/products/all`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/all`
       this.$http.get(api).then(response => {
         vm.products = response.data.products
         console.log('這是所有商品', response)
@@ -301,7 +288,7 @@ export default {
       const updatedFile = vm.$refs.files.files[0]
       const formdata = new FormData()
       formdata.append('file-to-upload', updatedFile)
-      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/upload`
+      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`
       vm.$http
         .post(api, formdata, {
           // 為將格式改成formdata格式故寫入此header
@@ -310,16 +297,12 @@ export default {
           }
         })
         .then(response => {
-          // vm.tempProduct.imageUrl = response.data.imageUrl;
-          console.log(response.data)
-          console.log(vm.tempProduct)
           if (response.data.success) {
             vm.$set(vm.tempProduct, 'imageUrl', response.data.imageUrl)
             vm.$bus.$emit('message:push', '圖片上傳成功', 'main')
           } else {
             vm.$bus.$emit('message:push', '圖片上傳失敗', 'danger')
           }
-          // this.tempProduct.$set()
           vm.isFileLoading = false
         })
       // this.isFileLoading = true;
@@ -337,16 +320,15 @@ export default {
     // },
     updateEdit () {
       const vm = this
-      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product`
+      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`
       let method = ''
       if (vm.isNew) {
         method = 'post'
       } else {
-        api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${vm.tempProduct.id}`
+        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProduct.id}`
         method = 'put'
       }
       this.$http[method](api, { data: vm.tempProduct }).then(response => {
-        console.log(response)
         this.getProducts()
         this.tempProduct = {}
         $('#productModal').modal('hide')
@@ -356,9 +338,8 @@ export default {
     removeProduct (id) {
       const vm = this
       vm.isLoading = true
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${id}`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${id}`
       this.$http.delete(api).then(response => {
-        console.log(response)
         this.getProducts()
         vm.isLoading = false
         this.$bus.$emit('message:push', response.data.message, 'main')

@@ -88,22 +88,19 @@ export default {
   },
   methods: {
     getCart () {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
       const vm = this
       vm.isLoading = true
       this.$http.get(api).then(response => {
         vm.cart = response.data.data.carts
-        // vm.getTotal = response.data.data.total;
-        console.log(response)
         vm.isLoading = false
       })
     },
     removeProduct (id) {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
       const vm = this
       vm.isLoading = true
       this.$http.delete(api).then(response => {
-        console.log(response)
         vm.getCart()
         vm.isLoading = false
       })
@@ -115,7 +112,6 @@ export default {
         query: { id: id }
       })
       window.open(routerPush.href, '_blank')
-      console.log(routerPush)
     },
     changeqty (item, qty) {
       item.qty = parseInt(qty)

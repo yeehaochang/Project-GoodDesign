@@ -154,7 +154,7 @@ export default {
   methods: {
     getCoupons (page = 1) {
       this.isLoading = true
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupons?page=${page}`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`
       const vm = this
       vm.$http.get(api).then(response => {
         console.log(response)
@@ -167,7 +167,7 @@ export default {
     },
     removeCoupon (id) {
       this.isLoading = true
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${id}`
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${id}`
       const vm = this
       vm.$http.delete(api).then(response => {
         console.log(response)
@@ -192,20 +192,14 @@ export default {
     updateEdit () {
       // 修改及送出方法
       const vm = this
-      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`
+      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`
       let method = ''
       if (vm.isNew) {
         method = 'post'
-        api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon`
+        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`
       } else {
         method = 'put'
       }
-      //   const coupondata = {
-      //       title:vm.tempCoupon.title,
-      //       is_enabled:vm.tempCoupon.is_enabled,
-      //       percent:vm.tempCoupon.percent,
-      //       due_date:vm.tempCoupon.due_date
-      //   }
       vm.$http[method](api, { data: vm.tempCoupon }).then(response => {
         console.log(response)
         vm.editItem = {}
