@@ -145,35 +145,23 @@ export default {
   },
   data () {
     return {
-      coupons: [],
       tempCoupon: {},
-      isNew: false,
-      isLoading: false
+      isNew: false
     }
   },
   methods: {
     getCoupons (page = 1) {
-      this.isLoading = true
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`
-      const vm = this
-      vm.$http.get(api).then(response => {
-        console.log(response)
-        vm.coupons = response.data.coupons
-        if (!response.data.success) {
-          this.$bus.$emit('message:push', response.data.message, 'danger')
-        }
-        vm.isLoading = false
-      })
+      this.$store.dispatch('getCoupons', page)
     },
     removeCoupon (id) {
-      this.isLoading = true
+      this.$store.dispatch('updateLoading', true)
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${id}`
       const vm = this
       vm.$http.delete(api).then(response => {
         console.log(response)
-        this.getCoupons()
-        vm.isLoading = false
-        this.$bus.$emit('message:push', response.data.message, 'main')
+        vm.getCoupons()
+        this.$store.dispatch('updateLoading', false)
+        vm.$bus.$emit('message:push', response.data.message, 'main')
       })
     },
     openModal (isNew, item) {
@@ -207,6 +195,11 @@ export default {
         this.$bus.$emit('message:push', response.data.message, 'main')
         $('#itemModal').modal('hide')
       })
+    }
+  },
+  computed: {
+    coupons () {
+      return this.$store.state.coupons
     }
   },
   created () {

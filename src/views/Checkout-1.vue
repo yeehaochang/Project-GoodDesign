@@ -36,7 +36,7 @@
         </table>
 
         <div class="text-right p-2">商品小計：{{getTotal|currency}}</div>
-        <div class="text-right p-2" v-if="finalpay !== ''">折扣後小計：{{finalpay|currency}}</div>
+        <div class="text-right p-2" v-if="final_price !== ''">折扣後小計：{{final_price|currency}}</div>
       </div>
 
       <!-- 右側表單 -->
@@ -157,8 +157,6 @@ import Progress from '../components/Progress'
 export default {
   data () {
     return {
-      isLoading: false,
-      cart: [],
       // getTotal: ',
       checkInfor: {
         name: '',
@@ -177,19 +175,10 @@ export default {
   },
   methods: {
     getCart () {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      const vm = this
-      vm.isLoading = true
-      this.$http.get(api).then(response => {
-        vm.cart = response.data.data.carts
-        vm.getTotal = response.data.data.total
-        console.log('這是購物車', response)
-        vm.isLoading = false
-      })
-      this.cart = this.$route.query.object
-      vm.isLoading = false
+      this.$store.dispatch('getCart')
     },
     checkOrder () {
+      // 表單驗證及送出
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`
       const vm = this
       const postInfor = {
@@ -216,36 +205,36 @@ export default {
         }
       })
     },
-    getOrders (page = 1) {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/orders?page=${page}`
-      this.$http.get(api).then(response => {
-      })
-    },
+    // getOrders (page = 1) {
+    //   const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/orders?page=${page}`
+    //   this.$http.get(api).then(response => {
+    //     console.log(response)
+    //   })
+    // },
     openProduct (id) {
       let routerPush = this.$router.resolve({
         path: '/productpage',
         query: { id: id }
       })
       window.open(routerPush.href, '_blank')
-      console.log(routerPush)
     },
     checkCounpon () {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`
-      const vm = this
-      vm.isLoading = true
-      this.$http
-        .post(api, { data: { code: vm.recentCoupon } })
-        .then(response => {
-          console.log('優惠券', response)
-          vm.finalpay = response.data.data.final_total
-          this.$bus.$emit('message:push', response.data.message, 'main')
-          vm.isLoading = false
-        })
+      this.$store.dispatch('useCounpon', { data: { code: this.recentCoupon } })
+    }
+  },
+  computed: {
+    cart () {
+      return this.$store.state.cart
+    },
+    isLoading () {
+      return this.$store.state.isLoading
+    },
+    final_price () {
+      return this.$store.state.final_price
     }
   },
   created () {
     this.getCart()
-    this.getOrders()
   }
 }
 </script>

@@ -207,25 +207,14 @@ export default {
   },
   data () {
     return {
-      orderList: [],
       tempCheck: {
         user: {}
-      },
-      isLoading: false
+      }
     }
   },
   methods: {
     getOrders (page = 1) {
-      const vm = this
-      vm.isLoading = true
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`
-      vm.$http.get(api).then(response => {
-        vm.orderList = response.data.orders
-        if (!response.data.success) {
-          this.$bus.$emit('message:push', response.data.message, 'danger')
-        }
-        vm.isLoading = false
-      })
+      this.$store.dispatch('getOrders', page)
     },
     openCheck (item) {
       this.tempCheck = Object.assign({}, item)
@@ -233,7 +222,7 @@ export default {
     },
     updateCheck (id) {
       const vm = this
-      vm.isLoading = true
+      this.$store.dispatch('updateLoading', true)
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${id}`
       vm.$http.put(api, { data: vm.tempCheck }).then(response => {
         vm.tempCheck = {
@@ -241,9 +230,14 @@ export default {
         }
         $('#checkModal').modal('hide')
         vm.getOrders()
-        vm.isLoading = false
+        this.$store.dispatch('updateLoading', false)
         this.$bus.$emit('message:push', response.data.message, 'main')
       })
+    }
+  },
+  computed: {
+    orderList () {
+      return this.$store.state.orderList
     }
   },
   created () {

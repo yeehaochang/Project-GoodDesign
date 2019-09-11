@@ -220,13 +220,6 @@
                   <small class="text-danger" v-if="errors.has('imgurl')">此欄位不得為空</small>
                 </div>
               </div>
-
-              <!-- <div class="form-group">
-                <div class="form-check">
-                  <input class="form-check-input" v-model="isCurrect" type="checkbox" id="isCurrect" />
-                  <label class="form-check-label" for="isCurrect">資料確認完畢</label>
-                </div>
-              </div>-->
             </form>
             <!-- 內容尾 -->
           </div>
@@ -250,26 +243,14 @@ export default {
   },
   data () {
     return {
-      products: [],
       tempProduct: {},
-      isLoading: false,
       isFileLoading: false,
       isNew: false
     }
   },
   methods: {
     getProducts () {
-      const vm = this
-      vm.isLoading = true
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/all`
-      this.$http.get(api).then(response => {
-        vm.products = response.data.products
-        console.log('這是所有商品', response)
-        if (!response.data.success) {
-          this.$bus.$emit('message:push', response.data.message, 'danger')
-        }
-        vm.isLoading = false
-      })
+      this.$store.dispatch('getFilterProducts', '')
     },
     openModal (isNew, item) {
       if (isNew) {
@@ -284,7 +265,7 @@ export default {
     updateImage () {
       console.log(this)
       const vm = this
-      vm.isFileLoading = true
+      this.$store.dispatch('updateLoading', true)
       const updatedFile = vm.$refs.files.files[0]
       const formdata = new FormData()
       formdata.append('file-to-upload', updatedFile)
@@ -303,21 +284,9 @@ export default {
           } else {
             vm.$bus.$emit('message:push', '圖片上傳失敗', 'danger')
           }
-          vm.isFileLoading = false
+          this.$store.dispatch('updateLoading', false)
         })
-      // this.isFileLoading = true;
-      // const file = event.target.files.item(0); //取得file物件
-      // const reader = new FileReader(); //建立fileReader 監聽 load 事件
-      // reader.addEventListener('load', this.imageLoader);
-      // reader.readAsDataURL(file);
-      // 在Vue實體中，於methods建立fileSelected方法，當檔案按鈕觸發change事件時，
-      // 會取得file物件，此時利用FileReader監聽 Load事件，取得圖檔被轉成Base64格式的URL
-      // 再把URL 綁到 img 的src 即可
     },
-    // imageLoader(e) {
-    //   this.tempProduct.image = e.target.result;
-    //   this.isFileLoading = false;
-    // },
     updateEdit () {
       const vm = this
       let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`
@@ -337,13 +306,18 @@ export default {
     },
     removeProduct (id) {
       const vm = this
-      vm.isLoading = true
+      this.$store.dispatch('updateLoading', true)
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${id}`
-      this.$http.delete(api).then(response => {
-        this.getProducts()
-        vm.isLoading = false
-        this.$bus.$emit('message:push', response.data.message, 'main')
+      vm.$http.delete(api).then(response => {
+        vm.getProducts()
+        this.$store.dispatch('updateLoading', false)
+        vm.$bus.$emit('message:push', response.data.message, 'main')
       })
+    }
+  },
+  computed: {
+    products () {
+      return this.$store.state.products
     }
   },
   created () {

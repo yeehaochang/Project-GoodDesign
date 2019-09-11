@@ -134,13 +134,8 @@ import Alert from '../components/Alert'
 export default {
   data () {
     return {
-      coupopforcustom: {
-        code: 'gooddesign',
-        title: '限時顧客回饋優惠',
-        percent: '90'
-      },
       fullWidth: '',
-      favoProduct: [],
+      // favoProduct: [],
       videoId: '34qHK_fUgUs',
       // swiper資料，一個大坑
       swiperMain: {
@@ -226,9 +221,7 @@ export default {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
         }
-      },
-      onsale: [],
-      isLoading: false
+      }
     }
   },
   components: {
@@ -280,16 +273,8 @@ export default {
     playing () {
       console.log('o/ we are watching!!!')
     },
-    getProducts (page = 1) {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`
-      const vm = this
-      this.$http.get(api).then(response => {
-        let newProd = response.data.products
-        vm.onsale = newProd.filter(function (item) {
-          return item.origin_price !== item.price
-        })
-        vm.putFavorite(vm.onsale)
-      })
+    getProducts () {
+      this.$store.dispatch('getFilterProducts', '')
     },
     openProduct (id) {
       let routerPush = this.$router.push({
@@ -300,69 +285,43 @@ export default {
     },
     addCart (id) {
       const vm = this
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
       const pushProduct = {
         product_id: id,
         qty: '1'
       }
-      this.$http.post(api, { data: pushProduct }).then(response => {
-        this.$bus.$emit('addCart')
-        this.$bus.$emit('message:push', response.data.message, 'main')
-        vm.isLoading = false
-        console.log('新增至購物車', response)
-      })
-    },
-    setFavorite () {
-      let stringdata = JSON.stringify(this.favoProduct)
-      localStorage.setItem('myFavorite', stringdata)
-    },
-    getFavorite () {
-      this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
-      console.log('我的最愛', JSON.parse(localStorage.getItem('myFavorite')))
-    },
-    putFavorite (productdata) {
-      const vm = this
-      vm.favoProduct = vm.favoProduct || []
-      let titledata = vm.favoProduct.map(function (item) {
-        return item.title
-      })
-      productdata.forEach(function (item, index, array) {
-        if (titledata.includes(item.title)) {
-          vm.$set(item, 'isFavor', true)
-        }
+      vm.$http.post(api, { data: pushProduct }).then(response => {
+        vm.$bus.$emit('addCart')
+        vm.$bus.$emit('message:push', response.data.message, 'main')
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     addFavor (e) {
-      const vm = this
-      vm.favoProduct = vm.favoProduct || []
-      if (e.isFavor) {
-        e.isFavor = false
-        vm.favoProduct.forEach(function (item, index, array) {
-          if (item.title === e.title) {
-            array.splice(index, 1)
-          }
-        })
-        vm.setFavorite()
-      } else {
-        vm.$set(e, 'isFavor', true)
-        vm.favoProduct.push(e)
-        vm.setFavorite()
-      }
-      vm.$bus.$emit('addHeart')
-      vm.getFavorite()
-    },
-    closetv () {
-      $('#videoboard').addClass('d-none')
+      this.$store.dispatch('addFavor', e)
     }
   },
   computed: {
     player () {
       return this.$refs.youtube.player
+    },
+    onsale () {
+      return this.$store.state.onsale
+    },
+    favoProduct () {
+      return this.$store.state.favoProduct
+    },
+    products () {
+      return this.$store.state.products
+    },
+    isLoading () {
+      return this.$store.state.isLoading
+    },
+    coupopforcustom () {
+      return this.$store.state.coupopforcustom
     }
   },
   created () {
-    this.getFavorite()
     this.getProducts()
     this.getWindow()
   }

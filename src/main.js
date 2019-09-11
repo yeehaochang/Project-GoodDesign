@@ -1,7 +1,9 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import Vuex from 'vuex'
 import './bus'
+import store from './store' //   把store匯入使用
 
 import Lightbox from 'vue-easy-lightbox'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -20,6 +22,7 @@ import * as VeeValidate from 'vee-validate'
 import zhTW from 'vee-validate/dist/locale/zh_TW'
 import VueI18n from 'vue-i18n'
 
+Vue.use(Vuex)
 Vue.use(Lightbox)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueAxios, axios)
@@ -58,6 +61,7 @@ Vue.component('Loading', Loading)
 // 全域啟動loading元件
 /* eslint-disable no-new */
 new Vue({
+  store, // 把store加入到應用程式內
   i18n,
   el: '#app',
   router,

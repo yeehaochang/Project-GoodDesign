@@ -154,10 +154,10 @@ export default {
   name: 'customboard',
   data () {
     return {
-      cartNum: '',
       searchText: '',
       favoProduct: [],
-      heartNum: ''
+      heartNum: '',
+      cartNum: ''
     }
   },
   methods: {
@@ -168,7 +168,7 @@ export default {
           t: text
         }
       })
-      this.$bus.$emit('getFilterProducts')
+      this.$bus.$emit('getSearchText', text)
     },
     getCartNum () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`

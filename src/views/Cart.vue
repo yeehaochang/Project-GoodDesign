@@ -78,9 +78,6 @@ import Progress from '../components/Progress'
 export default {
   data () {
     return {
-      isLoading: false,
-      cart: []
-      // getTotal: ""
     }
   },
   components: {
@@ -88,25 +85,18 @@ export default {
   },
   methods: {
     getCart () {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      const vm = this
-      vm.isLoading = true
-      this.$http.get(api).then(response => {
-        vm.cart = response.data.data.carts
-        vm.isLoading = false
-      })
+      this.$store.dispatch('getCart')
     },
     removeProduct (id) {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
       const vm = this
-      vm.isLoading = true
-      this.$http.delete(api).then(response => {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
+      vm.$store.dispatch('updateLoading', true)
+      vm.$http.delete(api).then(response => {
         vm.getCart()
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     openProduct (id) {
-      // let params = { title: 'test' }
       let routerPush = this.$router.resolve({
         path: '/productpage',
         query: { id: id }
@@ -138,6 +128,12 @@ export default {
         value += item.final_total
       })
       return value
+    },
+    cart () {
+      return this.$store.state.cart
+    },
+    isLoading () {
+      return this.$store.state.isLoading
     }
   },
   created () {

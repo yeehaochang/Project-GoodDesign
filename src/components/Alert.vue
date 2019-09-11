@@ -25,40 +25,33 @@ export default {
   name: 'Navbar',
   data () {
     return {
-      messages: []
     }
   },
   methods: {
     updateMessage (message, status) {
       const timestamp = Math.floor(new Date() / 1000)
-      this.messages.push({
-        message,
-        status,
-        timestamp
-      })
-      this.removeMessageWithTiming(timestamp)
+      console.log(timestamp)
+      this.$store.dispatch('updateMessage', { message, status, timestamp })
+      // this.removeMessageWithTiming(timestamp)
     },
     removeMessage (num) {
-      this.messages.splice(num, 1)
-    },
-    removeMessageWithTiming (timestamp) {
-      const vm = this
-      setTimeout(() => {
-        vm.messages.forEach((item, i) => {
-          if (item.timestamp === timestamp) {
-            vm.messages.splice(i, 1)
-          }
-        })
-      }, 5000)
+      this.$store.dispatch('removeMessage', num)
+    }
+    // removeMessageWithTiming (timestamp) {
+    //   this.$store.dispatch('removeMessageWithTiming', timestamp)
+    // }
+  },
+  computed: {
+    messages () {
+      return this.$store.state.messages
     }
   },
   created () {
-    const vm = this
     // 自定義名稱 'messsage:push'
     // message: 傳入參數
     // status: 樣式，預設值為 warning
-    vm.$bus.$on('message:push', (message, status = 'warning') => {
-      vm.updateMessage(message, status)
+    this.$bus.$on('message:push', (message, status = 'warning') => {
+      this.updateMessage(message, status)
     })
     // vm.$bus.$emit('message:push');
   }
