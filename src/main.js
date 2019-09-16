@@ -14,7 +14,6 @@ import VueCurrencyFilter from 'vue-currency-filter'
 // 為新增bootstrap套件使用而import，並且需要jquery及popper.js
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-import VueYoutube from 'vue-youtube'
 import App from './App.vue'
 import router from './router'
 
@@ -26,7 +25,6 @@ Vue.use(Vuex)
 Vue.use(Lightbox)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueAxios, axios)
-Vue.use(VueYoutube)
 
 Vue.use(VueI18n)
 const i18n = new VueI18n({
@@ -43,7 +41,7 @@ Vue.use(VeeValidate, {
 Vue.use(VueCurrencyFilter,
   {
     symbol: '$',
-    thousandsSeparator: '.',
+    thousandsSeparator: ',',
     // fractionCount: 2,
     // fractionSeparator: ',',
     symbolPosition: 'front',
@@ -79,6 +77,7 @@ router.beforeEach((to, from, next) => {
         next()
       } else {
         console.log(response.data)
+        this.$bus.$emit(response.data.message, 'mistake')
       }
     })
   } else {

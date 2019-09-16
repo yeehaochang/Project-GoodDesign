@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Alert></Alert>
     <loading :active.sync="isLoading"></loading>
     <table class="table mt-5">
       <thead class="thead-dark">
@@ -128,7 +127,7 @@
 
                 <div class="border-top w-100 h4">收件人資料</div>
 
-                <div class="col-12 mb-3">
+                <div class="mb-3">
                   <label for="address">地址 address</label>
                   <input
                     v-model="tempCheck.user.address"
@@ -167,7 +166,7 @@
                   />
                   <small class="text-danger" v-if="errors.has('username')">欄位不得為空</small>
                 </div>
-                <div class="col-12 mb-3">
+                <div class="mb-3">
                   <label for="usertel">連絡電話 tel</label>
                   <input
                     v-model="tempCheck.user.tel"
@@ -199,12 +198,8 @@
 
 <script>
 import $ from 'jquery'
-import Alert from '../components/Alert'
 
 export default {
-  components: {
-    Alert
-  },
   data () {
     return {
       tempCheck: {
@@ -231,13 +226,16 @@ export default {
         $('#checkModal').modal('hide')
         vm.getOrders()
         this.$store.dispatch('updateLoading', false)
-        this.$bus.$emit('message:push', response.data.message, 'main')
+        this.$store.dispatch('updateMessage', { message: response.data.message, status: 'correct' })
       })
     }
   },
   computed: {
     orderList () {
       return this.$store.state.orderList
+    },
+    isLoading () {
+      return this.$store.state.isLoading
     }
   },
   created () {

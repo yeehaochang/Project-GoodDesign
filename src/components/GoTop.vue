@@ -69,7 +69,7 @@ export default {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: $white;
+    background: $common;
     padding: 10px;
     cursor: pointer;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);

@@ -1,10 +1,9 @@
 <template>
   <div>
-    <Alert></Alert>
     <loading :active.sync="isLoading"></loading>
     <nav class="nav justify-content-center">
       <a
-        class="nav-link ml-auto text-main h4"
+        class="nav-link ml-auto text-first h4"
         href="#"
         data-toggle="modal"
         data-target="#addProduct"
@@ -14,7 +13,7 @@
     <table class="table">
       <thead>
         <tr class="thead-dark">
-          <th></th>
+          <th width="50"></th>
           <th class="d-none d-md-block pt-5">圖片</th>
           <th width="150">標題</th>
           <th width="100">種類</th>
@@ -96,7 +95,7 @@
                   />
                   <small class="text-danger" v-if="errors.has('title')">此欄位不得為空</small>
                 </div>
-                <div class="form-group col-12 col-md-6">
+                <div class="form-group col-md-6">
                   <label for="inputCategory">類別 category</label>
                   <select id="inputCategory" v-model="tempProduct.category" class="form-control">
                     <option>手作服飾</option>
@@ -171,7 +170,7 @@
                   <small class="text-danger" v-if="errors.has('img')">此欄位不得為空</small>
                   <img :src="tempProduct.imageUrl" class="img-fluid" />
                 </div>
-                <div class="form-group col-md-6 col-12">
+                <div class="form-group col-md-6">
                   <label for="inputState">商品描述 description</label>
                   <input
                     type="text"
@@ -207,7 +206,7 @@
                   <!-- <small class="text-danger" v-if="errors.has('isenabled')">此欄位不得為空</small> -->
                   <label class="form-check-label" for="is_enabled">是否啟用 is_enabled</label>
                 </div>
-                <div class="form-group col-12">
+                <div class="form-group">
                   <label for="imageUrl">圖片網址 imageUrl</label>
                   <input
                     type="text"
@@ -225,7 +224,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-general" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-main" @click.prevent="updateEdit">確認送出</button>
+            <button type="button" class="btn btn-first" @click.prevent="updateEdit">確認送出</button>
           </div>
         </div>
       </div>
@@ -235,12 +234,8 @@
 
 <script>
 import $ from 'jquery'
-import Alert from '../components/Alert'
 
 export default {
-  components: {
-    Alert
-  },
   data () {
     return {
       tempProduct: {},
@@ -280,9 +275,9 @@ export default {
         .then(response => {
           if (response.data.success) {
             vm.$set(vm.tempProduct, 'imageUrl', response.data.imageUrl)
-            vm.$bus.$emit('message:push', '圖片上傳成功', 'main')
+            this.$store.dispatch('updateMessage', { message: '圖片上傳成功', status: 'correct' })
           } else {
-            vm.$bus.$emit('message:push', '圖片上傳失敗', 'danger')
+            this.$store.dispatch('updateMessage', { message: '圖片上傳失敗', status: 'correct' })
           }
           this.$store.dispatch('updateLoading', false)
         })
@@ -301,23 +296,19 @@ export default {
         this.getProducts()
         this.tempProduct = {}
         $('#productModal').modal('hide')
-        this.$bus.$emit('message:push', response.data.message, 'main')
+        this.$store.dispatch('updateMessage', { message: response.data.message, status: 'correct' })
       })
     },
     removeProduct (id) {
-      const vm = this
-      this.$store.dispatch('updateLoading', true)
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${id}`
-      vm.$http.delete(api).then(response => {
-        vm.getProducts()
-        this.$store.dispatch('updateLoading', false)
-        vm.$bus.$emit('message:push', response.data.message, 'main')
-      })
+      this.$store.dispatch('removeProduct', id)
     }
   },
   computed: {
     products () {
-      return this.$store.state.products
+      return this.$store.state.productModules.products
+    },
+    isLoading () {
+      return this.$store.state.isLoading
     }
   },
   created () {

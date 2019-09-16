@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Alert></Alert>
     <loading :active.sync="isLoading"></loading>
     <nav class="nav justify-content-center">
       <a class="nav-link text-main h4 ml-auto" href="#" @click.prevent="openModal(true)">新增優惠券</a>
@@ -110,7 +109,7 @@
                   />
                   <small class="text-danger" v-if="errors.has('percent')">此欄位不得為空</small>
                 </div>
-                <div class="form-group col-12">
+                <div class="form-group">
                   <label for="due_date">due_date</label>
                   <input
                     type="number"
@@ -137,12 +136,8 @@
 
 <script>
 import $ from 'jquery'
-import Alert from '../components/Alert'
 
 export default {
-  components: {
-    Alert
-  },
   data () {
     return {
       tempCoupon: {},
@@ -154,15 +149,7 @@ export default {
       this.$store.dispatch('getCoupons', page)
     },
     removeCoupon (id) {
-      this.$store.dispatch('updateLoading', true)
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${id}`
-      const vm = this
-      vm.$http.delete(api).then(response => {
-        console.log(response)
-        vm.getCoupons()
-        this.$store.dispatch('updateLoading', false)
-        vm.$bus.$emit('message:push', response.data.message, 'main')
-      })
+      this.$store.dispatch('removeCoupon', id)
     },
     openModal (isNew, item) {
       // isNew確定為新增或修改
@@ -192,7 +179,7 @@ export default {
         console.log(response)
         vm.editItem = {}
         this.getCoupons()
-        this.$bus.$emit('message:push', response.data.message, 'main')
+        this.$store.dispatch('updateMessage', { message: response.data.message, status: 'correct' })
         $('#itemModal').modal('hide')
       })
     }
@@ -200,6 +187,9 @@ export default {
   computed: {
     coupons () {
       return this.$store.state.coupons
+    },
+    isLoading () {
+      return this.$store.state.isLoading
     }
   },
   created () {

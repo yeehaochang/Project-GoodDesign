@@ -12,7 +12,7 @@
     <div class="pb-2">
       <div class="row no-gutters">
         <div class="col-md-8">
-          <div class="text-left bg-second text-main border-second rounded p-1 pl-2">訂單商品列表：</div>
+          <div class="text-left bg-second text-first border-second rounded p-2 pl-2">訂單商品列表：</div>
           <span v-if="cart.length === 0">目前尚無任何商品</span>
           <table class="table">
             <tbody>
@@ -27,7 +27,7 @@
                 <td>
                   <a
                     href
-                    class="text-main"
+                    class="text-first"
                     @click.prevent="openProduct(item.product.id)"
                   >{{item.product.title}}</a>
                 </td>
@@ -36,7 +36,7 @@
                 </td>
                 <td class="text-right px-0">{{item.total|currency}}</td>
                 <td>
-                  <button type="button" class="close" @click.prevent="removeProduct(item.id)">
+                  <button type="button" class="close" @click.prevent="removeCartProduct(item.id)">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </td>
@@ -47,7 +47,7 @@
 
         <div class="col-md-4">
           <div class="card ml-md-2">
-            <h5 class="card-header bg-second text-main">訂單摘要</h5>
+            <h5 class="card-header bg-second text-first">訂單摘要</h5>
             <div class="card-body">
               <table class="w-100">
                 <tbody>
@@ -87,14 +87,8 @@ export default {
     getCart () {
       this.$store.dispatch('getCart')
     },
-    removeProduct (id) {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.delete(api).then(response => {
-        vm.getCart()
-        vm.$store.dispatch('updateLoading', false)
-      })
+    removeCartProduct (id) {
+      this.$store.dispatch('removeCartProduct', id)
     },
     openProduct (id) {
       let routerPush = this.$router.resolve({
@@ -114,7 +108,7 @@ export default {
           path: '/checkout-1'
         })
       } else {
-        this.$bus.$emit('message:push', '購物車尚無商品，無法進行結帳', 'danger')
+        this.$store.dispatch('updateMessage', { message: '購物車尚無商品，無法進行結帳', status: 'mistake' })
       }
     }
   },
@@ -123,14 +117,10 @@ export default {
       return this.cart.length
     },
     getTotal () {
-      let value = 0
-      this.cart.forEach(function (item) {
-        value += item.final_total
-      })
-      return value
+      return this.$store.state.getTotal || ''
     },
     cart () {
-      return this.$store.state.cart
+      return this.$store.state.cart || []
     },
     isLoading () {
       return this.$store.state.isLoading

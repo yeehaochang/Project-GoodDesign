@@ -22,24 +22,17 @@
 <script>
 
 export default {
-  name: 'Navbar',
   data () {
     return {
     }
   },
   methods: {
     updateMessage (message, status) {
-      const timestamp = Math.floor(new Date() / 1000)
-      console.log(timestamp)
-      this.$store.dispatch('updateMessage', { message, status, timestamp })
-      // this.removeMessageWithTiming(timestamp)
+      this.$store.dispatch('updateMessage', { message, status })
     },
     removeMessage (num) {
       this.$store.dispatch('removeMessage', num)
     }
-    // removeMessageWithTiming (timestamp) {
-    //   this.$store.dispatch('removeMessageWithTiming', timestamp)
-    // }
   },
   computed: {
     messages () {

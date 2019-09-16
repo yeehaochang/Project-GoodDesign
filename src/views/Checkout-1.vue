@@ -15,7 +15,7 @@
     <!-- 建立訂單 -->
     <div class="row no-gutters mb-4">
       <div class="col-md-7">
-        <div class="text-left bg-second text-main rounded p-1 pl-2">訂單商品列表：</div>
+        <div class="text-left bg-second text-first rounded p-2 pl-2">訂單商品列表：</div>
         <table class="table">
           <tbody>
             <tr class="p-2 border-bottom" v-for="item in cart" :key="item.id">
@@ -25,7 +25,7 @@
               <td>
                 <a
                   href
-                  class="text-main"
+                  class="text-first"
                   @click.prevent="openProduct(item.product.id)"
                 >{{item.product.title}}</a>
               </td>
@@ -42,7 +42,7 @@
       <!-- 右側表單 -->
       <div class="col-md-5">
         <form class="ml-md-2">
-          <div class="row bg-third m-0 p-4">
+          <div class="row bg-second m-0 p-4">
             <div class="col-md-6 mb-2">
               <div class="form-group">
                 <label for="name">收件人姓名</label>
@@ -73,7 +73,7 @@
               />
               <small class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</small>
             </div>
-            <div class="form-group col-12 mb-2">
+            <div class="form-group mb-2">
               <label for="tel">聯絡電話</label>
               <input
                 id="tel"
@@ -87,7 +87,7 @@
               />
               <small class="text-danger" v-if="errors.has('tel')">欄位不得為空</small>
             </div>
-            <div class="form-group col-12 mb-2">
+            <div class="form-group mb-2">
               <label for="address">收件人地址</label>
               <input
                 id="address"
@@ -101,7 +101,7 @@
               />
               <small class="text-danger" v-if="errors.has('address')">欄位不得為空</small>
             </div>
-            <div class="form-group col-12 mb-2">
+            <div class="form-group mb-2">
               <label for="textarea">留言備註</label>
               <input
                 id="textarea"
@@ -115,7 +115,7 @@
               />
               <small class="text-danger" v-if="errors.has('textarea')">欄位不得為空</small>
             </div>
-            <div class="form-group col-12 mb-2">
+            <div class="form-group mb-2">
               <label for="coupon">套用優惠券</label>
               <div class="input-group mb-3">
                 <input
@@ -157,7 +157,6 @@ import Progress from '../components/Progress'
 export default {
   data () {
     return {
-      // getTotal: ',
       checkInfor: {
         name: '',
         email: '',
@@ -166,8 +165,7 @@ export default {
       },
       recentCoupon: '',
       checkMessage: '',
-      finalpay: '',
-      getTotal: ''
+      finalpay: ''
     }
   },
   components: {
@@ -190,27 +188,21 @@ export default {
           // do stuff if not valid.
           this.$http.post(api, { data: postInfor }).then(response => {
             console.log('建立訂單', response)
-            vm.getCart()
+            this.$store.dispatch('getCart')
             if (response.data.success) {
-              this.$bus.$emit('message:push', response.data.message, 'main')
+              this.$store.dispatch('updateMessage', { message: response.data.message, status: 'correct' })
               this.$router.push({
                 path: `/checkout-2/${response.data.orderId}`
               })
             } else {
-              this.$bus.$emit('message:push', response.data.message, 'danger')
+              this.$store.dispatch('updateMessage', { message: response.data.message, status: 'mistake' })
             }
           })
         } else {
-          this.$bus.$emit('message:push', '欄位不完整', 'danger')
+          this.$store.dispatch('updateMessage', { message: '欄位不完整', status: 'mistake' })
         }
       })
     },
-    // getOrders (page = 1) {
-    //   const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/orders?page=${page}`
-    //   this.$http.get(api).then(response => {
-    //     console.log(response)
-    //   })
-    // },
     openProduct (id) {
       let routerPush = this.$router.resolve({
         path: '/productpage',
@@ -231,6 +223,9 @@ export default {
     },
     final_price () {
       return this.$store.state.final_price
+    },
+    getTotal () {
+      return this.$store.state.getTotal
     }
   },
   created () {
@@ -256,11 +251,11 @@ export default {
     position: relative;
     top: 5px;
     left: 5px;
-    // border: white 2px;
+    // border: common 2px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $white;
+    background-color: $common;
     span {
       color: $first;
       font-weight: bold;
@@ -290,11 +285,11 @@ export default {
     position: relative;
     top: 5px;
     left: 5px;
-    // border: white 2px;
+    // border: common 2px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $white;
+    background-color: $common;
     span {
       color: $shadow;
       font-weight: bold;

@@ -33,13 +33,14 @@ $grays: map-merge(
   ),
   $grays
 );
-
+// 客製化
 $general: #39393e !default;
 $first:#503E95 !default;
-$main: #bb5500 !default;
-$second:#F6EB8C !default;
-$third:#F6F6FB !default;
+$second:#e6e6fa !default;
 $shadow:#eeeeef!default;
+$correct:#40b883!default;
+$mistake:#FF6347!default;
+$common:#f8f8f8!default;
 
 $blue: #007bff !default;
 $indigo: #6610f2 !default;
@@ -56,12 +57,14 @@ $colors: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $colors: map-merge(
   (
+    "mistake":$mistake,
+    "correct":$correct,
+    "common":$common,
     "shadow":$shadow,
     "first":$first,
-    "third":$third,
     "general": $general,
-    "main": $main,
     "second": $second,
+    
     "blue": $blue,
     "indigo": $indigo,
     "purple": $purple,
@@ -92,12 +95,14 @@ $theme-colors: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $theme-colors: map-merge(
   (
+    "mistake":$mistake,
+    "correct":$correct,
+    "common":$common,
     "shadow":$shadow,
     "first":$first,
-    "third":$third,
     "general": $general,
-    "main": $main,
     "second": $second,
+
     "primary": $primary,
     "secondary": $secondary,
     "success": $success,

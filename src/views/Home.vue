@@ -1,33 +1,69 @@
 <template>
   <div>
-    <Alert></Alert>
+    <div class="home_banner text-center d-flex">
+      <strong class="banner_log my-auto mx-auto animated-top">Get design what you deserve.<br>帶走屬於你的好設計</strong>
+    </div>
     <loading :active.sync="isLoading"></loading>
-    <!-- swiper圖片區塊 -->
-    <swiper :options="swiperMain">
+    <!-- swiper 主要產品區塊 -->
+    <div class="container newArrival">
+      <div class="text-center p-3">
+        <span class="px-3 py-2 text-first bg-second rounded">New Arrival</span>
+      </div>
+      <swiper :options="swiperAllProducts" class="swiper-container-2">
+        <swiper-slide v-for="item in origin_products" :key="item.id">
+          <a href="#" @click.prevent="openProduct(item.id)">
+            <img :src="item.imageUrl" alt class="card-img-top img-fluid" style="min-height:150px;" />
+          </a>
+          <div class="title">{{item.title}}</div>
+          <div class="text-left d-none d-md-block">{{item.description}}</div>
+          <div class="text-right">
+            <i
+              class="far fa-heart mr-1"
+              v-if="item.isFavor != true"
+              @click.prevent="addFavor(item)"
+            ></i>
+            <i
+              class="fas fa-heart mr-1"
+              v-if="item.isFavor === true"
+              @click.prevent="addFavor(item)"
+            ></i>
+          </div>
+          <div class="row text-left no-gutters">
+            <strong
+              class=" col-md-6"
+              v-if="item.price == item.origin_price"
+            >{{item.origin_price|currency}}</strong>
+            <a
+              href="#"
+              class="text-general text-right  col-md-6 pr-1"
+              @click.prevent="addCart(item.id)"
+            >
+              <i class="fas fa-cart-plus"></i>
+            </a>
+          </div>
+        </swiper-slide>
+        <!-- <div class="swiper-pagination" slot="pagination"></div> -->
+        <!-- <div class="swiper-button-next" slot="button-prev"></div>
+        <div class="swiper-button-prev" slot="button-next"></div> -->
+    </swiper>
+    </div>
+    <!-- swiper banner圖片區塊 -->
+    <swiper :options="swiperBanner" class="container p-0">
       <swiper-slide v-for="item in SwiperImgs" :key="item.key" >
         <img :src="item.imgurl" class="img-fluid"/>
       </swiper-slide>
-      <!-- <div class="swiper-scrollbar"></div> -->
       <div class="swiper-button-next" slot="button-prev"></div>
       <div class="swiper-button-prev" slot="button-next"></div>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
-    <!-- youtube -->
-    <div id="videoboard">
-      <div id="video" class="video bg-second py-4 my-2 rounded d-none d-md-block">
-        <span class="ml-auto text-main d-block">每周小分享：</span>
-        <button type="button" class="close text-main" @click.prevent="closetv">
-          <span aria-hidden="true" class="pr-2">&times;</span>
-        </button>
-        <youtube :video-id="videoId" ref="youtube" @playing="playing"></youtube>
+    <!--  -->
+    <!-- swiper更多優惠區塊 -->
+    <div class="onsale container">
+      <div class="text-center p-3">
+        <span class="px-3 py-2 text-first bg-second rounded">On Sale</span>
       </div>
-    </div>
-
-    <div class="onsale-Products">
-      <!-- swiper更多優惠區塊 -->
-      <span class="home-pop">更多優惠</span>
-      <swiper :options="swiperProducts" class="swiper-container-2">
-        <swiper-slide class v-for="item in onsale" :key="item.id">
+      <swiper :options="swiperOnSale" class="swiper-container-2">
+        <swiper-slide v-for="item in onsale" :key="item.id">
           <a href="#" @click.prevent="openProduct(item.id)">
             <img :src="item.imageUrl" alt class="card-img-top img-fluid" style="min-height:150px;" />
           </a>
@@ -47,42 +83,39 @@
           </div>
           <div class="row text-left no-gutters">
             <div
-              class="col-12 col-md-6 col-lg-4"
+              class=" col-md-6 col-lg-4"
               v-if="item.price == item.origin_price"
             >{{item.origin_price|currency}}</div>
             <del
-              class="col-12 col-md-6 col-lg-4"
+              class=" col-md-6 col-lg-4"
               v-if="item.price !== item.origin_price"
             >{{item.origin_price|currency}}</del>
             <strong
-              class="col-12 col-md-6 col-lg-4"
+              class=" col-md-6 col-lg-4"
               v-if="item.price !== item.origin_price"
             >{{item.price|currency}}</strong>
             <a
               href="#"
-              class="text-main text-right col-12 col-lg-4 pr-1"
+              class="text-general text-right  col-lg-4 pr-1"
               @click.prevent="addCart(item.id)"
             >
               <i class="fas fa-cart-plus"></i>
             </a>
           </div>
         </swiper-slide>
-        <!-- <div class="swiper-pagination sw-2" slot="pagination"></div> -->
         <div class="swiper-button-next" slot="button-prev"></div>
-        <div class="swiper-button-prev" slot="button-next">
-          <!-- <i class="fas fa-hand-point-right fa-2x box-center"></i> -->
-        </div>
+        <div class="swiper-button-prev" slot="button-next"></div>
       </swiper>
     </div>
-    <!--  -->
-    <div class="bg-second py-4 rounded">
-        <strong class="text-general coupon_pop_1">W h a t !! </strong>
-        <strong class="text-general coupon_pop_2">拿到 G o o d d e s i g n 新開幕折扣竟然只需要幾秒鐘 !!</strong>
-        <a href="#" class="btn btn-first m-2 rounded-pill coupon_pop_3" @click.prevent="getCoupon">請點我</a>
+    <!-- 提領優惠 -->
+    <div class="bg-second py-4 px-2 rounded">
+        <strong class="text-general coupon_pop_1">What !! </strong>
+        <strong class="text-general coupon_pop_2">拿到 Gooddesign 新開幕折扣竟然只需要幾秒鐘 !!</strong>
+        <a href="#" class="bg-first m-2 p-2 text-second rounded-pill coupon_pop_3" @click.prevent="getCoupon">click here</a>
     </div>
     <!-- 特色介紹區塊 -->
     <div class="row no-gutters aboutus">
-      <div class="col-12 col-md-4 p-2 animated" v-for="item in aboutUsImg" :key="item.key" :id="item.key">
+      <div class=" col-md-4 p-2 animated" v-for="item in aboutUsImg" :key="item.key" :id="item.key">
         <div class="aboutus_card">
           <img :src="item.url" width="150" alt />
           <div class="title">{{item.title}}</div>
@@ -95,9 +128,9 @@
     <div class="modal fade" id="getCoupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-second text-main">
+          <div class="modal-header bg-first text-common">
             <h5 class="modal-title" id="exampleModalCenterTitle">恭喜你獲得本周優惠</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close text-second" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -118,7 +151,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-general" data-dismiss="modal">關閉</button>
-            <router-link class="btn btn-main" to="/products" data-dismiss="modal">購物去</router-link>
+            <router-link class="btn btn-first" to="/products" data-dismiss="modal">購物去</router-link>
           </div>
         </div>
       </div>
@@ -129,16 +162,48 @@
 <script>
 import $ from 'jquery'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import Alert from '../components/Alert'
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
-      fullWidth: '',
-      // favoProduct: [],
-      videoId: '34qHK_fUgUs',
+      swiperAllProducts: {
+        slidesPerView: 5,
+        spaceBetween: 50,
+        loopFillGroupWithBlank: true,
+        height: 300,
+        loop: true,
+        speed: 1000,
+        // init: false,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        },
+        breakpoints: {
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 40
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 30
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20
+          },
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 10
+          }
+        }
+      },
       // swiper資料，一個大坑
-      swiperMain: {
+      swiperBanner: {
         autoplay: {
           disableOnInteraction: false, // 用户操作后是否禁止自动循环
           delay: 4000 //  自动循环时间
@@ -204,28 +269,47 @@ export default {
           key: 3
         }
       ],
-      swiperProducts: {
-        slidesPerView: 4,
-        spaceBetween: 20,
-        slidesPerGroup: 4,
+      swiperOnSale: {
+        slidesPerView: 5,
+        spaceBetween: 50,
         autoHeight: true,
-        height: 250,
-        // loop: true,
-        // speed: 2000,
         loopFillGroupWithBlank: true,
+        height: 300,
+        loop: true,
+        speed: 1000,
+        // init: false,
         pagination: {
           el: '.swiper-pagination',
           clickable: true
+        },
+        breakpoints: {
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 40
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 30
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20
+          },
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 10
+          }
         },
         navigation: {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
         }
-      }
+      },
+      fullWidth: 0,
+      fullHeight: 0
     }
   },
   components: {
-    Alert,
     swiper,
     swiperSlide
   },
@@ -263,18 +347,12 @@ export default {
         if (response.data.success) {
           $('#getCoupon').modal('show')
         } else {
-          vm.$bus.$emit('message:push', response.data.message, 'danger')
+          this.$store.dispatch('updateMessage', { message: response.data.message, status: 'mistake' })
         }
       })
     },
-    playVideo () {
-      this.player.playVideo()
-    },
-    playing () {
-      console.log('o/ we are watching!!!')
-    },
     getProducts () {
-      this.$store.dispatch('getFilterProducts', '')
+      this.$store.dispatch('getProducts')
     },
     openProduct (id) {
       let routerPush = this.$router.push({
@@ -284,53 +362,32 @@ export default {
       console.log(routerPush)
     },
     addCart (id) {
-      const vm = this
-      vm.$store.dispatch('updateLoading', true)
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      const pushProduct = {
-        product_id: id,
-        qty: '1'
-      }
-      vm.$http.post(api, { data: pushProduct }).then(response => {
-        vm.$bus.$emit('addCart')
-        vm.$bus.$emit('message:push', response.data.message, 'main')
-        vm.$store.dispatch('updateLoading', false)
-      })
+      this.$store.dispatch('addCart', id)
     },
     addFavor (e) {
       this.$store.dispatch('addFavor', e)
     }
   },
   computed: {
-    player () {
-      return this.$refs.youtube.player
-    },
-    onsale () {
-      return this.$store.state.onsale
-    },
-    favoProduct () {
-      return this.$store.state.favoProduct
-    },
-    products () {
-      return this.$store.state.products
-    },
-    isLoading () {
-      return this.$store.state.isLoading
-    },
-    coupopforcustom () {
-      return this.$store.state.coupopforcustom
-    }
+    ...mapGetters(['onsale', 'favoProduct', 'products', 'isLoading',
+      'coupopforcustom', 'origin_products'])
   },
   created () {
+    this.$store.dispatch('refresh')
     this.getProducts()
     this.getWindow()
+  },
+  mounted () {
+    setTimeout(() => {
+      $('.banner_log').addClass('fadeIn')
+    }, 600)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-del,strong {
-  font-size: 20px;
+strong {
+  font-size: 18px;
 }
 .fa-cart-plus,
 .fa-heart {
@@ -369,28 +426,29 @@ del,strong {
   background-color: rgba(255, 255, 255, 0.8);
   width: 37px;
   height: 54px;
-  box-shadow: 1px 1px 1px $third;
+  box-shadow: 1px 1px 1px $shadow;
   background-image: url("../assets/chevron-right-solid.svg");
 }
-
 .swiper-container {
   width: 100%;
   height: 400px;
   @media (max-width: 992px) {
-    height: 300px;
+    height: 380px;
   }
   @media (max-width: 768px) {
-    height: 200px;
+    height: 300px;
   }
   @media (max-width: 576px) {
-    height: 120px;
+    height: 180px;
   }
   // margin: 20px auto;
 }
 .swiper-container-2 {
-  padding-top: 50px;
   height: 0px;
-  min-height: 400px;
+  min-height: 350px;
+  .swiper-container-2 del {
+    font-size: 14px;
+  }
 }
 .swiper-container img {
   background-position: center center;
@@ -404,7 +462,7 @@ del,strong {
   // border-radius: 10px;
   width: 37px;
   height: 54px;
-  box-shadow: 1px 1px 1px $third;
+  box-shadow: 1px 1px 1px $shadow;
   background-image: url("../assets/chevron-left-solid.svg");
 }
 .swiper-slide {
@@ -420,25 +478,17 @@ del,strong {
 .card-img-top:hover {
   opacity: 0.5;
 }
-
-.onsale-Products {
-  position: relative;
-  .home-pop {
-    border: 1.5px $first solid;
-    padding: 6px;
-    position: absolute;
-    z-index: 10;
-    top: 5px;
-    left: 0px;
-  }
-  .title {
+@mixin title () {
     min-height: 50px;
     line-height: 50px;
     @media (max-width: 568px) {
       line-height: 25px;
     }
-  }
 }
+.title {
+    @include title;
+}
+
 @mixin couponpop{
   opacity: 0;
   transition: all 2s;
@@ -464,6 +514,20 @@ del,strong {
 .fadeIn {
   opacity: 1;
   transform: translateY(0);
+}
+.home_banner {
+  background-image: url(../assets/home_banner.jpg);
+  background-size:cover;
+  background-position: center center;
+  height: 600px;
+  margin-top:-70px;
+  @media (max-width:768px) {
+    height:400px;
+  }
+  .banner_log{
+    color:$common;
+    font-size: 30px;
+  }
 }
 
 </style>

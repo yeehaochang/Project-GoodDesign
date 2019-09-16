@@ -28,6 +28,22 @@ body {
     outline: none;
     box-shadow: none;
   }
+.page-item.active {
+  background-color: $first;
+  border:$first;
+  color:$common;
+  .page-link{
+    background-color: $first;
+    border:$first;
+    color:$common;
+  }
+}
+.page-item,.page-link{
+  color:$first;
+  &:hover{
+    background-color:$second
+  }
+}
 
 
   // background-color: $main;

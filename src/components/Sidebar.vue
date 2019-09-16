@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 商品種類 -->
-    <div class="p-1 bg-second text-main">
+    <div class="p-1 bg-second text-first">
       <small>商品分類</small>
     </div>
     <div class="list-group list-group-horizontal">
@@ -16,10 +16,10 @@
     <a href="#" class="form-check my-2 p-2 border border-first text-first" v-if="!isFavorite" @click.prevent="chooseFavorite">
       <i class="far fa-heart mr-1"></i><span>顯示我的最愛</span>
     </a>
-    <a href="#" class="form-check my-2 p-2 border border-first text-white bg-first" v-if="isFavorite" @click.prevent="chooseFavorite">
+    <a href="#" class="form-check my-2 p-2 border border-first text-common bg-first" v-if="isFavorite" @click.prevent="chooseFavorite">
       <i class="far fa-heart mr-1"></i><span>顯示我的最愛</span>
     </a>
-    <div class="p-1 bg-second text-main">
+    <div class="p-1 bg-second text-first">
       <small>設計師</small>
     </div>
     <div class="list-group">
@@ -32,7 +32,7 @@
       >{{item}}</a>
     </div>
     <!-- 價格篩選 -->
-    <div class="p-1 bg-second text-main mt-2">
+    <div class="p-1 bg-second text-first mt-2">
       <small>價格篩選</small>
     </div>
     <div class="p-2">
@@ -94,7 +94,7 @@
             />
             <small class="text-danger" v-if="errors.has('minprice') && checkvalue === ''">欄位不得為空</small>
           </div>
-            <div class="form-group col-6 col-sm-12 text-left">
+            <div class="form-group col-6 col-md-12 text-left">
             <label for="max_price">最高金額</label>
             <input
               type="number"
@@ -143,12 +143,12 @@ export default {
     chooseFilter () {
       this.checkType()
       if (this.priceType.minprice === '' || this.priceType.maxprice === '') {
-        this.$bus.$emit('message:push', '金額欄位不得為空', 'danger')
+        this.$bus.$emit('message:push', '金額欄位不得為空', 'mistake')
       } else {
         if (parseInt(this.priceType.maxprice) >= parseInt(this.priceType.minprice)) {
           this.$emit('recentfilter', this.priceType)
         } else {
-          this.$bus.$emit('message:push', '最高金額不得低於起始金額', 'danger')
+          this.$bus.$emit('message:push', '最高金額不得低於起始金額', 'mistake')
         }
       }
     },
@@ -203,8 +203,8 @@ a {
 .list-group-item {
   color:$general;
   &:focus {
-    background-color: rgba(246, 235,140,0.4);
-    color: $main;
+    background-color:$second;
+    color: $first;
   }
 }
 </style>

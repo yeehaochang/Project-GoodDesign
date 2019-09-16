@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Alert></Alert>
     <loading :active.sync="isLoading"></loading>
     <div class="container p-0 mt-2">
       <div class="row no-gutters">
@@ -63,7 +62,7 @@
             </div>
             <div class="text-right mb-1 mx-1">
               商品庫存僅剩
-              <span class="text-danger mx-1">{{10 - product.qty}}</span>
+              <span class="text-mistake mx-1">{{10 - product.qty}}</span>
               {{product.unit}}
             </div>
             <div class="row no-gutters">
@@ -71,9 +70,8 @@
                 <div class="p-2 text-left">小計：{{total|currency}}</div>
               </div>
               <div class="col-md-6">
-                <a href="#" class="p-2 btn btn-main d-block" @click.prevent="addCart">
+                <a href="#" class="p-2 btn btn-first d-block" @click.prevent="addCart">
                   <span>加入購物車</span>
-                  <i class="fas fa-cart-plus"></i>
                 </a>
               </div>
             </div>
@@ -91,12 +89,10 @@
 </template>
 
 <script>
-import Alert from '../components/Alert'
 import VueEasyLightbox from 'vue-easy-lightbox'
 
 export default {
   components: {
-    Alert,
     VueEasyLightbox
   },
   data () {
@@ -124,28 +120,10 @@ export default {
       })
     },
     addCart () {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      const vm = this
-      vm.isLoading = true
-      const pushProduct = {
-        product_id: vm.product.id,
-        qty: vm.product.qty
-      }
-      vm.$http.post(api, { data: pushProduct }).then(response => {
-        this.$bus.$emit('addCart')
-        this.$bus.$emit('message:push', response.data.message, 'main')
-        vm.isLoading = false
-      })
+      this.$store.dispatch('addCart', this.product.id)
     },
     gettotal () {
       this.total = parseInt(this.product.qty) * parseInt(this.product.price)
-    },
-    getFavorite () {
-      this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
-    },
-    setFavorite () {
-      let stringdata = JSON.stringify(this.favoProduct)
-      localStorage.setItem('myFavorite', stringdata)
     },
     putPageFavorite (e) {
       this.favoProduct = JSON.parse(localStorage.getItem('myFavorite'))
@@ -159,23 +137,7 @@ export default {
       }
     },
     addFavor () {
-      const vm = this
-      vm.favoProduct = vm.favoProduct || []
-      if (vm.product.isFavor) {
-        vm.product.isFavor = false
-        vm.favoProduct.forEach(function (item, index, array) {
-          if (item.title === vm.product.title) {
-            array.splice(index, 1)
-          }
-        })
-        vm.setFavorite()
-      } else {
-        vm.$set(vm.product, 'isFavor', true)
-        vm.favoProduct.push(vm.product)
-        vm.setFavorite()
-      }
-      vm.$bus.$emit('addHeart')
-      vm.getFavorite()
+      this.$store.dispatch('addFavor', this.product)
     },
     // 燈箱效果
     showSingle (url) {

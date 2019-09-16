@@ -1,13 +1,13 @@
 <template>
   <div>
-    <GoTop></GoTop>
-    <div class="container p-0">
+    <Alert></Alert>
+    <div class="container-fluid">
       <BackNavbar></BackNavbar>
       <div class="row no-gutters">
-        <div class="col-md-2 col-12">
+        <div class="col-md-2">
           <BackSidebar></BackSidebar>
         </div>
-        <div class="col-12 col-md-10">
+        <div class="col-md-10">
           <div class="p-1">
             <router-view></router-view>
           </div>
@@ -20,7 +20,7 @@
 <script>
 import BackNavbar from '../components/Back-Navbar'
 import BackSidebar from '../components/Back-Sidebar'
-import GoTop from '../components/GoTop'
+import Alert from '../components/Alert'
 
 export default {
   data () {
@@ -29,7 +29,7 @@ export default {
   components: {
     BackNavbar,
     BackSidebar,
-    GoTop
+    Alert
   }
 }
 </script>

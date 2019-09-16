@@ -1,8 +1,12 @@
 <template>
-  <div class="container p-0">
-    <GoTop></GoTop>
+  <div>
+    <Alert></Alert>
     <Navbar></Navbar>
-    <router-view></router-view>
+    <div class="toparea">
+    </div>
+    <div class="container">
+      <router-view></router-view>
+    </div>
     <Footer></Footer>
   </div>
 </template>
@@ -11,7 +15,7 @@
 // import "../assets/all.scss";
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
-import GoTop from '../components/GoTop'
+import Alert from '../components/Alert'
 
 export default {
   data () {
@@ -20,11 +24,17 @@ export default {
   components: {
     Footer,
     Navbar,
-    GoTop
+    Alert
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.toparea{
+  padding-top: 70px;
+  @media (max-width: 575px) {
+    padding-top:100px;
+  }
+}
 
 </style>

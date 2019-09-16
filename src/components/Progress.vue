@@ -67,11 +67,11 @@ export default {
     position: relative;
     top: 5px;
     left: 5px;
-    // border: white 2px;
+    // border: common 2px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $white;
+    background-color: $common;
     span {
       color: $first;
       font-weight: bold;
@@ -101,11 +101,11 @@ export default {
     position: relative;
     top: 5px;
     left: 5px;
-    // border: white 2px;
+    // border: common 2px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $white;
+    background-color: $common;
     span {
       color: $shadow;
       font-weight: bold;

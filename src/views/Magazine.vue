@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap mt-2">
+  <div class="wrap">
     <div class="scoll-top-list">
       <a href="1" class="scoll-top text-general rounded p-1 m-2" @click.prevent="goSlide">禮物包裝是種禮儀！</a>
       <a
@@ -31,7 +31,7 @@
       <div class="back back-2 row no-gutters">
         <div class="col-10 col-md-5 d-none d-md-block">
           <h2 id="title-2" class="magtitle animated-top">2019 限塑新政策！環保吸管「徹底清洗」教學＋ 9 款材質推薦評比</h2>
-          <p id="content-2" class="text-white p-2 animated">
+          <p id="content-2" class="text-common p-2 animated">
             從口號、潮流，到今天的全民意識，「環保」是離不開大家的生活議題，新的「限塑政策」將在七月登場，
             今天就讓小編來示範環保吸管的正確清洗方式吧！若還沒開始使用，不知道哪種材質較好？小編也蒐集了功能好用、方便清潔的環保吸管推薦給大家唷～
           </p>
@@ -78,7 +78,7 @@
     </div>
 
     <div class="magfooter text-right p-2 d-flex">
-      <span class="text-white ml-auto mt-auto">以上資料來自pinkoi，本頁面並無商業用途。僅供作業練習</span>
+      <span class="text-common ml-auto mt-auto">以上資料來自pinkoi，本頁面並無商業用途。僅供作業練習</span>
     </div>
   </div>
 </template>
@@ -166,14 +166,20 @@ export default {
 .scoll-top-list {
   display: flex;
   .scoll-top {
-    background-color: $white;
+    background-color: $common;
   }
 }
 .magbg {
   transform: rotate(-7deg);
-  padding: 80px 0px 60px 0px;
+  padding: 120px 0px 100px 0px;
   margin: 100px -80px 0px -80px;
   background-color: rgba(255, 255, 255, 0.9);
+  @media (max-width: 768px) {
+    padding:60px 0px 120px 0px;
+  }
+  @media (max-width: 512px) {
+    padding:60px 0px 60px 0px;
+  }
 }
 
 .magbg-2 {
@@ -186,7 +192,7 @@ export default {
   transform: rotate(7deg);
 }
 .imgboard {
-  border: 1px $white solid;
+  border: 1px $common solid;
   padding: 5px;
   margin: 0px 10px;
 }

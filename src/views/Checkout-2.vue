@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Alert></Alert>
     <loading :active.sync="isLoading"></loading>
     <Progress>
       <template v-slot:progress-2>
@@ -25,13 +24,12 @@
     <div class="container">
       <form>
         <!-- 商品資訊 -->
-
         <div class="form-row">
           <div class="form-group col-md-6">
-            <div class="col-12 p-2 bg-second text-main">
+            <div class=" p-2 bg-second text-first">
               <strong>商品資訊</strong>
             </div>
-            <div class="form-row">
+            <div class="form-row p-3">
               <div class="form-group col-md-6 text-left">
                 <label for="orderid">訂單編號</label>
                 <input
@@ -45,17 +43,9 @@
               </div>
               <div class="form-group col-md-6 text-left">
                 <label for="total">訂單總金額</label>
-                <!-- <input
-                  type="number"
-                  class="form-control"
-                  id="total"
-                  placeholder
-                  v-model="recentOrder.total"
-                  disabled
-                />-->
                 <div class="form-control text-right disabled">{{recentOrder.total|currency}}</div>
               </div>
-              <div class="form-group col-12 text-left">
+              <div class="form-group  text-left">
                 <label for="message">訂單備註</label>
                 <input
                   type="text"
@@ -66,7 +56,7 @@
                   disabled
                 />
               </div>
-              <div class="form-group col-12 text-left">
+              <div class="form-group  text-left">
                 <label for="total">商品預覽：</label>
                 <div class="row no-gutters">
                   <div
@@ -76,7 +66,7 @@
                   >
                     <img
                       :src="item.product.imageUrl"
-                      class="p-1"
+                      class="pb-2"
                       width="120"
                       height="100"
                       alt
@@ -90,7 +80,7 @@
           <!-- 買家資訊 -->
 
           <div class="form-group col-md-6">
-            <div class="p-2 bg-second text-main">
+            <div class="p-2 bg-second text-first">
               <strong>訂購人資料</strong>
             </div>
             <div class="form-row p-3">
@@ -105,7 +95,7 @@
                   disabled
                 />
               </div>
-              <div class="form-group col-12 col-md-6 text-left">
+              <div class="form-group  col-md-6 text-left">
                 <label for="tel">連絡電話</label>
                 <input
                   type="tel"
@@ -116,7 +106,7 @@
                   disabled
                 />
               </div>
-              <div class="form-group col-12 text-left">
+              <div class="form-group  text-left">
                 <label for="email">email</label>
                 <input
                   type="email"
@@ -127,7 +117,7 @@
                   disabled
                 />
               </div>
-              <div class="form-group col-12 text-left">
+              <div class="form-group  text-left">
                 <label for="address">地址</label>
                 <input
                   type="text"
@@ -138,14 +128,14 @@
                   disabled
                 />
               </div>
-              <div class="form-group col-12">
+              <div class="form-group ">
                 <div>
                   付款狀態：
                   <span class="text-danger" v-if="!recentOrder.is_paid">尚未付款</span>
                   <span class="text-success" v-if="recentOrder.is_paid">完成付款</span>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="">
                 <a href="#" class="btn btn-general" @click.prevent="payment">點擊付款</a>
               </div>
             </div>
@@ -158,16 +148,13 @@
 
 <script>
 import Progress from '../components/Progress'
-import Alert from '../components/Alert'
 
 export default {
   components: {
-    Progress,
-    Alert
+    Progress
   },
   data () {
     return {
-      isLoading: false,
       orderId: '',
       recentOrder: {}
     }
@@ -177,22 +164,28 @@ export default {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${this.$route.params.orderId}`
       const vm = this
       vm.isLoading = true
+      this.$store.dispatch('updateLoading', true)
       this.$http.get(api).then(response => {
         console.log('這是該筆訂單', response)
         vm.recentOrder = response.data.order
-        vm.isLoading = false
+        this.$store.dispatch('updateLoading', false)
       })
     },
     payment () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${this.recentOrder.id}`
       const vm = this
-      vm.isLoading = true
+      this.$store.dispatch('updateLoading', true)
       vm.$http.post(api, vm.recentOrder.id).then(response => {
-        this.$bus.$emit('message:push', response.data.message, 'main')
+        this.$store.dispatch('updateMessage', { message: response.data.message, status: 'correct' })
         console.log('結帳付款', response)
-        vm.isLoading = false
+        this.$store.dispatch('updateLoading', false)
       })
       vm.getOrders()
+    }
+  },
+  computed: {
+    isLoading () {
+      return this.$store.state.isLoading
     }
   },
   created () {
@@ -218,11 +211,11 @@ export default {
     position: relative;
     top: 5px;
     left: 5px;
-    // border: white 2px;
+    // border: common 2px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $white;
+    background-color: $common;
     span {
       color: $first;
       font-weight: bold;
@@ -252,11 +245,11 @@ export default {
     position: relative;
     top: 5px;
     left: 5px;
-    // border: white 2px;
+    // border: common 2px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $white;
+    background-color: $common;
     span {
       color: $shadow;
       font-weight: bold;

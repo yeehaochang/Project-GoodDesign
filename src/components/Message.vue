@@ -2,7 +2,7 @@
   <div>
     <a
       href="#"
-      class="message-button text-white rounded"
+      class="message-button text-common rounded"
       data-toggle="modal"
       data-target="#feedbackModal"
       @click.prevent="showMessage"
@@ -106,20 +106,21 @@ export default {
 #message {
   // display: none;
   position: fixed;
-  top: 300px;
+  top: 400px;
   right: 60px;
   padding: 10px;
   height: 150px;
   width: 300px;
-  background-color: white;
-  box-shadow: 0px 0px 3px $general;
+  background-color: $common;
+  box-shadow: 0px 0px 2px $general;
   z-index: 10;
 }
 .message-button {
-  @include red-gradual();
+  background-color:$first;
+  color:$common;
   position: fixed;
   padding: 12px;
-  top: 300px;
+  top: 400px;
   right: 0px;
   -webkit-writing-mode: vertical-lr;
   writing-mode: vertical-lr;
@@ -146,7 +147,7 @@ export default {
 }
 .animated {
   opacity: 0;
-  transition: all 1.2s;
+  transition: all 0.8s;
   transform: translateX(20px);
 }
 .fadeIn {

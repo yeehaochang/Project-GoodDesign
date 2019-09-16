@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="my-2 p-2 bg_wall">
+    <div class="mb-2 p-2 bg_wall">
       <div class="py-2">
         <a href="#" class="btn btn-second text-general" @click.prevent="showMultiple"><strong>點我依序觀看</strong></a>
       </div>
