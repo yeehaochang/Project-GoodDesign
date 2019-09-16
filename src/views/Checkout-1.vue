@@ -43,21 +43,19 @@
       <div class="col-md-5">
         <form class="ml-md-2">
           <div class="row bg-second m-0 p-4">
-            <div class="col-md-6 mb-2">
-              <div class="form-group">
-                <label for="name">收件人姓名</label>
-                <input
-                  name="name"
-                  type="text"
-                  class="form-control"
-                  id="name"
-                  v-model="checkInfor.name"
-                  placeholder="請輸入姓名"
-                  v-validate="'required'"
-                  :class="{'is-invalid':errors.has('name')}"
-                />
-                <small class="text-danger" v-if="errors.has('name')">欄位不得為空</small>
-              </div>
+            <div class="form-group col-md-6 mb-2">
+              <label for="name">收件人姓名</label>
+              <input
+                name="name"
+                type="text"
+                class="form-control"
+                id="name"
+                v-model="checkInfor.name"
+                placeholder="請輸入姓名"
+                v-validate="'required'"
+                :class="{'is-invalid':errors.has('name')}"
+              />
+              <small class="text-danger" v-if="errors.has('name')">欄位不得為空</small>
             </div>
             <div class="form-group col-md-6 mb-2">
               <label for="email">Email</label>
@@ -73,7 +71,7 @@
               />
               <small class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</small>
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group col-12 mb-2">
               <label for="tel">聯絡電話</label>
               <input
                 id="tel"
@@ -87,7 +85,7 @@
               />
               <small class="text-danger" v-if="errors.has('tel')">欄位不得為空</small>
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group col-12 mb-2">
               <label for="address">收件人地址</label>
               <input
                 id="address"
@@ -101,7 +99,7 @@
               />
               <small class="text-danger" v-if="errors.has('address')">欄位不得為空</small>
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group col-12 mb-2">
               <label for="textarea">留言備註</label>
               <input
                 id="textarea"
@@ -115,7 +113,7 @@
               />
               <small class="text-danger" v-if="errors.has('textarea')">欄位不得為空</small>
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group col-12 mb-2">
               <label for="coupon">套用優惠券</label>
               <div class="input-group mb-3">
                 <input

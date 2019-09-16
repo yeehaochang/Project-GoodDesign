@@ -95,7 +95,7 @@
                   disabled
                 />
               </div>
-              <div class="form-group  col-md-6 text-left">
+              <div class="form-group col-md-6 text-left">
                 <label for="tel">連絡電話</label>
                 <input
                   type="tel"
@@ -106,7 +106,7 @@
                   disabled
                 />
               </div>
-              <div class="form-group  text-left">
+              <div class="form-group col-md-6 text-left">
                 <label for="email">email</label>
                 <input
                   type="email"
@@ -117,7 +117,7 @@
                   disabled
                 />
               </div>
-              <div class="form-group  text-left">
+              <div class="form-group col-md-6 text-left">
                 <label for="address">地址</label>
                 <input
                   type="text"
@@ -128,14 +128,14 @@
                   disabled
                 />
               </div>
-              <div class="form-group ">
+              <div class="form-group col-md-6">
                 <div>
                   付款狀態：
                   <span class="text-danger" v-if="!recentOrder.is_paid">尚未付款</span>
                   <span class="text-success" v-if="recentOrder.is_paid">完成付款</span>
                 </div>
               </div>
-              <div class="">
+              <div class="col-md-6">
                 <a href="#" class="btn btn-general" @click.prevent="payment">點擊付款</a>
               </div>
             </div>
@@ -163,7 +163,6 @@ export default {
     getOrders () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${this.$route.params.orderId}`
       const vm = this
-      vm.isLoading = true
       this.$store.dispatch('updateLoading', true)
       this.$http.get(api).then(response => {
         console.log('這是該筆訂單', response)
