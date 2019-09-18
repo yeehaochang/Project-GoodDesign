@@ -42,8 +42,6 @@ Vue.use(VueCurrencyFilter,
   {
     symbol: '$',
     thousandsSeparator: ',',
-    // fractionCount: 2,
-    // fractionSeparator: ',',
     symbolPosition: 'front',
     symbolSpacing: true
   })
@@ -77,7 +75,7 @@ router.beforeEach((to, from, next) => {
         next()
       } else {
         console.log(response.data)
-        this.$bus.$emit(response.data.message, 'mistake')
+        this.store.dispatch('updateMessage', { message: response.data.message, status: 'mistake' })
       }
     })
   } else {

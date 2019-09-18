@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 第一層footer -->
-    <footer class="bg-second pt-4 px-4">
+    <footer class="bg-secondary pt-4 px-4">
       <!-- 第二層footer -->
       <div class="row no-gutters">
         <div class="col-2 col-md-4"></div>
@@ -9,9 +9,9 @@
         <div class="col-5 col-md-3">
           <div class="h6 text-left mb-4">購物 / 販售</div>
           <div class="d-flex flex-column-reverse align-items-start">
-            <router-link class="text-first" to="/products">所有商品</router-link>
-            <router-link class="text-first" to="/imagewall">商品牆</router-link>
-            <router-link class="text-first" to="/magazine">設計誌</router-link>
+            <router-link class="text-primary" to="/products">所有商品</router-link>
+            <router-link class="text-primary" to="/imagewall">商品牆</router-link>
+            <router-link class="text-primary" to="/magazine">設計誌</router-link>
           </div>
         </div>
 

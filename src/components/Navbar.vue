@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 至頂navbar -->
-    <div class="topNavbar bg-first p-2 ">
+    <div class="topNavbar bg-primary p-2 ">
       <div class="d-flex align-items-center justify-content-sm-center justify-content-between">
         <i id="toggleicon" class="topicon navlist fas mx-2 fa-bars d-md-none" @click.prevent="togglelist"></i>
       <div class="mr-auto align-items-center d-none d-md-block">
@@ -18,7 +18,7 @@
         </ul>
       </div>
       <router-link to="/home" class="">
-        <h1 class="text-common h6 m-0 m-md-2">G o o d D e s i g n</h1>
+        <h1 class="text-common h6 m-0 m-md-2 ">G o o d D e s i g n</h1>
       </router-link>
       <!-- 搜尋框 -->
       <div class="d-none d-sm-block mr-auto">
@@ -43,11 +43,11 @@
       <div class="d-flex">
         <a href="#" class="heart ml-2" data-toggle="modal" data-target=".favoriteModal">
           <div class="heartnum">{{favoNum}}</div>
-          <i class="topicon far fa-heart text-common"></i>
+          <i class="topicon far fa-heart text-common icon_heart"></i>
         </a>
         <router-link class="text-common cart mx-md-3 mx-2" to="/cart">
           <div class="cartnum">{{cartNum}}</div>
-          <i class="topicon fas fa-shopping-cart "></i>
+          <i class="topicon fas fa-shopping-cart icon_cart"></i>
         </router-link>
         <a class="" href="#" data-toggle="modal" data-target="#signin">
           <i class="topicon fas fa-user text-common"></i>
@@ -72,7 +72,7 @@
         </button>
       </div>
     </div>
-    <ul class="m-0 px-2 list-unstyled bg-first " id="togglelist">
+    <ul class="m-0 px-2 list-unstyled bg-primary " id="togglelist">
       <li>
         <router-link class="btn rounded-0 text-common navlist" to="/products">找好設計</router-link>
       </li>
@@ -95,9 +95,9 @@
       >
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-first text-common">
+          <div class="modal-header bg-primary text-common">
             <h5 class="modal-title" id="exampleModalLabel">登入</h5>
-            <button type="button" class="close text-second" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -137,7 +137,7 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-general" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-first" @click.prevent="signin">確認送出</button>
+            <button type="button" class="btn btn-primary" @click.prevent="signin">確認送出</button>
           </div>
         </div>
       </div>
@@ -153,10 +153,10 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content p-2">
           <div class="border">
-            <button type="button" class="close text-second p-1" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close text-secondary p-1" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <div class="py-2 h4 bg-first text-second">我的最愛</div>
+            <div class="py-2 h4 bg-primary text-secondary">我的最愛</div>
             <div class="p-2">
               <div class="border-bottom" v-for="item in favoProduct" :key="item.id">
                 <div class="row no-gutters py-2">
@@ -175,7 +175,7 @@
                       <div class="col-md-3 text-left">
                         <a
                           href="#"
-                          class="text-first"
+                          class="text-primary"
                           @click.prevent="openProduct(item.id)"
                         >{{item.title}}</a>
                       </div>
@@ -238,7 +238,7 @@ export default {
         path: '/products'
       })
       this.$store.dispatch('getSearchText', text)
-      this.$bus.$emit('getFilterProducts')
+      this.$store.dispatch('getFilterProducts', '')
     },
     signin () {
       const api = `${process.env.VUE_APP_APIPATH}/admin/signin`
@@ -284,7 +284,7 @@ export default {
   },
   computed: {
     cartNum () {
-      return this.$store.state.cartNum
+      return this.$store.state.cartNum || 0
     },
     favoNum () {
       return this.$store.state.productModules.favoNum
@@ -293,12 +293,24 @@ export default {
       return this.$store.state.productModules.favoProduct
     }
   },
+  watch: {
+    cartNum () {
+      $('.icon_cart').addClass('bounceIn')
+      setTimeout(() => {
+        $('.icon_cart').removeClass('bounceIn')
+      }, 500)
+    },
+    favoNum () {
+      $('.icon_heart').addClass('bounceIn')
+      setTimeout(() => {
+        $('.icon_heart').removeClass('bounceIn')
+      }, 500)
+    }
+  },
   created () {
     this.outsideclick()
     this.$store.dispatch('getFavorite')
     this.getCartNum()
-    this.$bus.$on('addCart', this.getCartNum)
-    this.$bus.$on('addHeart', this.getFavorite)
   }
 }
 </script>
@@ -319,6 +331,7 @@ export default {
   border-radius: 50%;
   width: 20px;
   height: 20px;
+  z-index: 1100;
 }
 .heart {
   position: relative;
@@ -332,6 +345,7 @@ export default {
   border-radius: 50%;
   width: 20px;
   height: 20px;
+  z-index: 1100;
 }
 .topicon {
   font-size:30px;
@@ -349,11 +363,11 @@ export default {
   color:$common;
   // box-shadow: 0px 1px 0.5px $shadow;
   &:hover{
-    color:$second;
+    color:$secondary;
   }
   &:focus{
-    color: $second;
-    border-bottom: 3px $second solid;
+    color: $secondary;
+    border-bottom: 3px $secondary solid;
   }
 }
 #togglelist{

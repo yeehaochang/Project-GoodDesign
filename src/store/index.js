@@ -11,6 +11,7 @@ export default new Vuex.Store({
   strict: true,
   state: {
     isLoading: false,
+    isFileLoading: false,
     isFavorite: false,
     // Home
     coupopforcustom: {
@@ -18,6 +19,7 @@ export default new Vuex.Store({
       title: '限時顧客回饋優惠',
       percent: '90'
     },
+    ModalDisplay: '',
     // cart&checkout
     cart: [],
     cartNum: '',
@@ -35,30 +37,49 @@ export default new Vuex.Store({
     updateLoading (context, status) {
       context.commit('LOADING', status)
     },
+    updateFileLoading (context, status) {
+      context.commit('FILELOADING', status)
+    },
+    updateModalDisplay (context, status) {
+      context.commit('MODALSIDPLAY', status)
+    },
     addCart ({ dispatch }, payload) {
-      dispatch('updateLoading', true)
+      dispatch('updateFileLoading', true)
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
       const pushProduct = {
-        product_id: payload,
-        qty: '1'
+        product_id: payload.id,
+        qty: parseInt(payload.qty)
       }
       axios.post(api, { data: pushProduct }).then(response => {
         dispatch('getCart')
-        dispatch('updateMessage', { message: response.data.message, status: 'correct' })
-        dispatch('updateLoading', false)
+        dispatch('updateMessage', { message: payload.title + ' x ' + payload.qty + ' ' + response.data.message, status: 'correct' })
+        dispatch('updateModalDisplay', 'none')
+        dispatch('updateFileLoading', false)
       })
     },
+    // 取得購物車所有商品(含數量)
     getCart (context) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      context.commit('LOADING', true)
+      // context.commit('LOADING', true)
       axios.get(api).then(response => {
         context.commit('CART', response.data.data.carts)
         if (response.data.data.carts.length !== 0) {
           context.commit('GETTOTAL', response.data.data.carts)
         }
-        context.commit('LOADING', false)
+        // context.commit('LOADING', false)
       })
     },
+    // 購物車頁面移除單一商品
+    removeCartProduct ({ commit, dispatch }, payload) {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${payload.id}`
+      commit('LOADING', true)
+      axios.delete(api).then(response => {
+        dispatch('updateMessage', { message: response.data.message + '商品：' + payload.product.title, status: 'correct' })
+        dispatch('getCart')
+        commit('LOADING', false)
+      })
+    },
+    // 後台優惠券頁面
     getCoupons ({ commit, dispatch }, payload = 1) {
       commit('LOADING', true)
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${payload}`
@@ -79,6 +100,7 @@ export default new Vuex.Store({
         dispatch('updateMessage', { message: response.data.message, status: 'correct' })
       })
     },
+    // 後台訂單
     getOrders ({ commit, dispatch }, payload) {
       commit('LOADING', true)
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${payload}`
@@ -90,6 +112,7 @@ export default new Vuex.Store({
         commit('LOADING', false)
       })
     },
+    // 結帳頁面使用優惠券
     useCounpon ({ commit, dispatch }, payload) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`
       commit('LOADING', true)
@@ -128,9 +151,12 @@ export default new Vuex.Store({
     LOADING (state, status) {
       state.isLoading = status
     },
+    FILELOADING (state, status) {
+      state.isFileLoading = status
+    },
     CART (state, payload) {
+      state.cartNum = payload.length || 0
       state.cart = payload || []
-      state.cartNum = payload.length
     },
     GETTOTAL (state, payload) {
       let pricedata = payload.map((item) => {
@@ -159,17 +185,17 @@ export default new Vuex.Store({
           state.messages.splice(index, 1)
         }
       })
+    },
+    MODALSIDPLAY (state, status) {
+      state.ModalDisplay = status
     }
   },
   getters: {
     isLoading: state => state.isLoading,
+    isFileLoading: state => state.isFileLoading,
     isFavorite: state => state.isFavorite,
     coupopforcustom: state => state.coupopforcustom,
-    origin_products: state => {
-      return state.productModules.products.filter((item) => {
-        return item.origin_price === item.price
-      })
-    }
+    ModalDisplay: state => state.ModalDisplay
   },
   modules: {
     productModules

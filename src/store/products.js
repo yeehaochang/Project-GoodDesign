@@ -14,11 +14,21 @@ export default {
     onsale: [],
     filterdata: {},
     categoryList: [],
-    designerlist: []
+    designerlist: [],
+    newArrival_products: [],
+    checkvalue: '',
+    priceType: {
+      minprice: '',
+      maxprice: ''
+    }
   },
   actions: {
     // 取得商品列表方法(含分頁)
+    // 含過濾出sidebar所需的過濾標籤
     getProducts (context, payload = 1) {
+      if (!localStorage.myFavorite) {
+        localStorage.setItem('myFavorite', '[]')
+      }
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${payload}`
       context.commit('LOADING', true)
       // dispatch 傳入
@@ -29,11 +39,15 @@ export default {
         context.commit('DESIGNERLIST', newProd)
         context.commit('PAGINATION', response.data.pagination)
         context.commit('PRODUCTS', newProd)
+        context.commit('NEWARRIVAL_PRODUCTS', newProd)
         context.commit('LOADING', false)
       })
     },
     //  取得過濾後產品列表方法
     getFilterProducts (context, payload) {
+      if (!localStorage.myFavorite) {
+        localStorage.setItem('myFavorite', '[]')
+      }
       //  參數為sidebar透過emit傳進的選定商品分類
       context.commit('RECENTCATEGORY', payload)
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`
@@ -60,6 +74,7 @@ export default {
         context.commit('LOADING', false)
       })
     },
+    // 後台產品清單上刪除商品
     removeProduct ({ commit, dispatch }, payload) {
       commit('LOADING', true)
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${payload}`
@@ -69,8 +84,30 @@ export default {
         dispatch('updateMessage', { message: response.data.message, status: 'correct' })
       })
     },
-    getfilter (context, payload) {
-      context.commit('FILTERDATA', payload)
+    addFavor (context, payload) {
+      context.commit('FAVOPRODUCT', payload)
+    },
+    // 清空所有過濾標籤
+    refresh (context) {
+      context.commit('REFRESH')
+    },
+    // get過濾方法
+    getfilter ({ commit, dispatch, state }, payload) {
+      commit('FILTERDATA', payload)
+      dispatch('getFilterProducts', state.recentCategory)
+    },
+    getDesigner ({ commit, dispatch, state }, payload) {
+      commit('RECENTDESIGNER', payload)
+      dispatch('getFilterProducts', state.recentCategory)
+    },
+    getSearchText (context, payload) {
+      context.commit('SEARCHTEXT', payload)
+    },
+    getFavorite (context) {
+      let getlocal = JSON.parse(localStorage.getItem('myFavorite'))
+      if (getlocal !== []) {
+        context.commit('GETFAVORIT', getlocal)
+      }
     },
     sortType (context, payload) {
       if (payload === 'price') {
@@ -79,28 +116,29 @@ export default {
         context.commit('SORTVALUE')
       }
     },
-    addFavor (context, payload) {
-      context.commit('FAVOPRODUCT', payload)
-    },
-    refresh (context) {
-      context.commit('REFRESH')
-    },
-    getDesigner (context, payload) {
-      context.commit('RECENTDESIGNER', payload)
-    },
+    // 產品頁過濾我的最愛商品陣列
     showFavorite ({ commit, dispatch, state }) {
       commit('ISFAVORITE')
       dispatch('getFilterProducts', state.recentCategory)
     },
-    removeCartProduct ({ commit, dispatch }, payload) {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${payload}`
-      commit('LOADING', true)
-      axios.delete(api).then(response => {
-        dispatch('getCart')
-        commit('LOADING', false)
-      })
+    // 從sidebar傳入過濾金額標籤
+    submitFilter ({ dispatch, state }, payload) {
+      dispatch('setPriceType', payload)
+      dispatch('getFilterProducts', state.recentCategory)
     },
-    // 移除過濾標籤
+    setPriceType (context, payload) {
+      context.commit('SETPRICETYPE', payload)
+    },
+    setCheckvalue (context, payload) {
+      context.commit('SETCHECKVALUE', payload)
+    },
+    refreshCheckvalue (context) {
+      context.commit('REFRESHCHECKVALUE')
+    },
+    refreshPriceType (context) {
+      context.commit('REFRESHPRICETYPE')
+    },
+    // 產品頁面移除單一過濾標籤
     removeDesigner ({ commit, dispatch, state }) {
       commit('RECENTDESIGNER', '')
       dispatch('getFilterProducts', state.recentCategory)
@@ -120,15 +158,6 @@ export default {
     removeSearchText ({ commit, dispatch, state }) {
       commit('SEARCHTEXT', '')
       dispatch('getFilterProducts', state.recentCategory)
-    },
-    getSearchText (context, payload) {
-      context.commit('SEARCHTEXT', payload)
-    },
-    getFavorite (context) {
-      let getlocal = JSON.parse(localStorage.getItem('myFavorite'))
-      if (getlocal !== []) {
-        context.commit('GETFAVORIT', getlocal)
-      }
     }
   },
   mutations: {
@@ -197,6 +226,9 @@ export default {
     PAGINATION (state, payload) {
       state.pagination = Object.assign({}, payload)
     },
+    // 判斷帶入的參數為陣列or單一物件
+    // 陣列 => 過濾出我的最愛
+    // 單一物件為 => 新增刪除我的最愛
     FAVOPRODUCT (state, payload) {
       if (JSON.parse(localStorage.getItem('myFavorite')) === null) {
         state.favoProduct = []
@@ -270,6 +302,28 @@ export default {
     GETFAVORIT (state, payload) {
       state.favoProduct = payload
       state.favoNum = payload.length
+    },
+    NEWARRIVAL_PRODUCTS (state, payload) {
+      state.newArrival_products = payload.filter((item) => {
+        return item.origin_price === item.price
+      })
+    },
+    REFRESHCHECKVALUE (state) {
+      if (state.checkvalue !== '') {
+        state.checkvalue = ''
+      }
+    },
+    REFRESHPRICETYPE (state) {
+      if (state.priceType.minprice !== '' && state.priceType.maxprice !== '') {
+        state.priceType.minprice = ''
+        state.priceType.maxprice = ''
+      }
+    },
+    SETCHECKVALUE (state, payload) {
+      state.checkvalue = payload
+    },
+    SETPRICETYPE (state, payload) {
+      state.priceType = payload
     }
   },
   getters: {
@@ -283,6 +337,7 @@ export default {
     searchText: state => state.searchText,
     onsale: state => state.onsale,
     categoryList: state => state.categoryList,
-    designerlist: state => state.designerlist
+    designerlist: state => state.designerlist,
+    newArrival_products: state => state.newArrival_products
   }
 }

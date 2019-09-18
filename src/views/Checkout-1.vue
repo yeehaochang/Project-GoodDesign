@@ -15,7 +15,7 @@
     <!-- 建立訂單 -->
     <div class="row no-gutters mb-4">
       <div class="col-md-7">
-        <div class="text-left bg-second text-first rounded p-2 pl-2">訂單商品列表：</div>
+        <div class="text-left bg-secondary text-primary p-2 pl-2">訂單商品列表：</div>
         <table class="table">
           <tbody>
             <tr class="p-2 border-bottom" v-for="item in cart" :key="item.id">
@@ -25,7 +25,7 @@
               <td>
                 <a
                   href
-                  class="text-first"
+                  class="text-primary"
                   @click.prevent="openProduct(item.product.id)"
                 >{{item.product.title}}</a>
               </td>
@@ -42,7 +42,7 @@
       <!-- 右側表單 -->
       <div class="col-md-5">
         <form class="ml-md-2">
-          <div class="row bg-second m-0 p-4">
+          <div class="row bg-secondary m-0 p-4">
             <div class="form-group col-md-6 mb-2">
               <label for="name">收件人姓名</label>
               <input
@@ -69,7 +69,7 @@
                 v-validate="'required|email'"
                 :class="{'is-invalid':errors.has('email')}"
               />
-              <small class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</small>
+              <small class="text-danger" v-if="errors.has('email')">{{errors.primary('email')}}</small>
             </div>
             <div class="form-group col-12 mb-2">
               <label for="tel">聯絡電話</label>
@@ -244,7 +244,7 @@ export default {
   min-width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: $first;
+  background-color: $primary;
   .progress {
     position: relative;
     top: 5px;
@@ -255,7 +255,7 @@ export default {
     border-radius: 50%;
     background-color: $common;
     span {
-      color: $first;
+      color: $primary;
       font-weight: bold;
       font-size: 20px;
       position: absolute;

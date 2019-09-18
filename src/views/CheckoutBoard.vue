@@ -4,7 +4,7 @@
     <Navbar></Navbar>
     <div class="toparea">
     </div>
-    <div class="container">
+    <div class="container middlearea">
       <router-view></router-view>
     </div>
     <Footer></Footer>
@@ -36,5 +36,7 @@ export default {
     padding-top:100px;
   }
 }
-
+.middlearea {
+  min-height: 666px;
+}
 </style>

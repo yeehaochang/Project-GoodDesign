@@ -13,7 +13,7 @@
         ></Sidebar>
       </div>
       <div class="col-md-9">
-        <div class="bg-second text-first p-2 mx-2">商品列表</div>
+        <div class="bg-secondary text-primary p-2 mx-2">商品列表</div>
         <div class="p-3 d-flex">
           <!-- 過濾標籤 -->
           <span class="border rounded p-2 mx-1" v-if="recentCategory">
@@ -38,7 +38,7 @@
           </span>
           <div class="nav-item dropdown ml-auto">
             <a
-              class="nav-link dropdown-toggle text-first border rounded"
+              class="nav-link dropdown-toggle text-primary border rounded"
               href="#"
               id="navbarDropdownMenuLink"
               role="button"
@@ -55,7 +55,7 @@
           <div class="col" v-if="products.length === 0">目前尚無符合搜尋結果的商品。</div>
           <!-- 商品 -->
           <div
-            class="col-lg-3 col-md-4 col-sm-6 card p-2 border border-shadow"
+            class="col-lg-3 col-md-4 col-sm-6 card p-2 product_card"
             v-for="item in products"
             :key="item.id"
           >
@@ -69,23 +69,58 @@
             <span class="text-left">{{item.description}}</span>
             <span class="text-right">
               <i
-                class="far fa-heart text-first"
-                v-if="item.isFavor != true"
+                class="far fa-heart text-primary"
+                v-if="item.isFavor !== true"
                 @click.prevent="addFavor(item)"
               ></i>
               <i
-                class="fas fa-heart text-first"
+                class="fas fa-heart text-primary"
                 v-if="item.isFavor === true"
                 @click.prevent="addFavor(item)"
               ></i>
             </span>
             <div class="text-left d-flex align-items-end">
-              <div v-if="item.price == item.origin_price">{{item.origin_price|currency}}</div>
+              <strong v-if="item.price == item.origin_price">{{item.origin_price|currency}}</strong>
               <del v-if="item.price !== item.origin_price">{{item.origin_price|currency}}</del>
               <strong class="ml-2" v-if="item.price !== item.origin_price">{{item.price|currency}}</strong>
-              <a href="#" class="text-general ml-auto" @click.prevent="addCart(item.id)">
+              <a href="#" class="text-general ml-auto" @click.prevent="addCartModal(item)">
                 <i class="fas fa-cart-plus fa-2x"></i>
               </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="ProductModal" style="top:250px;" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-common">
+              <h5 class="modal-title" id="exampleModalLabel">{{addCartTemplate.title}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click.prevent="cleanTemplate()">
+                <span class="text-secondary" aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row no-gutters">
+                <div class="col-md-6">
+                  <img :src="addCartTemplate.imageUrl" width="150" height="120">
+                </div>
+                <div class="col-md-6">
+                  <div class="text-left pb-2">類型：{{addCartTemplate.category}}</div>
+                  <div class="text-left pb-2">設計師：{{addCartTemplate.description}}</div>
+                  <div class="input-group">
+                    <select class="custom-select" id="inputGroupSelect01" v-model="addCartTemplate.qty">
+                    <option v-for="item in 10" :key="item">{{item}}</option>
+                  </select>
+                  <span class="p-2">{{addCartTemplate.unit}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <i class="fas fa-circle-notch fa-spin" v-if="isFileLoading"></i>
+              <button type="button" class="btn btn-general" data-dismiss="modal" @click.prevent="cleanTemplate()">取消</button>
+              <button type="button" class="btn btn-primary" @click.prevent="addCart(addCartTemplate)">加入購物車</button>
             </div>
           </div>
         </div>
@@ -99,10 +134,13 @@
 import Sidebar from '../components/Sidebar'
 import Pagination from '../components/Pagination'
 import { mapGetters, mapActions } from 'vuex'
+import $ from 'jquery'
 export default {
   props: ['info'],
   data () {
     return {
+      addCartTemplate: {
+      }
     }
   },
   components: {
@@ -116,7 +154,6 @@ export default {
     },
     // 開啟單一產品頁面
     openProduct (id) {
-      // let params = { title: 'test' }
       this.$router.push({
         path: '/productpage',
         query: { id: id }
@@ -128,16 +165,29 @@ export default {
     },
     getfilter (data) {
       this.$store.dispatch('getfilter', data)
-      this.getFilterProducts(this.recentCategory)
     },
     getDesigner (item) {
       this.$store.dispatch('getDesigner', item)
-      this.getFilterProducts(this.recentCategory)
     },
     // 加入我的最愛
     addFavor (e) {
       this.$store.dispatch('addFavor', e)
       this.$store.dispatch('getFavorite')
+    },
+    addCartModal (item) {
+      $('#ProductModal').modal('show')
+      this.addCartTemplate = Object.assign({}, item)
+      this.$set(this.addCartTemplate, 'qty', 1)
+      this.$store.dispatch('updateModalDisplay', 'block')
+    },
+    addCart (obj) {
+      this.$store.dispatch('addCart', obj)
+      setTimeout(() => {
+        this.addCartTemplate = {}
+      }, 2000)
+    },
+    cleanTemplate () {
+      this.addCartTemplate = {}
     },
     // 將參數值傳到資料上
     sortType (event) {
@@ -149,15 +199,21 @@ export default {
       this.$store.dispatch('getSearchText', text)
       this.getFilterProducts(this.recentCategory)
     },
-    ...mapActions(['removeDesigner', 'removeSearchText', 'removeCategory', 'removeFilter', 'removeSort', 'addCart', 'showFavorite'])
+    ...mapActions(['removeDesigner', 'removeSearchText', 'removeCategory', 'removeFilter', 'removeSort', 'showFavorite'])
+  },
+  // 監聽ModalDisplay關閉購買商品modal
+  watch: {
+    ModalDisplay () {
+      if (this.ModalDisplay === 'none') {
+        $('#ProductModal').modal('hide')
+      }
+    }
   },
   computed: {
     ...mapGetters(['isLoading', 'products', 'products', 'categoryList', 'designerlist', 'recentCategory',
-      'recentDesigner', 'filterdata', 'pagination', 'favoProduct', 'isFavorite', 'sortValue', 'searchText'])
+      'recentDesigner', 'filterdata', 'pagination', 'favoProduct', 'isFavorite', 'sortValue', 'searchText', 'isFileLoading', 'ModalDisplay'])
   },
   created () {
-    this.$bus.$on('getFilterProducts', this.getFilterProducts)
-    this.$bus.$on('getSearchText', this.getSearchText)
     this.getProducts()
   }
 }
@@ -165,18 +221,32 @@ export default {
 
 <style lang="scss" scoped>
 .card-img-top {
+  border-radius: 0;
   max-height: 140px;
   object-fit: cover;
 }
 .card-img-top:hover {
   opacity: 0.5;
 }
+.product_card {
+  border-top:0;
+  border-left:0;
+  box-shadow: 0px 0px 2px $shadow;
+  border-radius: 0;
+}
 strong {
   font-size: 24px;
 }
 .fa-cart-plus,
 .fa-heart {
+  transition: transform 0.1s ease-out;
   font-size: 26px;
+  &:hover{
+    transform: scale(0.9);
+  }
+  &:active {
+    transform: scale(0.9);
+  }
 }
 div,
 a {

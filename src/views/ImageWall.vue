@@ -2,12 +2,12 @@
   <div>
     <div class="mb-2 p-2 bg_wall">
       <div class="py-2">
-        <a href="#" class="btn btn-second text-general" @click.prevent="showMultiple"><strong>點我依序觀看</strong></a>
+        <a href="#" class="btn btn-secondary text-general" @click.prevent="showMultiple"><strong>點我依序觀看</strong></a>
       </div>
 
       <span v-for="item in imgArray" :key="item">
         <a href="#" @click.prevent="showSingle(item)">
-          <img :src="item" alt class="img-fluid border border-second m-1" width="30%" />
+          <img :src="item" alt class="img-fluid border border-secondary m-1" width="30%" />
         </a>
       </span>
     </div>

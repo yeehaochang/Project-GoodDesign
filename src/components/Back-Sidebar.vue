@@ -21,7 +21,7 @@ a {
   color: $general;
 }
 a:focus {
-  background-color: $first;
+  background-color: $primary;
   color: $common;
 }
 </style>

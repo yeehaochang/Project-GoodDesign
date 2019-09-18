@@ -62,7 +62,7 @@ export default {
   min-width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: $first;
+  background-color: $primary;
   .progress {
     position: relative;
     top: 5px;
@@ -73,7 +73,7 @@ export default {
     border-radius: 50%;
     background-color: $common;
     span {
-      color: $first;
+      color: $primary;
       font-weight: bold;
       font-size: 20px;
       position: absolute;

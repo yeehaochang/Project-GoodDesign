@@ -1,25 +1,25 @@
 <template>
   <div>
     <!-- 商品種類 -->
-    <div class="p-1 bg-second text-first">
+    <div class="p-1 bg-secondary text-primary">
       <small>商品分類</small>
     </div>
-    <div class="list-group list-group-horizontal">
+    <div class="list-group list-group-horizontal row no-gutters">
       <a
         href="#"
-        class="list-group-item rounded-0"
+        class="list-group-item col rounded-0"
         v-for="item in categorybar"
         :key="item"
         @click.prevent="chooseCategory(item)"
       >{{item}}</a>
     </div>
-    <a href="#" class="form-check my-2 p-2 border border-first text-first" v-if="!isFavorite" @click.prevent="chooseFavorite">
+    <a href="#" class="form-check my-2 p-2 border border-primary text-primary" v-if="!isFavorite" @click.prevent="chooseFavorite">
       <i class="far fa-heart mr-1"></i><span>顯示我的最愛</span>
     </a>
-    <a href="#" class="form-check my-2 p-2 border border-first text-common bg-first" v-if="isFavorite" @click.prevent="chooseFavorite">
+    <a href="#" class="form-check my-2 p-2 border border-primary text-common bg-primary" v-if="isFavorite" @click.prevent="chooseFavorite">
       <i class="far fa-heart mr-1"></i><span>顯示我的最愛</span>
     </a>
-    <div class="p-1 bg-second text-first">
+    <div class="p-1 bg-secondary text-primary">
       <small>設計師</small>
     </div>
     <div class="list-group">
@@ -32,7 +32,7 @@
       >{{item}}</a>
     </div>
     <!-- 價格篩選 -->
-    <div class="p-1 bg-second text-first mt-2">
+    <div class="p-1 bg-secondary text-primary mt-2">
       <small>價格篩選</small>
     </div>
     <div class="p-2">
@@ -44,7 +44,7 @@
             name="exampleRadios"
             id="exampleRadios1"
             value="0"
-            v-model="checkvalue"
+            v-model="checkvalueTemplate"
             checked
             @change="refreshPriceType"
           />
@@ -59,7 +59,7 @@
             type="radio"
             name="exampleRadios"
             id="exampleRadios2"
-            v-model="checkvalue"
+            v-model="checkvalueTemplate"
             value="1"
             @change="refreshPriceType"
           />
@@ -71,7 +71,7 @@
             type="radio"
             name="exampleRadios"
             id="exampleRadios3"
-            v-model="checkvalue"
+            v-model="checkvalueTemplate"
             value="2"
             @change="refreshPriceType"
           />
@@ -84,7 +84,7 @@
             <label for="min_price" class="">起始金額</label>
             <input
               type="number"
-              v-model="priceType.minprice"
+              v-model="priceTypeTemplate.minprice"
               @change="refreshCheckvalue"
               class="form-control"
               id="min_price"
@@ -92,37 +92,38 @@
               name="minprice"
               placeholder
             />
-            <small class="text-danger" v-if="errors.has('minprice') && checkvalue === ''">欄位不得為空</small>
+            <!-- <small class="text-danger" v-if="errors.has('minprice') && checkvalue === ''">欄位不得為空</small> -->
           </div>
             <div class="form-group col-6 col-md-12 text-left">
             <label for="max_price">最高金額</label>
             <input
               type="number"
               class="form-control"
-              v-model="priceType.maxprice"
+              v-model="priceTypeTemplate.maxprice"
               @change="refreshCheckvalue"
               id="max_price"
               v-validate="'required'"
               name="maxprice"
               placeholder
             />
-            <small class="text-danger" v-if="errors.has('maxprice') && checkvalue === ''">欄位不得為空</small>
+            <!-- <small class="text-danger" v-if="errors.has('maxprice') && checkvalue === ''">欄位不得為空</small> -->
           </div>
           </div>
         </div>
-        <button class="btn btn-general" @click.prevent="chooseFilter">送出</button>
+        <button class="btn btn-general" @click.prevent="submitFilter">送出</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   props: ['categorybar', 'designerbar'],
   data () {
     return {
-      checkvalue: {},
-      priceType: {
+      checkvalueTemplate: '',
+      priceTypeTemplate: {
         minprice: '',
         maxprice: ''
       },
@@ -135,53 +136,59 @@ export default {
       this.$emit('recentFavorite')
     },
     chooseCategory (item) {
-      this.$emit('recentCategory', item)
+      // this.$emit('recentCategory', item)
+      this.$store.dispatch('getFilterProducts', item)
     },
     chooseDesigner (item) {
-      this.$emit('recentDesigner', item)
+      // this.$emit('recentDesigner', item)
+      this.$store.dispatch('getDesigner', item)
     },
-    chooseFilter () {
-      this.checkType()
-      if (this.priceType.minprice === '' || this.priceType.maxprice === '') {
-        this.$bus.$emit('message:push', '金額欄位不得為空', 'mistake')
-      } else {
-        if (parseInt(this.priceType.maxprice) >= parseInt(this.priceType.minprice)) {
-          this.$emit('recentfilter', this.priceType)
-        } else {
-          this.$bus.$emit('message:push', '最高金額不得低於起始金額', 'mistake')
-        }
+    submitFilter () {
+      let valueSwitchType = {
+        minprice: '',
+        maxprice: ''
       }
-    },
-    checkType () {
-      switch (this.checkvalue) {
-        case '0':
-          this.priceType.minprice = 0
-          this.priceType.maxprice = 500
-          break
-        case '1':
-          this.priceType.minprice = 500
-          this.priceType.maxprice = 1000
-          break
-        case '2':
-          this.priceType.minprice = 1000
-          this.priceType.maxprice = 10000
-          break
+      if (this.checkvalueTemplate === '0') {
+        valueSwitchType.minprice = 0
+        valueSwitchType.maxprice = 500
+        this.$store.dispatch('getfilter', valueSwitchType)
+      } else if (this.checkvalueTemplate === '1') {
+        valueSwitchType.minprice = 500
+        valueSwitchType.maxprice = 1000
+        this.$store.dispatch('getfilter', valueSwitchType)
+      } else if (this.checkvalueTemplate === '2') {
+        valueSwitchType.minprice = 1000
+        valueSwitchType.maxprice = 10000
+        this.$store.dispatch('getfilter', valueSwitchType)
+      } else {
+        if (this.priceTypeTemplate.minprice === '' || this.priceTypeTemplate.maxprice === '') {
+          this.$store.dispatch('updateMessage', { message: '金額欄位不得為空', status: 'mistake' })
+        } else {
+          if (parseInt(this.priceTypeTemplate.maxprice) >= parseInt(this.priceTypeTemplate.minprice)) {
+            this.$store.dispatch('getfilter', this.priceTypeTemplate)
+          } else {
+            this.$store.dispatch('updateMessage', { message: '最高金額不得低於起始金額', status: 'mistake' })
+          }
+        }
+        console.log(valueSwitchType)
       }
     },
     refreshCheckvalue () {
-      if (this.checkvalue !== '') {
-        this.checkvalue = ''
-      }
+      this.checkvalueTemplate = ''
     },
     refreshPriceType () {
-      if (this.priceType.minprice !== '' && this.priceType.maxprice !== '') {
-        this.priceType.minprice = ''
-        this.priceType.maxprice = ''
+      this.priceTypeTemplate = {
+        minprice: '',
+        maxprice: ''
       }
     }
   },
   created () {
-    this.checkType()
+    this.checkvalueTemplate = ''
+    this.priceTypeTemplate = {
+      minprice: '',
+      maxprice: ''
+    }
   }
 }
 </script>
@@ -201,10 +208,10 @@ a {
   }
 }
 .list-group-item {
+  transition: transform 0.1s ease-out;
   color:$general;
-  &:focus {
-    background-color:$second;
-    color: $first;
+  &:active {
+    transform: scale(0.9);
   }
 }
 </style>

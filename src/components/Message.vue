@@ -2,7 +2,7 @@
   <div>
     <a
       href="#"
-      class="message-button text-common rounded"
+      class="message-button text-common"
       data-toggle="modal"
       data-target="#feedbackModal"
       @click.prevent="showMessage"
@@ -13,24 +13,24 @@
       <strong>您對網站的評價為何?</strong>
       <div class="message-body">
         <div class="d-flex align-items-center justify-content-between">
-          <a id="20" @mouseover="selectScore" @mouseout="outScore" @click.prevent="Score" :class="{'fa-2x':ScoreType === '20'}">
-            <i class="far fa-meh-rolling-eyes fa-2x text-first"></i>
+          <a id="20" @mouseover="selectScore" @mouseout="outScore" @click.prevent="giveScore" :class="{'fa-2x':ScoreType === '20'}">
+            <i class="far fa-meh-rolling-eyes fa-2x text-primary"></i>
             <small class="d-none scoretext" :class="{'d-block':ScoreType === '20'}">糟糕</small>
           </a>
-          <a id="40" @mouseover="selectScore" @mouseout="outScore" @click.prevent="Score" :class="{'fa-2x':ScoreType === '40'}">
-            <i class="far fa-sad-tear fa-2x text-first"></i>
+          <a id="40" @mouseover="selectScore" @mouseout="outScore" @click.prevent="giveScore" :class="{'fa-2x':ScoreType === '40'}">
+            <i class="far fa-sad-tear fa-2x text-primary"></i>
             <small class="d-none scoretext" :class="{'d-block':ScoreType === '40'}">差</small>
           </a>
-          <a id="60" @mouseover="selectScore" @mouseout="outScore" @click.prevent="Score" :class="{'fa-2x':ScoreType === '60'}">
-            <i class="far fa-meh fa-2x text-first"></i>
+          <a id="60" @mouseover="selectScore" @mouseout="outScore" @click.prevent="giveScore" :class="{'fa-2x':ScoreType === '60'}">
+            <i class="far fa-meh fa-2x text-primary"></i>
             <small class="d-none scoretext" :class="{'d-block':ScoreType === '60'}">普通</small>
           </a>
-          <a id="80" @mouseover="selectScore" @mouseout="outScore" @click.prevent="Score" :class="{'fa-2x':ScoreType === '80'}">
-            <i class="far fa-smile-beam fa-2x text-first"></i>
+          <a id="80" @mouseover="selectScore" @mouseout="outScore" @click.prevent="giveScore" :class="{'fa-2x':ScoreType === '80'}">
+            <i class="far fa-smile-beam fa-2x text-primary"></i>
             <small class="d-none scoretext" :class="{'d-block':ScoreType === '80'}">還不賴</small>
           </a>
-          <a id="100" @mouseover="selectScore" @mouseout="outScore" @click.prevent="Score" :class="{'fa-2x':ScoreType === '100'}">
-            <i class="far fa-grin-squint fa-2x text-first"></i>
+          <a id="100" @mouseover="selectScore" @mouseout="outScore" @click.prevent="giveScore" :class="{'fa-2x':ScoreType === '100'}">
+            <i class="far fa-grin-squint fa-2x text-primary"></i>
             <small class="d-none scoretext" :class="{'d-block':ScoreType === '100'}">太棒了</small>
           </a>
         </div>
@@ -54,7 +54,6 @@ export default {
   methods: {
     showMessage () {
       $('#message').toggleClass('fadeIn')
-      // $('.message-body').fadeToggle(200);
       $('.message-footer').hide()
     },
     selectScore (event) {
@@ -76,7 +75,7 @@ export default {
         .removeClass('opacity')
       $('#' + e).children('.scoretext').addClass('d-none')
     },
-    Score (event) {
+    giveScore (event) {
       let e = event.currentTarget.id
       this.ScoreType = e
       console.log(e)
@@ -116,7 +115,7 @@ export default {
   z-index: 10;
 }
 .message-button {
-  background-color:$first;
+  background-color:$primary;
   color:$common;
   position: fixed;
   padding: 12px;

@@ -6,7 +6,9 @@
       <Navbar></Navbar>
       <div class="toparea">
       </div>
-      <router-view></router-view>
+      <div class="middlearea">
+        <router-view></router-view>
+      </div>
       <Footer></Footer>
     </div>
   </div>
@@ -22,18 +24,6 @@ export default {
   name: 'customboard',
   data () {
     return {
-      searchText: ''
-    }
-  },
-  methods: {
-    goSearch (text) {
-      this.$router.push({
-        path: '/products',
-        query: {
-          t: text
-        }
-      })
-      this.$bus.$emit('getSearchText', text)
     }
   },
   components: {
@@ -60,5 +50,8 @@ td {
   @media (max-width: 575px) {
     padding-top:100px;
   }
+}
+.middlearea {
+  min-height: 666px;
 }
 </style>

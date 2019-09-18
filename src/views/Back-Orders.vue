@@ -186,7 +186,7 @@
             <button type="button" class="btn btn-general" data-dismiss="modal">取消</button>
             <button
               type="button"
-              class="btn btn-main"
+              class="btn btn-primary"
               @click.prevent="updateCheck(tempCheck.id)"
             >確認送出</button>
           </div>

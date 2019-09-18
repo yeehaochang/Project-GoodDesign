@@ -26,7 +26,7 @@
         <!-- 商品資訊 -->
         <div class="form-row">
           <div class="form-group col-md-6">
-            <div class=" p-2 bg-second text-first">
+            <div class=" p-2 bg-secondary text-primary">
               <strong>商品資訊</strong>
             </div>
             <div class="form-row p-3">
@@ -45,7 +45,7 @@
                 <label for="total">訂單總金額</label>
                 <div class="form-control text-right disabled">{{recentOrder.total|currency}}</div>
               </div>
-              <div class="form-group  text-left">
+              <div class="form-group col text-left">
                 <label for="message">訂單備註</label>
                 <input
                   type="text"
@@ -56,7 +56,7 @@
                   disabled
                 />
               </div>
-              <div class="form-group  text-left">
+              <div class="form-group text-left">
                 <label for="total">商品預覽：</label>
                 <div class="row no-gutters">
                   <div
@@ -80,7 +80,7 @@
           <!-- 買家資訊 -->
 
           <div class="form-group col-md-6">
-            <div class="p-2 bg-second text-first">
+            <div class="p-2 bg-secondary text-primary">
               <strong>訂購人資料</strong>
             </div>
             <div class="form-row p-3">
@@ -205,7 +205,7 @@ export default {
   min-width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: $first;
+  background-color: $primary;
   .progress {
     position: relative;
     top: 5px;
@@ -216,7 +216,7 @@ export default {
     border-radius: 50%;
     background-color: $common;
     span {
-      color: $first;
+      color: $primary;
       font-weight: bold;
       font-size: 20px;
       position: absolute;

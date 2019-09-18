@@ -7,10 +7,10 @@
     <!-- swiper 主要產品區塊 -->
     <div class="container newArrival">
       <div class="text-center p-3">
-        <span class="px-3 py-2 text-first bg-second rounded">New Arrival</span>
+        <span class="px-3 py-2 text-primary bg-secondary">New Arrival</span>
       </div>
       <swiper :options="swiperAllProducts" class="swiper-container-2">
-        <swiper-slide v-for="item in origin_products" :key="item.id">
+        <swiper-slide v-for="item in newArrival_products" :key="item.id">
           <a href="#" @click.prevent="openProduct(item.id)">
             <img :src="item.imageUrl" alt class="card-img-top img-fluid" style="min-height:150px;" />
           </a>
@@ -36,15 +36,12 @@
             <a
               href="#"
               class="text-general text-right  col-md-6 pr-1"
-              @click.prevent="addCart(item.id)"
+              @click.prevent="addCartModal(item)"
             >
               <i class="fas fa-cart-plus"></i>
             </a>
           </div>
         </swiper-slide>
-        <!-- <div class="swiper-pagination" slot="pagination"></div> -->
-        <!-- <div class="swiper-button-next" slot="button-prev"></div>
-        <div class="swiper-button-prev" slot="button-next"></div> -->
     </swiper>
     </div>
     <!-- swiper banner圖片區塊 -->
@@ -56,11 +53,10 @@
       <div class="swiper-button-prev" slot="button-next"></div>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
-    <!--  -->
     <!-- swiper更多優惠區塊 -->
     <div class="onsale container">
       <div class="text-center p-3">
-        <span class="px-3 py-2 text-first bg-second rounded">On Sale</span>
+        <span class="px-3 py-2 text-primary bg-secondary">On Sale</span>
       </div>
       <swiper :options="swiperOnSale" class="swiper-container-2">
         <swiper-slide v-for="item in onsale" :key="item.id">
@@ -97,7 +93,7 @@
             <a
               href="#"
               class="text-general text-right  col-lg-4 pr-1"
-              @click.prevent="addCart(item.id)"
+              @click.prevent="addCartModal(item)"
             >
               <i class="fas fa-cart-plus"></i>
             </a>
@@ -108,10 +104,10 @@
       </swiper>
     </div>
     <!-- 提領優惠 -->
-    <div class="bg-second py-4 px-2 rounded">
+    <div class="bg-secondary py-4 px-2 rounded">
         <strong class="text-general coupon_pop_1">What !! </strong>
         <strong class="text-general coupon_pop_2">拿到 Gooddesign 新開幕折扣竟然只需要幾秒鐘 !!</strong>
-        <a href="#" class="bg-first m-2 p-2 text-second rounded-pill coupon_pop_3" @click.prevent="getCoupon">click here</a>
+        <a href="#" class="bg-primary m-2 p-2 text-secondary rounded-pill coupon_pop_3" @click.prevent="getCoupon">click here</a>
     </div>
     <!-- 特色介紹區塊 -->
     <div class="row no-gutters aboutus">
@@ -124,13 +120,13 @@
       </div>
     </div>
     <div class="border-bottom"></div>
-    <!-- Modal -->
+    <!-- 優惠券Modal -->
     <div class="modal fade" id="getCoupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-first text-common">
+          <div class="modal-header bg-primary text-common">
             <h5 class="modal-title" id="exampleModalCenterTitle">恭喜你獲得本周優惠</h5>
-            <button type="button" class="close text-second" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -151,11 +147,46 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-general" data-dismiss="modal">關閉</button>
-            <router-link class="btn btn-first" to="/products" data-dismiss="modal">購物去</router-link>
+            <router-link class="btn btn-primary" to="/products" data-dismiss="modal">購物去</router-link>
           </div>
         </div>
       </div>
     </div>
+    <!-- 加入購物車Modal -->
+      <div class="modal fade" :class="{'show':isFileLoading}" id="ProductModal" style="top:250px;" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-common">
+              <h5 class="modal-title" id="exampleModalLabel">{{addCartTemplate.title}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click.prevent="cleanTemplate()">
+                <span class="text-secondary" aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row no-gutters">
+                <div class="col-md-6">
+                  <img :src="addCartTemplate.imageUrl" width="150" height="120">
+                </div>
+                <div class="col-md-6">
+                  <div class="text-left pb-2">類型：{{addCartTemplate.category}}</div>
+                  <div class="text-left pb-2">設計師：{{addCartTemplate.description}}</div>
+                  <div class="input-group">
+                    <select class="custom-select" id="inputGroupSelect01" v-model="addCartTemplate.qty">
+                    <option v-for="item in 10" :key="item">{{item}}</option>
+                  </select>
+                  <span class="p-2">{{addCartTemplate.unit}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <i class="fas fa-circle-notch fa-spin" v-if="isFileLoading"></i>
+              <button type="button" class="btn btn-general" data-dismiss="modal" @click.prevent="cleanTemplate()">取消</button>
+              <button type="button" class="btn btn-primary" @click.prevent="addCart(addCartTemplate)">加入購物車</button>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -234,21 +265,21 @@ export default {
           url: require('../assets/img-1.png'),
           title: '集結世界各地好設計',
           content:
-            'Gathering good designers everywhere in the world,includes so many kinds of art and handmade culture.',
+            '從來自世界各地願意合作的設計師分享，匯集在一起提供給每一位顧客',
           key: 'card-1'
         },
         {
           url: require('../assets/img-2.png'),
           title: '富含創意的高品質設計',
           content:
-            'After our team review and choice , we do our best to give what you guys deserve the good design.',
+            '透過顧客使用心得透明化，提供消費者更明確的資訊做參考，透過良性競爭間接提高商品品質',
           key: 'card-2'
         },
         {
           url: require('../assets/img-3.png'),
           title: '設計師與顧客的保障',
           content:
-            'Be a good bridge between designer and customers,good buy for good life.',
+            '明確制定完整的消費準則，避免不必要的時間花費及遺漏資訊，更保障設計師與顧客的權益',
           key: 'card-3'
         }
       ],
@@ -306,7 +337,8 @@ export default {
         }
       },
       fullWidth: 0,
-      fullHeight: 0
+      fullHeight: 0,
+      addCartTemplate: {}
     }
   },
   components: {
@@ -346,6 +378,7 @@ export default {
       vm.$http.post(api).then(response => {
         if (response.data.success) {
           $('#getCoupon').modal('show')
+          this.showModal = true
         } else {
           this.$store.dispatch('updateMessage', { message: response.data.message, status: 'mistake' })
         }
@@ -361,16 +394,36 @@ export default {
       })
       console.log(routerPush)
     },
-    addCart (id) {
-      this.$store.dispatch('addCart', id)
+    addCart (item) {
+      this.$store.dispatch('addCart', item)
+      setTimeout(() => {
+        this.addCartTemplate = {}
+      }, 2000)
+    },
+    addCartModal (item) {
+      $('#ProductModal').modal('show')
+      this.addCartTemplate = Object.assign({}, item)
+      this.$set(this.addCartTemplate, 'qty', 1)
+      this.$store.dispatch('updateModalDisplay', 'block')
+    },
+    cleanTemplate () {
+      this.addCartTemplate = {}
     },
     addFavor (e) {
       this.$store.dispatch('addFavor', e)
     }
   },
+  // 監聽ModalDisplay關閉購買商品modal
+  watch: {
+    ModalDisplay () {
+      if (this.ModalDisplay === 'none') {
+        $('#ProductModal').modal('hide')
+      }
+    }
+  },
   computed: {
     ...mapGetters(['onsale', 'favoProduct', 'products', 'isLoading',
-      'coupopforcustom', 'origin_products'])
+      'coupopforcustom', 'newArrival_products', 'isFileLoading', 'ModalDisplay'])
   },
   created () {
     this.$store.dispatch('refresh')
@@ -391,7 +444,14 @@ strong {
 }
 .fa-cart-plus,
 .fa-heart {
+  transition: transform 0.1s ease-out;
   font-size: 26px;
+  &:hover{
+    transform: scale(0.9);
+  }
+  &:active {
+    transform: scale(0.9);
+  }
 }
 .aboutus {
   padding:20px;
@@ -472,6 +532,7 @@ strong {
 // card
 
 .card-img-top {
+  border-radius: 0;
   max-height: 130px;
   object-fit: cover;
 }
@@ -496,10 +557,7 @@ strong {
 .coupon_pop_1 ,.coupon_pop_2,.coupon_pop_3{
   @include couponpop;
 }
-// .easeOut {
-//   opacity: 1;
-//   transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-// }
+
 // animated
 .animated {
   opacity: 0;

@@ -126,7 +126,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-general" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-main" @click.prevent="updateEdit">儲存修改</button>
+            <button type="button" class="btn btn-primary" @click.prevent="updateEdit">儲存修改</button>
           </div>
         </div>
       </div>

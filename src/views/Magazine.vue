@@ -8,8 +8,8 @@
         @click.prevent="goSlide"
       >2019 限塑新政策！</a>
       <a href="3" class="scoll-top text-general rounded p-1 m-2" @click.prevent="goSlide">單身又怎樣？</a>
-      <small class="mt-3 text-first">
-        <i class="fas fa-mouse-pointer mr-1"></i>點擊他們來導航
+      <small class="mt-3 text-secondary">
+        <i class="fas fa-mouse-pointer mr-1"></i>點擊為您導航
       </small>
     </div>
     <!-- 1 -->

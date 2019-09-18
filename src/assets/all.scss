@@ -1,21 +1,21 @@
-@import '../../node_modules/bootstrap/scss/functions';
-@import './helpers/variables';
+@import "../../node_modules/bootstrap/scss/functions";
+@import "./helpers/variables";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 // @import '../../node_modules/bootstrap/scss/mixins';
 
- // 漸層函式
-  @mixin blue-gradual() {
-    background: -webkit-linear-gradient(left, $first, #10567b);
-    background: -o-linear-gradient(right, $first, #10567b);
-    background: -moz-linear-gradient(right, $first, #10567b);
-    background: linear-gradient(to right, $first, #10567b);
-  }
-  @mixin red-gradual() {
-    background: -webkit-linear-gradient(left, #ff5511, $red);
-    background: -o-linear-gradient(right, #ff5511, $red);
-    background: -moz-linear-gradient(right, #ff5511, $red);
-    background: linear-gradient(to right, #ff5511, $red);
-  }
+// 漸層函式
+@mixin blue-gradual() {
+  background: -webkit-linear-gradient(left, $first, #10567b);
+  background: -o-linear-gradient(right, $first, #10567b);
+  background: -moz-linear-gradient(right, $first, #10567b);
+  background: linear-gradient(to right, $first, #10567b);
+}
+@mixin red-gradual() {
+  background: -webkit-linear-gradient(left, #ff5511, $red);
+  background: -o-linear-gradient(right, #ff5511, $red);
+  background: -moz-linear-gradient(right, #ff5511, $red);
+  background: linear-gradient(to right, #ff5511, $red);
+}
 body {
   .btn:focus,
   .form-control:focus,
@@ -28,23 +28,65 @@ body {
     outline: none;
     box-shadow: none;
   }
-.page-item.active {
-  background-color: $first;
-  border:$first;
-  color:$common;
-  .page-link{
+  .page-item.active {
     background-color: $first;
-    border:$first;
-    color:$common;
+    border: $first;
+    color: $common;
+    .page-link {
+      background-color: $first;
+      border: $first;
+      color: $common;
+    }
   }
-}
-.page-item,.page-link{
-  color:$first;
-  &:hover{
-    background-color:$second
+  .page-item,
+  .page-link {
+    color: $first;
+    &:hover {
+      background-color: $second;
+    }
   }
-}
 
+  @keyframes bounceIn {
+    from,
+    20%,
+    40%,
+    60%,
+    80%,
+    to {
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    0% {
+      opacity: 0;
+      transform: scale3d(0.3, 0.3, 0.3);
+    }
+
+    20% {
+      transform: scale3d(1.1, 1.1, 1.1);
+    }
+
+    40% {
+      transform: scale3d(0.9, 0.9, 0.9);
+    }
+
+    60% {
+      opacity: 1;
+      transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    80% {
+      transform: scale3d(0.97, 0.97, 0.97);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale3d(1, 1, 1);
+    }
+  }
+  .bounceIn {
+    animation-duration: 0.75s;
+    animation-name: bounceIn;
+  }
 
   // background-color: $main;
   // font-family:
@@ -69,4 +111,22 @@ body {
       // scale 為控制大小
     }
   }
+  // @keyframes pulse {
+  //   from {
+  //     transform: scale3d(1, 1, 1);
+  //   }
+
+  //   50% {
+  //     transform: scale3d(1.05, 1.05, 1.05);
+  //   }
+
+  //   to {
+  //     transform: scale3d(1, 1, 1);
+  //   }
+  // }
+
+  // .pulse {
+  //   animation-duration: 0.75s;
+  //   animation-name: pulse;
+  // }
 }

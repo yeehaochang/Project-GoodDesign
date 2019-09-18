@@ -3,7 +3,7 @@
     <loading :active.sync="isLoading"></loading>
     <nav class="nav justify-content-center">
       <a
-        class="nav-link ml-auto text-first h4"
+        class="nav-link ml-auto text-primary h4"
         href="#"
         data-toggle="modal"
         data-target="#addProduct"
@@ -11,7 +11,7 @@
       >新增商品</a>
     </nav>
     <table class="table">
-      <thead>
+      <thead>s
         <tr class="thead-dark">
           <th width="50"></th>
           <th class="d-none d-md-block pt-5">圖片</th>
@@ -224,7 +224,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-general" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-first" @click.prevent="updateEdit">確認送出</button>
+            <button type="button" class="btn btn-primary" @click.prevent="updateEdit">確認送出</button>
           </div>
         </div>
       </div>

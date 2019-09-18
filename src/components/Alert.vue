@@ -43,9 +43,9 @@ export default {
     // 自定義名稱 'messsage:push'
     // message: 傳入參數
     // status: 樣式，預設值為 warning
-    this.$bus.$on('message:push', (message, status = 'warning') => {
-      this.updateMessage(message, status)
-    })
+    // this.$bus.$on('message:push', (message, status = 'warning') => {
+    //   this.updateMessage(message, status)
+    // })
     // vm.$bus.$emit('message:push');
   }
 }

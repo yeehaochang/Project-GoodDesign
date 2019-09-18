@@ -36,12 +36,12 @@
               <span class="h2">{{product.title}}</span>
 
               <i
-                class="far fa-heart ml-1 fa-2x text-first"
+                class="far fa-heart ml-1 fa-2x text-primary"
                 v-if="product.isFavor != true"
                 @click.prevent="addFavor()"
               ></i>
               <i
-                class="fas fa-heart ml-1 fa-2x text-first"
+                class="fas fa-heart ml-1 fa-2x text-primary"
                 v-if="product.isFavor === true"
                 @click.prevent="addFavor()"
               ></i>
@@ -70,7 +70,7 @@
                 <div class="p-2 text-left">小計：{{total|currency}}</div>
               </div>
               <div class="col-md-6">
-                <a href="#" class="p-2 btn btn-first d-block" @click.prevent="addCart">
+                <a href="#" class="p-2 btn btn-primary d-block" @click.prevent="addCart">
                   <span>加入購物車</span>
                 </a>
               </div>
@@ -120,7 +120,7 @@ export default {
       })
     },
     addCart () {
-      this.$store.dispatch('addCart', this.product.id)
+      this.$store.dispatch('addCart', { id: this.product.id, qty: this.product.qty })
     },
     gettotal () {
       this.total = parseInt(this.product.qty) * parseInt(this.product.price)

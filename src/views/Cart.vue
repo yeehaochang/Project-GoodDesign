@@ -12,7 +12,7 @@
     <div class="pb-2">
       <div class="row no-gutters">
         <div class="col-md-8">
-          <div class="text-left bg-second text-first border-second rounded p-2 pl-2">訂單商品列表：</div>
+          <div class="text-left bg-secondary text-primary border-secondary p-2 pl-2">訂單商品列表：</div>
           <span v-if="cart.length === 0">目前尚無任何商品</span>
           <table class="table">
             <tbody>
@@ -27,7 +27,7 @@
                 <td>
                   <a
                     href
-                    class="text-first"
+                    class="text-primary"
                     @click.prevent="openProduct(item.product.id)"
                   >{{item.product.title}}</a>
                 </td>
@@ -36,7 +36,7 @@
                 </td>
                 <td class="text-right px-0">{{item.total|currency}}</td>
                 <td>
-                  <button type="button" class="close" @click.prevent="removeCartProduct(item.id)">
+                  <button type="button" class="close" @click.prevent="removeCartProduct(item)">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </td>
@@ -46,8 +46,8 @@
         </div>
 
         <div class="col-md-4">
-          <div class="card ml-md-2">
-            <h5 class="card-header bg-second text-first">訂單摘要</h5>
+          <div class="card rounded-0 ml-md-2">
+            <h5 class="card-header bg-secondary text-primary">訂單摘要</h5>
             <div class="card-body">
               <table class="w-100">
                 <tbody>
@@ -87,8 +87,8 @@ export default {
     getCart () {
       this.$store.dispatch('getCart')
     },
-    removeCartProduct (id) {
-      this.$store.dispatch('removeCartProduct', id)
+    removeCartProduct (item) {
+      this.$store.dispatch('removeCartProduct', item)
     },
     openProduct (id) {
       let routerPush = this.$router.resolve({
