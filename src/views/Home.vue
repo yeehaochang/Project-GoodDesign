@@ -16,7 +16,7 @@
           </a>
           <div class="title">{{item.title}}</div>
           <div class="text-left d-none d-md-block">{{item.description}}</div>
-          <div class="text-right">
+          <div class="text-right heartSpan">
             <i
               class="far fa-heart mr-1"
               v-if="item.isFavor != true"
@@ -65,7 +65,7 @@
           </a>
           <div class="title">{{item.title}}</div>
           <div class="text-left d-none d-md-block">{{item.description}}</div>
-          <div class="text-right">
+          <div class="text-right heartSpan">
             <i
               class="far fa-heart mr-1"
               v-if="item.isFavor != true"
@@ -587,5 +587,7 @@ strong {
     font-size: 30px;
   }
 }
-
+.heartSpan {
+  height: 30px;
+}
 </style>

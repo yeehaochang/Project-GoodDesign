@@ -67,7 +67,7 @@
               <a href="#" class="text-general" @click.prevent="openProduct(item.id)">{{item.title}}</a>
             </div>
             <span class="text-left">{{item.description}}</span>
-            <span class="text-right">
+            <span class="text-right heartSpan">
               <i
                 class="far fa-heart text-primary"
                 v-if="item.isFavor !== true"
@@ -255,5 +255,8 @@ a {
 .cardshadow {
   border: none;
   box-shadow: 1px 1px 2px $shadow;
+}
+.heartSpan {
+  height: 30px;
 }
 </style>
