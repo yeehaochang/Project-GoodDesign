@@ -22,7 +22,7 @@ export default new Vuex.Store({
     ModalDisplay: '',
     // cart&checkout
     cart: [],
-    cartNum: '',
+    cartNum: 0,
     getTotal: '',
     final_price: '',
     // 後台

@@ -5,9 +5,9 @@
     </div>
     <loading :active.sync="isLoading"></loading>
     <!-- swiper 主要產品區塊 -->
-    <div class="container newArrival">
+    <div class="container newArrival p-md-0">
       <div class="text-center p-3">
-        <span class="px-3 py-2 text-primary bg-secondary">New Arrival</span>
+        <strong class="px-3 py-2 text-primary bg-secondary">New Arrival</strong>
       </div>
       <swiper :options="swiperAllProducts" class="swiper-container-2">
         <swiper-slide v-for="item in newArrival_products" :key="item.id">
@@ -15,27 +15,34 @@
             <img :src="item.imageUrl" alt class="card-img-top img-fluid" style="min-height:150px;" />
           </a>
           <div class="title">{{item.title}}</div>
-          <div class="text-left d-none d-md-block">{{item.description}}</div>
+          <div class="text-left ">{{item.description}}</div>
           <div class="text-right heartSpan">
             <i
-              class="far fa-heart mr-1"
+              class="far fa-heart mr-1 text-primary"
               v-if="item.isFavor != true"
               @click.prevent="addFavor(item)"
             ></i>
             <i
-              class="fas fa-heart mr-1"
+              class="fas fa-heart mr-1 text-primary"
               v-if="item.isFavor === true"
               @click.prevent="addFavor(item)"
             ></i>
           </div>
-          <div class="row text-left no-gutters">
+          <div class="d-flex">
             <strong
-              class=" col-md-6"
+              class="mr-auto"
               v-if="item.price == item.origin_price"
             >{{item.origin_price|currency}}</strong>
             <a
               href="#"
-              class="text-general text-right  col-md-6 pr-1"
+              class="text-general d-md-none pr-1"
+              @click.prevent="addCartModal(item)"
+            >
+              <i class="fas fa-cart-plus"></i>
+            </a>
+            <a
+              href="#"
+              class="text-general text-right d-none d-md-inline col-md-6 pr-1"
               @click.prevent="addCartModal(item)"
             >
               <i class="fas fa-cart-plus"></i>
@@ -44,6 +51,8 @@
         </swiper-slide>
     </swiper>
     </div>
+    <div class="container">
+    </div>
     <!-- swiper banner圖片區塊 -->
     <swiper :options="swiperBanner" class="container p-0">
       <swiper-slide v-for="item in SwiperImgs" :key="item.key" >
@@ -51,12 +60,12 @@
       </swiper-slide>
       <div class="swiper-button-next" slot="button-prev"></div>
       <div class="swiper-button-prev" slot="button-next"></div>
-      <div class="swiper-pagination" slot="pagination"></div>
+      <!-- <div class="swiper-pagination" slot="pagination"></div> -->
     </swiper>
     <!-- swiper更多優惠區塊 -->
-    <div class="onsale container">
+    <div class="onsale container p-md-0">
       <div class="text-center p-3">
-        <span class="px-3 py-2 text-primary bg-secondary">On Sale</span>
+        <strong class="px-3 py-2 text-primary bg-secondary">On Sale</strong>
       </div>
       <swiper :options="swiperOnSale" class="swiper-container-2">
         <swiper-slide v-for="item in onsale" :key="item.id">
@@ -67,55 +76,55 @@
           <div class="text-left d-none d-md-block">{{item.description}}</div>
           <div class="text-right heartSpan">
             <i
-              class="far fa-heart mr-1"
+              class="far fa-heart mr-1 text-primary"
               v-if="item.isFavor != true"
               @click.prevent="addFavor(item)"
             ></i>
             <i
-              class="fas fa-heart mr-1"
+              class="fas fa-heart mr-1 text-primary"
               v-if="item.isFavor === true"
               @click.prevent="addFavor(item)"
             ></i>
           </div>
-          <div class="row text-left no-gutters">
+          <div class="d-flex align-items-end">
             <div
-              class=" col-md-6 col-lg-4"
+              class=""
               v-if="item.price == item.origin_price"
             >{{item.origin_price|currency}}</div>
             <del
-              class=" col-md-6 col-lg-4"
+              class=" "
               v-if="item.price !== item.origin_price"
             >{{item.origin_price|currency}}</del>
             <strong
-              class=" col-md-6 col-lg-4"
+              class="mr-auto ml-2"
               v-if="item.price !== item.origin_price"
             >{{item.price|currency}}</strong>
             <a
               href="#"
-              class="text-general text-right  col-lg-4 pr-1"
+              class="text-general pr-1"
               @click.prevent="addCartModal(item)"
             >
               <i class="fas fa-cart-plus"></i>
             </a>
           </div>
         </swiper-slide>
-        <div class="swiper-button-next" slot="button-prev"></div>
-        <div class="swiper-button-prev" slot="button-next"></div>
+        <div class="swiper-button-next swiper-button-next-2" slot="button-prev"></div>
+        <div class="swiper-button-prev swiper-button-prev-2" slot="button-next"></div>
       </swiper>
     </div>
     <!-- 提領優惠 -->
     <div class="bg-secondary py-4 px-2 rounded">
-        <strong class="text-general coupon_pop_1">What !! </strong>
-        <strong class="text-general coupon_pop_2">拿到 Gooddesign 新開幕折扣竟然只需要幾秒鐘 !!</strong>
-        <a href="#" class="bg-primary m-2 p-2 text-secondary rounded-pill coupon_pop_3" @click.prevent="getCoupon">click here</a>
+        <strong class="text-primary coupon_pop_1">即日起，</strong>
+        <strong class="text-primary coupon_pop_2">登入會員即可獲得 GoodDesign 本週新開幕折扣</strong>
+        <a href="#" class="bg-primary d-inline-block m-2 px-2 py-1 text-secondary rounded coupon_pop_3" @click.prevent="getCoupon"><strong>click here</strong></a>
     </div>
     <!-- 特色介紹區塊 -->
     <div class="row no-gutters aboutus">
       <div class=" col-md-4 p-2 animated" v-for="item in aboutUsImg" :key="item.key" :id="item.key">
         <div class="aboutus_card">
-          <img :src="item.url" width="150" alt />
-          <div class="title">{{item.title}}</div>
-          <div class="content">{{item.content}}</div>
+          <img :class="'aboutus_img_'+ item.num" @mouseenter="showAboutUs(item.num)" @mouseleave="removeShowAboutUs(item.num)" :src="item.url" />
+          <div :class="'aboutus_title_'  + item.num">{{item.title}}</div>
+          <div :class="'aboutus_content_' + item.num">{{item.content}}</div>
         </div>
       </div>
     </div>
@@ -182,7 +191,7 @@
             <div class="modal-footer">
               <i class="fas fa-circle-notch fa-spin" v-if="isFileLoading"></i>
               <button type="button" class="btn btn-general" data-dismiss="modal" @click.prevent="cleanTemplate()">取消</button>
-              <button type="button" class="btn btn-primary" @click.prevent="addCart(addCartTemplate)">加入購物車</button>
+              <button id="addCartButton" type="button" class="btn btn-primary" @click.prevent="addCart(addCartTemplate)">加入購物車</button>
             </div>
           </div>
         </div>
@@ -203,7 +212,7 @@ export default {
         spaceBetween: 50,
         loopFillGroupWithBlank: true,
         height: 300,
-        loop: true,
+        loop: false,
         speed: 1000,
         // init: false,
         pagination: {
@@ -211,8 +220,8 @@ export default {
           clickable: true
         },
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
+          // nextEl: '.swiper-button-next',
+          // prevEl: '.swiper-button-prev'
         },
         breakpoints: {
           1024: {
@@ -237,9 +246,9 @@ export default {
       swiperBanner: {
         autoplay: {
           disableOnInteraction: false, // 用户操作后是否禁止自动循环
-          delay: 4000 //  自动循环时间
+          delay: 6000 //  自动循环时间
         }, // 可选选项，自动滑动
-        speed: 3000, // 切换速度，即slider自动滑动开始到结束的时间（单位ms）
+        speed: 1000, // 切换速度，即slider自动滑动开始到结束的时间（单位ms）
         loop: true, //  循环切换
         grabCursor: false, // 设置为true时，鼠标覆盖Swiper时指针会变成手掌形状，拖动时指针会变成抓手形状
         // setWrapperSize: true, //Swiper使用flexbox布局(display: flex)，开启这个设定会在Wrapper上添加等于slides相加的宽或高，在对flexbox布局的支持不是很好的浏览器中可能需要用到。
@@ -262,25 +271,28 @@ export default {
       aboutUsImg: [
         //  建議將絕對路徑修正成正確路徑，你原本的路徑還需要往更上一層，require 前面不用使用 ` 且 () 內多一個單引號，key 的值最開頭不可有 0 ，
         {
-          url: require('../assets/img-1.png'),
+          url: require('../assets/img-1.jpg'),
           title: '集結世界各地好設計',
           content:
             '從來自世界各地願意合作的設計師分享，匯集在一起提供給每一位顧客',
-          key: 'card-1'
+          key: 'card-1',
+          num: 1
         },
         {
-          url: require('../assets/img-2.png'),
+          url: require('../assets/img-2.jpg'),
           title: '富含創意的高品質設計',
           content:
             '透過顧客使用心得透明化，提供消費者更明確的資訊做參考，透過良性競爭間接提高商品品質',
-          key: 'card-2'
+          key: 'card-2',
+          num: 2
         },
         {
-          url: require('../assets/img-3.png'),
+          url: require('../assets/img-3.jpg'),
           title: '設計師與顧客的保障',
           content:
             '明確制定完整的消費準則，避免不必要的時間花費及遺漏資訊，更保障設計師與顧客的權益',
-          key: 'card-3'
+          key: 'card-3',
+          num: 3
         }
       ],
       SwiperImgs: [
@@ -361,6 +373,9 @@ export default {
             setTimeout(() => {
               $('.coupon_pop_3').addClass('fadeIn')
             }, 2000)
+            setTimeout(() => {
+              $('.coupon_pop_3').addClass('bounceIn')
+            }, 3000)
             $('#card-1').addClass('fadeIn')
             setTimeout(() => {
               $('#card-2').addClass('fadeIn')
@@ -384,9 +399,6 @@ export default {
         }
       })
     },
-    getProducts () {
-      this.$store.dispatch('getProducts')
-    },
     openProduct (id) {
       let routerPush = this.$router.push({
         path: '/productpage',
@@ -396,8 +408,10 @@ export default {
     },
     addCart (item) {
       this.$store.dispatch('addCart', item)
+      document.getElementById('addCartButton').disabled = true
       setTimeout(() => {
         this.addCartTemplate = {}
+        document.getElementById('addCartButton').disabled = false
       }, 2000)
     },
     addCartModal (item) {
@@ -411,6 +425,15 @@ export default {
     },
     addFavor (e) {
       this.$store.dispatch('addFavor', e)
+    },
+    showAboutUs (num) {
+      console.log(num)
+      $('.aboutus_title_' + num).addClass('show_aboutus')
+      $('.aboutus_content_' + num).addClass('show_aboutus')
+    },
+    removeShowAboutUs (num) {
+      $('.aboutus_title_' + num).removeClass('show_aboutus')
+      $('.aboutus_content_' + num).removeClass('show_aboutus')
     }
   },
   // 監聽ModalDisplay關閉購買商品modal
@@ -426,8 +449,9 @@ export default {
       'coupopforcustom', 'newArrival_products', 'isFileLoading', 'ModalDisplay'])
   },
   created () {
+    this.$store.dispatch('getCart')
     this.$store.dispatch('refresh')
-    this.getProducts()
+    this.$store.dispatch('getFilterProducts')
     this.getWindow()
   },
   mounted () {
@@ -440,7 +464,10 @@ export default {
 
 <style lang="scss" scoped>
 strong {
-  font-size: 18px;
+  font-size: 16px;
+}
+del {
+  font-size: 14px;
 }
 .fa-cart-plus,
 .fa-heart {
@@ -453,26 +480,55 @@ strong {
     transform: scale(0.9);
   }
 }
+
+// aboutus
+
 .aboutus {
-  padding:20px;
   .aboutus_card {
+    margin:20px;
+    position: relative;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16);
-    min-height: 365px;
-  }
-  img {
-    width: 120px;
-    margin: 40px 0px;
-  }
-  .title {
-    font-weight: 900;
-    font-size: 18px;
-  }
-  .content {
-    padding: 15px 50px;
-    font-size:18px;
-    font-family: sans-serif;
-    overflow: hidden;
-    text-align: left;
+    height:350px;
+    .aboutus_img_1,.aboutus_img_2,.aboutus_img_3 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width:100%;
+      height:100%;
+      transition: all 0.3s;
+      opacity: 1;
+      &:hover{
+        filter:brightness(0.7);
+      }
+    }
+    .aboutus_title_1,.aboutus_title_2,.aboutus_title_3 {
+      position: absolute;
+      top: 5%;
+      left:5%;
+      z-index: 9;
+      color: $common;
+      font-weight: 900;
+      font-size: 18px;
+      transition: all 0.3s;
+      opacity: 0;
+    }
+    .aboutus_content_1,.aboutus_content_2,.aboutus_content_3 {
+      position: absolute;
+      bottom:5%;
+      left:5%;
+      z-index: 9;
+      color: $common;
+      font-size:18px;
+      font-family: sans-serif;
+      overflow: hidden;
+      text-align: left;
+      transition: all 0.3s;
+      opacity: 0;
+    }
+    .show_aboutus{
+      opacity: 1;
+    }
   }
   li {
     font-size: 16px;
@@ -481,8 +537,7 @@ strong {
 
 // swiper樣式
 
-%swiper-next {
-  right: 5px;
+%swiper-prev-next {
   background-color: rgba(255, 255, 255, 0.8);
   width: 37px;
   height: 54px;
@@ -491,17 +546,19 @@ strong {
 }
 .swiper-container {
   width: 100%;
-  height: 400px;
+  height: 525px;
   @media (max-width: 992px) {
-    height: 380px;
+    height: 330px;
   }
   @media (max-width: 768px) {
-    height: 300px;
+    height: 250px;
   }
   @media (max-width: 576px) {
-    height: 180px;
+    height: 220px;
   }
-  // margin: 20px auto;
+  @media (max-width: 375px) {
+    height: 160px;
+  }
 }
 .swiper-container-2 {
   height: 0px;
@@ -514,15 +571,22 @@ strong {
   background-position: center center;
 }
 .swiper-button-next {
-  @extend %swiper-next;
+  @extend %swiper-prev-next;
 }
 .swiper-button-prev {
-  left: 5px;
-  background-color: rgba(255, 255, 255, 0.8);
-  // border-radius: 10px;
-  width: 37px;
-  height: 54px;
-  box-shadow: 1px 1px 1px $shadow;
+  @extend %swiper-prev-next;
+  background-image: url("../assets/chevron-left-solid.svg");
+}
+
+.swiper-button-next-2{
+  top:30%;
+  right:5px;
+  @extend %swiper-prev-next;
+}
+.swiper-button-prev-2{
+  top:30%;
+  left:5px;
+  @extend %swiper-prev-next;
   background-image: url("../assets/chevron-left-solid.svg");
 }
 .swiper-slide {

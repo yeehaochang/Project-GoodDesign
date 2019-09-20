@@ -120,7 +120,7 @@
             <div class="modal-footer">
               <i class="fas fa-circle-notch fa-spin" v-if="isFileLoading"></i>
               <button type="button" class="btn btn-general" data-dismiss="modal" @click.prevent="cleanTemplate()">取消</button>
-              <button type="button" class="btn btn-primary" @click.prevent="addCart(addCartTemplate)">加入購物車</button>
+              <button id="addCartButton" type="button" class="btn btn-primary" @click.prevent="addCart(addCartTemplate)">加入購物車</button>
             </div>
           </div>
         </div>
@@ -182,8 +182,10 @@ export default {
     },
     addCart (obj) {
       this.$store.dispatch('addCart', obj)
+      document.getElementById('addCartButton').disabled = true
       setTimeout(() => {
         this.addCartTemplate = {}
+        document.getElementById('addCartButton').disabled = false
       }, 2000)
     },
     cleanTemplate () {
@@ -235,7 +237,10 @@ export default {
   border-radius: 0;
 }
 strong {
-  font-size: 24px;
+  font-size: 18px;
+}
+del {
+  font-size: 14px;
 }
 .fa-cart-plus,
 .fa-heart {

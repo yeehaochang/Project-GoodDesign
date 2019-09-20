@@ -102,11 +102,11 @@
             </button>
           </div>
           <div class="modal-body p-5">
-            <h2>Good Design</h2>
-            <div class="border-bottom my-4"></div>
+            <h2 class="">Good<img class="mb-2" src="../assets/logo.png" width="48" alt="" srcset="">esign</h2>
+            <div class="my-4"></div>
             <form>
               <div class="form-group text-left">
-                <label for="username">帳號</label>
+                <label for="username"><span class="labelspan">帳號</span></label>
                 <input
                   name="account"
                   type="email"
@@ -120,7 +120,7 @@
                 <small class="text-danger" v-if="errors.has('account')">{{errors.first('account')}}</small>
               </div>
               <div class="form-group text-left">
-                <label for="password">密碼</label>
+                <label for="password"><span class="labelspan">密碼</span></label>
                 <input
                   name="password"
                   type="password"
@@ -261,9 +261,6 @@ export default {
     refreshfavo () {
       this.$store.dispatch('getFavorite')
     },
-    getCartNum () {
-      this.$store.dispatch('getCart')
-    },
     setFavorite () {
       let stringdata = JSON.stringify(this.favoProduct)
       localStorage.setItem('myFavorite', stringdata)
@@ -310,7 +307,7 @@ export default {
   created () {
     this.outsideclick()
     this.$store.dispatch('getFavorite')
-    this.getCartNum()
+    this.$store.dispatch('getCart')
   }
 }
 </script>
@@ -361,7 +358,6 @@ export default {
   font-size: 15px;
   border-bottom-width: 3px;
   color:$common;
-  // box-shadow: 0px 1px 0.5px $shadow;
   &:hover{
     color:$secondary;
   }
@@ -376,5 +372,9 @@ export default {
   top:50px;
   left:0px;
   z-index: 10;
+}
+.labelspan{
+  font-size: 18px;
+  font-weight: 900;
 }
 </style>

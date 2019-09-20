@@ -106,13 +106,13 @@ export default {
   // display: none;
   position: fixed;
   top: 400px;
-  right: 60px;
+  right: 50px;
   padding: 10px;
   height: 150px;
-  width: 300px;
+  width: 250px;
   background-color: $common;
   box-shadow: 0px 0px 2px $general;
-  z-index: 10;
+  z-index: 9;
 }
 .message-button {
   background-color:$primary;
@@ -132,7 +132,7 @@ export default {
 .message-body {
   position: fixed;
   top: 60px;
-  right: 40px;
+  right: 20px;
 }
 .message-body div{
   width: 210px;
@@ -147,7 +147,7 @@ export default {
 .animated {
   opacity: 0;
   transition: all 0.8s;
-  transform: translateX(20px);
+  transform: translateX(250px);
 }
 .fadeIn {
   opacity: 1;

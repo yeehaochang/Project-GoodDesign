@@ -39,7 +39,6 @@ export default {
         context.commit('DESIGNERLIST', newProd)
         context.commit('PAGINATION', response.data.pagination)
         context.commit('PRODUCTS', newProd)
-        context.commit('NEWARRIVAL_PRODUCTS', newProd)
         context.commit('LOADING', false)
       })
     },
@@ -55,6 +54,7 @@ export default {
       axios.get(api).then(response => {
         let newProd = response.data.products
         context.commit('FAVOPRODUCT', newProd)
+        context.commit('NEWARRIVAL_PRODUCTS', newProd)
         // 透過點擊傳進來的value篩選出商品分類結果
         if (payload !== '') {
           newProd = newProd.filter(function (item) {
@@ -304,8 +304,12 @@ export default {
       state.favoNum = payload.length
     },
     NEWARRIVAL_PRODUCTS (state, payload) {
-      state.newArrival_products = payload.filter((item) => {
-        return item.origin_price === item.price
+      let count = 0
+      state.newArrival_products = payload.filter((item, index) => {
+        if (item.origin_price === item.price && count < 5) {
+          count += 1
+          return item
+        }
       })
     },
     REFRESHCHECKVALUE (state) {
