@@ -195,7 +195,8 @@ export default new Vuex.Store({
     isFileLoading: state => state.isFileLoading,
     isFavorite: state => state.isFavorite,
     coupopforcustom: state => state.coupopforcustom,
-    ModalDisplay: state => state.ModalDisplay
+    ModalDisplay: state => state.ModalDisplay,
+    cartNum: state => state.cartNum
   },
   modules: {
     productModules

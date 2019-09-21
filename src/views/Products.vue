@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-0">
+  <div class="container p-0 mt-4">
     <loading :active.sync="isLoading"></loading>
     <div class="row mb-2 no-gutters">
       <div class="col-md-3">
@@ -13,7 +13,7 @@
         ></Sidebar>
       </div>
       <div class="col-md-9">
-        <div class="bg-secondary text-primary p-2 mx-2">商品列表</div>
+        <div class="bg-secondary text-primary p-2 mx-2 tag_name">商品列表</div>
         <div class="p-3 d-flex">
           <!-- 過濾標籤 -->
           <span class="border rounded p-2 mx-1" v-if="recentCategory">
@@ -140,7 +140,8 @@ export default {
   data () {
     return {
       addCartTemplate: {
-      }
+      },
+      isPaying: false
     }
   },
   components: {
@@ -175,18 +176,17 @@ export default {
       this.$store.dispatch('getFavorite')
     },
     addCartModal (item) {
-      $('#ProductModal').modal('show')
-      this.addCartTemplate = Object.assign({}, item)
-      this.$set(this.addCartTemplate, 'qty', 1)
-      this.$store.dispatch('updateModalDisplay', 'block')
+      if (this.isPaying === false) {
+        $('#ProductModal').modal('show')
+        this.addCartTemplate = Object.assign({}, item)
+        this.$set(this.addCartTemplate, 'qty', 1)
+        this.$store.dispatch('updateModalDisplay', 'block')
+      }
     },
     addCart (obj) {
+      this.isPaying = true
       this.$store.dispatch('addCart', obj)
       document.getElementById('addCartButton').disabled = true
-      setTimeout(() => {
-        this.addCartTemplate = {}
-        document.getElementById('addCartButton').disabled = false
-      }, 2000)
     },
     cleanTemplate () {
       this.addCartTemplate = {}
@@ -208,6 +208,8 @@ export default {
     ModalDisplay () {
       if (this.ModalDisplay === 'none') {
         $('#ProductModal').modal('hide')
+        this.isPaying = false
+        document.getElementById('addCartButton').disabled = false
       }
     }
   },

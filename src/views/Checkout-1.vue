@@ -15,7 +15,7 @@
     <!-- 建立訂單 -->
     <div class="row no-gutters mb-4">
       <div class="col-md-7">
-        <div class="text-left bg-secondary text-primary p-2 pl-2">訂單商品列表：</div>
+        <div class="text-left bg-secondary text-primary p-2 pl-2 tag_name">訂單商品列表：</div>
         <table class="table">
           <tbody>
             <tr class="p-2 border-bottom" v-for="item in cart" :key="item.id">
@@ -44,7 +44,7 @@
         <form class="ml-md-2">
           <div class="row bg-secondary m-0 p-4">
             <div class="form-group col-md-6 mb-2">
-              <label for="name">收件人姓名</label>
+              <label class="tag_name" for="name">收件人姓名</label>
               <input
                 name="name"
                 type="text"
@@ -58,7 +58,7 @@
               <small class="text-danger" v-if="errors.has('name')">欄位不得為空</small>
             </div>
             <div class="form-group col-md-6 mb-2">
-              <label for="email">Email</label>
+              <label class="tag_name" for="email">Email</label>
               <input
                 id="email"
                 type="email"
@@ -69,10 +69,10 @@
                 v-validate="'required|email'"
                 :class="{'is-invalid':errors.has('email')}"
               />
-              <small class="text-danger" v-if="errors.has('email')">{{errors.primary('email')}}</small>
+              <small class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</small>
             </div>
             <div class="form-group col-12 mb-2">
-              <label for="tel">聯絡電話</label>
+              <label class="tag_name" for="tel">聯絡電話</label>
               <input
                 id="tel"
                 type="tel"
@@ -86,7 +86,7 @@
               <small class="text-danger" v-if="errors.has('tel')">欄位不得為空</small>
             </div>
             <div class="form-group col-12 mb-2">
-              <label for="address">收件人地址</label>
+              <label class="tag_name" for="address">收件人地址</label>
               <input
                 id="address"
                 type="text"
@@ -100,7 +100,7 @@
               <small class="text-danger" v-if="errors.has('address')">欄位不得為空</small>
             </div>
             <div class="form-group col-12 mb-2">
-              <label for="textarea">留言備註</label>
+              <label class="tag_name" for="textarea">留言備註</label>
               <input
                 id="textarea"
                 type="text"
@@ -114,7 +114,7 @@
               <small class="text-danger" v-if="errors.has('textarea')">欄位不得為空</small>
             </div>
             <div class="form-group col-12 mb-2">
-              <label for="coupon">套用優惠券</label>
+              <label class="tag_name" for="coupon">套用優惠券</label>
               <div class="input-group mb-3">
                 <input
                   id="coupon"

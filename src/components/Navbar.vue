@@ -152,11 +152,11 @@
       >
       <div class="modal-dialog modal-lg">
         <div class="modal-content p-2">
-          <div class="border">
+          <div class="">
             <button type="button" class="close text-secondary p-1" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <div class="py-2 h4 bg-primary text-secondary">我的最愛</div>
+            <div class="py-3 h4 bg-primary text-secondary">我的最愛</div>
             <div class="p-2">
               <div class="border-bottom" v-for="item in favoProduct" :key="item.id">
                 <div class="row no-gutters py-2">

@@ -35,14 +35,14 @@
             >{{item.origin_price|currency}}</strong>
             <a
               href="#"
-              class="text-general d-md-none pr-1"
+              class="text-general d-md-none pr-1 cart_button"
               @click.prevent="addCartModal(item)"
             >
               <i class="fas fa-cart-plus"></i>
             </a>
             <a
               href="#"
-              class="text-general text-right d-none d-md-inline col-md-6 pr-1"
+              class="text-general text-right d-none d-md-inline col-md-6 pr-1 cart_button"
               @click.prevent="addCartModal(item)"
             >
               <i class="fas fa-cart-plus"></i>
@@ -101,7 +101,7 @@
             >{{item.price|currency}}</strong>
             <a
               href="#"
-              class="text-general pr-1"
+              class="text-general pr-1 cart_button"
               @click.prevent="addCartModal(item)"
             >
               <i class="fas fa-cart-plus"></i>
@@ -350,7 +350,8 @@ export default {
       },
       fullWidth: 0,
       fullHeight: 0,
-      addCartTemplate: {}
+      addCartTemplate: {},
+      isPaying: false
     }
   },
   components: {
@@ -407,18 +408,17 @@ export default {
       console.log(routerPush)
     },
     addCart (item) {
+      this.isPaying = true
       this.$store.dispatch('addCart', item)
       document.getElementById('addCartButton').disabled = true
-      setTimeout(() => {
-        this.addCartTemplate = {}
-        document.getElementById('addCartButton').disabled = false
-      }, 2000)
     },
     addCartModal (item) {
-      $('#ProductModal').modal('show')
-      this.addCartTemplate = Object.assign({}, item)
-      this.$set(this.addCartTemplate, 'qty', 1)
-      this.$store.dispatch('updateModalDisplay', 'block')
+      if (this.isPaying === false) {
+        $('#ProductModal').modal('show')
+        this.addCartTemplate = Object.assign({}, item)
+        this.$set(this.addCartTemplate, 'qty', 1)
+        this.$store.dispatch('updateModalDisplay', 'block')
+      }
     },
     cleanTemplate () {
       this.addCartTemplate = {}
@@ -441,12 +441,14 @@ export default {
     ModalDisplay () {
       if (this.ModalDisplay === 'none') {
         $('#ProductModal').modal('hide')
+        this.isPaying = false
+        document.getElementById('addCartButton').disabled = false
       }
     }
   },
   computed: {
     ...mapGetters(['onsale', 'favoProduct', 'products', 'isLoading',
-      'coupopforcustom', 'newArrival_products', 'isFileLoading', 'ModalDisplay'])
+      'coupopforcustom', 'newArrival_products', 'isFileLoading', 'ModalDisplay', 'cartNum'])
   },
   created () {
     this.$store.dispatch('getCart')

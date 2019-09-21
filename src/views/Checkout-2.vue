@@ -27,7 +27,7 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <div class=" p-2 bg-secondary text-primary">
-              <strong>商品資訊</strong>
+              <span class="tag_name">商品資訊</span>
             </div>
             <div class="form-row p-3">
               <div class="form-group col-md-6 text-left">
@@ -81,7 +81,7 @@
 
           <div class="form-group col-md-6">
             <div class="p-2 bg-secondary text-primary">
-              <strong>訂購人資料</strong>
+              <span class="tag_name">訂購人資料</span>
             </div>
             <div class="form-row p-3">
               <div class="form-group col-md-6 text-left">

@@ -12,7 +12,7 @@
     <div class="pb-2">
       <div class="row no-gutters">
         <div class="col-md-8">
-          <div class="text-left bg-secondary text-primary border-secondary p-2 pl-2">訂單商品列表：</div>
+          <div class="text-left bg-secondary text-primary border-secondary p-2 pl-2 tag_name">訂單商品列表：</div>
           <span v-if="cart.length === 0">目前尚無任何商品</span>
           <table class="table">
             <tbody>
@@ -47,7 +47,7 @@
 
         <div class="col-md-4">
           <div class="card rounded-0 ml-md-2">
-            <h5 class="card-header bg-secondary text-primary">訂單摘要</h5>
+            <h5 class="card-header bg-secondary text-primary font-weight-bold">訂單摘要</h5>
             <div class="card-body">
               <table class="w-100">
                 <tbody>
