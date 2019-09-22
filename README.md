@@ -6,7 +6,7 @@
 
 [MyGitPage](https://edward.yihao.nctu.me/#/home)
 
-### 關於測試及開發網站
+### 關於網站測試及開發
 
 使用的API：[六角API](https://github.com/hexschool/vue-course-api-wiki/wiki)
 ```
