@@ -16,18 +16,15 @@
 ```
 ### 使用到的工具
 ```
+
 * Webpack，Vue-cli
 
 ```
 ### 使用到的IDE
 ```
+
 * VS Code
 
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
 
 ### Customize configuration
