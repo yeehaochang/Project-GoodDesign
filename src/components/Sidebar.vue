@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 商品種類 -->
-    <div class="p-1 bg-secondary text-primary">
+    <div class="p-1 bg-secondary text-primary tag_board">
       <span class="tag_name">商品分類</span>
     </div>
     <div class="list-group list-group-horizontal row no-gutters">
@@ -13,13 +13,13 @@
         @click.prevent="chooseCategory(item)"
       >{{item}}</a>
     </div>
-    <a href="#" class="form-check my-2 p-2 border border-primary text-primary" v-if="!isFavorite" @click.prevent="chooseFavorite">
-      <i class="far fa-heart mr-1"></i><span>顯示我的最愛</span>
+    <a href="#" class="form-check my-2 p-2 border border-primary text-primary " v-if="!isFavorite" @click.prevent="chooseFavorite">
+      <i class="far fa-heart mr-1 "></i><span>顯示我的最愛</span>
     </a>
     <a href="#" class="form-check my-2 p-2 border border-primary text-common bg-primary" v-if="isFavorite" @click.prevent="chooseFavorite">
       <i class="far fa-heart mr-1"></i><span>顯示我的最愛</span>
     </a>
-    <div class="p-1 bg-secondary text-primary">
+    <div class="p-1 bg-secondary text-primary tag_board">
       <span class="tag_name">設計師</span>
     </div>
     <div class="list-group">
@@ -32,7 +32,7 @@
       >{{item}}</a>
     </div>
     <!-- 價格篩選 -->
-    <div class="p-1 bg-secondary text-primary mt-2">
+    <div class="p-1 bg-secondary text-primary mt-2 tag_board">
       <span class="tag_name">價格篩選</span>
     </div>
     <div class="p-2">
@@ -194,6 +194,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tag_board{
+  @include card_3d;
+}
 a {
   font-size: 15px;
 }
@@ -208,6 +211,7 @@ a {
   }
 }
 .list-group-item {
+  @include card_3d;
   transition: transform 0.1s ease-out;
   color:$general;
   &:active {

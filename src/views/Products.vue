@@ -16,29 +16,29 @@
         <div class="bg-secondary text-primary p-2 mx-2 tag_name">商品列表</div>
         <div class="p-3 d-flex">
           <!-- 過濾標籤 -->
-          <span class="border rounded p-2 mx-1" v-if="recentCategory">
+          <span class="border rounded p-2 mx-1 card_3d" v-if="recentCategory">
             <i class="fas fa-times mr-1" @click.prevent="removeCategory"></i>
             {{recentCategory}}
           </span>
-          <span class="border rounded p-2 mx-1" v-if="filterdata.maxprice">
+          <span class="border rounded p-2 mx-1 card_3d" v-if="filterdata.maxprice">
             <i class="fas fa-times mr-1" @click.prevent="removeFilter"></i>
             金額：{{filterdata.minprice}} ~ {{filterdata.maxprice}}
           </span>
-          <span class="border rounded p-2 mx-1" v-if="searchText != ''">
+          <span class="border rounded p-2 mx-1 card_3d" v-if="searchText != ''">
             <i class="fas fa-times mr-1" @click.prevent="removeSearchText"></i>
             {{searchText}}
           </span>
-          <span class="border rounded p-2 mx-1" v-if="recentDesigner != ''">
+          <span class="border rounded p-2 mx-1 card_3d" v-if="recentDesigner != ''">
             <i class="fas fa-times mr-1" @click.prevent="removeDesigner"></i>
             設計師：{{recentDesigner}}
           </span>
-          <span class="border rounded p-2 mx-1" v-if="sortValue === 'price'">
+          <span class="border rounded p-2 mx-1 card_3d" v-if="sortValue === 'price'">
             <i class="fas fa-times mr-1" @click.prevent="removeSort"></i>
             依金額排序
           </span>
           <div class="nav-item dropdown ml-auto">
             <a
-              class="nav-link dropdown-toggle text-primary border rounded"
+              class="nav-link dropdown-toggle text-primary border rounded card_3d"
               href="#"
               id="navbarDropdownMenuLink"
               role="button"
@@ -224,6 +224,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .card-img-top {
   border-radius: 0;
   max-height: 140px;
@@ -232,11 +233,9 @@ export default {
 .card-img-top:hover {
   opacity: 0.5;
 }
+
 .product_card {
-  border-top:0;
-  border-left:0;
-  box-shadow: 0px 0px 2px $shadow;
-  border-radius: 0;
+  @include card_3d;
 }
 strong {
   font-size: 18px;
