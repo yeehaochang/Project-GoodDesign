@@ -8,6 +8,7 @@
 
 ### 使用到的技術
 ```
+
 * Vue，Vuex
 * Javascript，Jquery，Ajax
 * Sass，Bootstrap，RWD
@@ -20,7 +21,7 @@
 * Webpack，Vue-cli
 
 ```
-### 使用到的IDE
+### 使用到的編輯器
 ```
 
 * VS Code
