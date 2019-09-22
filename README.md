@@ -1,4 +1,4 @@
-# 我的Vue電子商務網站專案 My SPA Project
+# 我的VUE電子商務網站專案作品 My SPA Project
 
 ![image](img/myWebsite.png)
 
@@ -18,14 +18,16 @@
 
 ```
 
-### Compiles and minifies for production
+### 使用到的工具
 ```
-npm run build
+* Webpack，Vue-cli
+
 ```
 
 ### Run your tests
 ```
 npm run test
+
 ```
 
 ### Lints and fixes files
