@@ -4,12 +4,9 @@
 
 ### 我的GitPage
 
-
 [MyGitPage](https://edward.yihao.nctu.me/#/home)
 
-
-
-## 使用到的技術
+### 使用到的技術
 ```
 * Vue，Vuex
 * Javascript，Jquery，Ajax
@@ -17,16 +14,14 @@
 * HTML，CSS
 
 ```
-
 ### 使用到的工具
 ```
 * Webpack，Vue-cli
 
 ```
-
-### Run your tests
+### 使用到的IDE
 ```
-npm run test
+* VS Code
 
 ```
 
