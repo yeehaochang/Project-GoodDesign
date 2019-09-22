@@ -1,6 +1,6 @@
 # My SPA Project
 
-
+![image](img/myWebsite.png)
 
 ## Project setup
 ```
