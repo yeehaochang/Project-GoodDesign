@@ -10,7 +10,7 @@
 
 使用的API：[六角API](https://github.com/hexschool/vue-course-api-wiki/wiki)
 ```
-使用者：
+登入使用：
 帳號：s2995510@gmail.com
 密碼：ink660egg908
 ```
