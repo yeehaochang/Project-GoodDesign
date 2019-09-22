@@ -4,16 +4,16 @@
 
 ## 使用到的技術
 ```
-*Vue，Vuex
-*Javascript，Jquery，Ajax
-*Sass，Bootstrap，RWD
-*HTML，CSS
+* Vue，Vuex
+* Javascript，Jquery，Ajax
+* Sass，Bootstrap，RWD
+* HTML，CSS
 
 ```
 
 ### 我的GitPage
 ```
-[My Git Page](https://edward.yihao.nctu.me/#/home) inline link
+(https://edward.yihao.nctu.me/#/home "My Git Page") inline link
 ```
 
 ### Compiles and minifies for production
