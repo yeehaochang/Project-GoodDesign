@@ -13,7 +13,7 @@
 
 ### 我的GitPage
 ```
-(https://edward.yihao.nctu.me/#/home "My Git Page") inline link
+[My Git Page](https://edward.yihao.nctu.me/#/home)
 ```
 
 ### Compiles and minifies for production
