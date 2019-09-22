@@ -4,7 +4,7 @@
 
 ## 使用到的技術
 ```
-Vue-cli，Vuex
+Vue，Vuex
 Javascript，Jquery，Ajax
 Sass，Bootstrap，RWD
 HTML，CSS
@@ -13,7 +13,7 @@ HTML，CSS
 
 ### 我的GitPage
 ```
-(https://edward.yihao.nctu.me/#/home)
+[My Git Page](https://edward.yihao.nctu.me/#/home)
 ```
 
 ### Compiles and minifies for production
