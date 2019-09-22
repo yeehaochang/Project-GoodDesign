@@ -2,14 +2,18 @@
 
 ![image](img/myWebsite.png)
 
-## Project setup
+## 使用到的技術
 ```
-npm install
+Vue-cli，Vuex
+Javascript，Jquery，Ajax
+Sass，Bootstrap，RWD
+HTML，CSS
+
 ```
 
-### Compiles and hot-reloads for development
+### 我的GitPage
 ```
-npm run serve
+(https://edward.yihao.nctu.me/#/home)
 ```
 
 ### Compiles and minifies for production
