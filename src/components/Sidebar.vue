@@ -170,7 +170,6 @@ export default {
             this.$store.dispatch('updateMessage', { message: '最高金額不得低於起始金額', status: 'mistake' })
           }
         }
-        console.log(valueSwitchType)
       }
     },
     refreshCheckvalue () {

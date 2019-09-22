@@ -78,7 +78,6 @@ export default {
     giveScore (event) {
       let e = event.currentTarget.id
       this.ScoreType = e
-      console.log(e)
       // let stringE = JSON.stringify(e)
       localStorage.setItem('score', e)
       $('#' + e).addClass('fa-2x')

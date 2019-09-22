@@ -401,11 +401,10 @@ export default {
       })
     },
     openProduct (id) {
-      let routerPush = this.$router.push({
+      this.$router.push({
         path: '/productpage',
         query: { id: id }
       })
-      console.log(routerPush)
     },
     addCart (item) {
       this.isPaying = true
@@ -427,7 +426,6 @@ export default {
       this.$store.dispatch('addFavor', e)
     },
     showAboutUs (num) {
-      console.log(num)
       $('.aboutus_title_' + num).addClass('show_aboutus')
       $('.aboutus_content_' + num).addClass('show_aboutus')
     },

@@ -1,8 +1,8 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <table class="table mt-5">
-      <thead class="thead-dark">
+    <table class="table bg-common text-general text-left mt-5">
+      <thead class="bg-general text-common">
         <tr>
           <th>create_at</th>
           <th>id</th>

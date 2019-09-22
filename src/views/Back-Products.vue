@@ -1,27 +1,25 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <nav class="nav justify-content-center">
       <a
-        class="nav-link ml-auto text-primary h4"
+        class="btn btn-general my-2"
         href="#"
         data-toggle="modal"
         data-target="#addProduct"
         @click.prevent="openModal(true)"
       >新增商品</a>
-    </nav>
-    <table class="table">
-      <thead>s
-        <tr class="thead-dark">
+    <table class="table bg-common text-general text-left">
+      <thead class="bg-general text-common">
+        <tr>
           <th width="50"></th>
-          <th class="d-none d-md-block pt-5">圖片</th>
+          <th class="d-none d-md-block border-0 text-center">圖片</th>
           <th width="150">標題</th>
           <th width="100">種類</th>
           <!-- <th>內容</th> -->
           <!-- <th>描述</th> -->
           <th width="220px">ID</th>
           <!-- <th>圖片</th> -->
-          <th class="text-success">啟用</th>
+          <th class="text-correct">啟用</th>
           <!-- <th>原價</th> -->
           <th width="80">定價</th>
           <th>數量</th>
@@ -34,11 +32,11 @@
         <tr v-for="item in products" :key="item.id">
           <td>
             <a href="#" class="text-general" @click.prevent="removeProduct(item.id)">
-              <i class="fas fa-trash-alt"></i>
+              <i class="fas fa-trash-alt text-common"></i>
             </a>
           </td>
-          <td class="d-none d-md-block">
-            <img :src="item.imageUrl" class="bg-cover" alt width="100px" height="100px" srcset />
+          <td class="d-none d-md-block text-center">
+            <img :src="item.imageUrl" class="bg-cover border border-common" alt width="100px" height="100px" srcset />
           </td>
           <td>{{item.title}}</td>
           <td>{{item.category}}</td>
@@ -54,7 +52,8 @@
 
           <td width="80">
             <a href="#" class="text-general" @click.prevent="openModal(false,item)">
-              <i class="fas fa-cog"></i>修改
+              <i class="fas fa-cog"></i>
+              <span>修改</span>
             </a>
           </td>
         </tr>
@@ -258,7 +257,6 @@ export default {
       $('#productModal').modal('show')
     },
     updateImage () {
-      console.log(this)
       const vm = this
       this.$store.dispatch('updateLoading', true)
       const updatedFile = vm.$refs.files.files[0]

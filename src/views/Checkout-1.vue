@@ -185,7 +185,6 @@ export default {
         if (valid) {
           // do stuff if not valid.
           this.$http.post(api, { data: postInfor }).then(response => {
-            console.log('建立訂單', response)
             this.$store.dispatch('getCart')
             if (response.data.success) {
               this.$store.dispatch('updateMessage', { message: response.data.message, status: 'correct' })

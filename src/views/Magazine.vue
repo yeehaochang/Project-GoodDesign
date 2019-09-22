@@ -113,7 +113,6 @@ export default {
       let pos = document.getElementById(target)
       let targetPos = pos.getBoundingClientRect().top
       this.targetPosition = targetPos
-      console.log(target, targetPos)
       $('html, body').animate({ scrollTop: targetPos }, 1000)
     },
     getWindow () {

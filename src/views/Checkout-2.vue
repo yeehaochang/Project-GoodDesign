@@ -165,7 +165,6 @@ export default {
       const vm = this
       this.$store.dispatch('updateLoading', true)
       this.$http.get(api).then(response => {
-        console.log('這是該筆訂單', response)
         vm.recentOrder = response.data.order
         this.$store.dispatch('updateLoading', false)
       })
@@ -176,7 +175,6 @@ export default {
       this.$store.dispatch('updateLoading', true)
       vm.$http.post(api, vm.recentOrder.id).then(response => {
         this.$store.dispatch('updateMessage', { message: response.data.message, status: 'correct' })
-        console.log('結帳付款', response)
         this.$store.dispatch('updateLoading', false)
       })
       vm.getOrders()

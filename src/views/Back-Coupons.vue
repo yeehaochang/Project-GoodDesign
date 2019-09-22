@@ -1,11 +1,9 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <nav class="nav justify-content-center">
-      <a class="nav-link text-main h4 ml-auto" href="#" @click.prevent="openModal(true)">新增優惠券</a>
-    </nav>
-    <table class="table">
-      <thead class="thead-dark">
+      <a class="btn btn-general my-2" href="#" @click.prevent="openModal(true)">新增優惠券</a>
+    <table class="table bg-common text-general text-left">
+      <thead class="bg-general text-common">
         <tr>
           <th></th>
           <th>code</th>
@@ -176,7 +174,6 @@ export default {
         method = 'put'
       }
       vm.$http[method](api, { data: vm.tempCoupon }).then(response => {
-        console.log(response)
         vm.editItem = {}
         this.getCoupons()
         this.$store.dispatch('updateMessage', { message: response.data.message, status: 'correct' })
