@@ -1,4 +1,4 @@
-# 我的 電子商務網站專案作品 My SPA Project
+# 我的專案作品 My SPA Project
 
 ![image](img/myWebsite.png)
 
