@@ -1,4 +1,6 @@
-# vue-shop-project
+# My SPA Project
+
+
 
 ## Project setup
 ```
