@@ -1,6 +1,13 @@
-# My SPA Project
+# 我的Vue電子商務網站專案 My SPA Project
 
 ![image](img/myWebsite.png)
+
+### 我的GitPage
+
+
+[MyGitPage](https://edward.yihao.nctu.me/#/home)
+
+
 
 ## 使用到的技術
 ```
@@ -10,13 +17,6 @@
 * HTML，CSS
 
 ```
-
-### 我的GitPage
-
-
-[My Git Page](https://edward.yihao.nctu.me/#/home)
-
-
 
 ### Compiles and minifies for production
 ```
