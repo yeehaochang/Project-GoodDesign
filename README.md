@@ -6,6 +6,14 @@
 
 [MyGitPage](https://edward.yihao.nctu.me/#/home)
 
+### 關於測試及開發網站
+
+使用的API：[六角API](https://github.com/hexschool/vue-course-api-wiki/wiki)
+```
+使用者：
+帳號：s2995510@gmail.com
+密碼：ink660egg908
+```
 ### 使用到的技術
 ```
 
