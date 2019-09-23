@@ -3,7 +3,7 @@
     <loading :active.sync="isLoading"></loading>
     <Progress>
       <template v-slot:back>
-        <router-link class="back text-general" to="/products">
+        <router-link class="back text-general d-none d-md-inline" to="/products">
           <i class="fas fa-arrow-left"></i>
           繼續購物
         </router-link>
@@ -14,7 +14,7 @@
         <div class="col-md-8">
           <div class="text-left bg-secondary text-primary border-secondary p-2 pl-2 tag_name">訂單商品列表：</div>
           <span v-if="cart.length === 0">目前尚無任何商品</span>
-          <table class="table">
+          <table class="table rwdtable">
             <tbody>
               <tr
                 class="p-2 border-bottom"

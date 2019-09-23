@@ -108,7 +108,8 @@ export default {
       favoProduct: [],
       imgs: '',
       visible: false,
-      index: 0
+      index: 0,
+      isPaying: false
     }
   },
   methods: {
@@ -125,7 +126,10 @@ export default {
       })
     },
     addCart () {
-      this.$store.dispatch('addCart', this.product)
+      if (this.isPaying === false && this.isFileLoading === false) {
+        this.isPaying = true
+        this.$store.dispatch('addCart', this.product)
+      }
     },
     gettotal () {
       this.total = parseInt(this.product.qty) * parseInt(this.product.price)
@@ -159,6 +163,13 @@ export default {
     },
     handleHide () {
       this.visible = false
+    }
+  },
+  watch: {
+    isFileLoading () {
+      if (this.isFileLoading === false) {
+        this.isPaying = false
+      }
     }
   },
   computed: {

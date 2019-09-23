@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex justify-content-center align-items-center py-4" style="position:relative">
       <slot name="back">
-      <a class="back text-general" href="#" @click.prevent="back">
+      <a class="back text-general d-none d-md-inline" href="#" @click.prevent="back">
         <i class="fas fa-arrow-left"></i>
         回上一步</a>
       </slot>
