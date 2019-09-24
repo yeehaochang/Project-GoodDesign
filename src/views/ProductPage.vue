@@ -74,10 +74,10 @@
                 <div class="p-2 text-left"><span>小計：{{total|currency}}</span></div>
               </div>
               <div class="col-md-6">
-                <a href="#" class="p-2 btn btn-primary d-block" @click.prevent="addCart">
+                <button id="addCartButton" class="p-2 btn btn-primary w-100" @click.prevent="addCart">
                   <i class="fas fa-circle-notch fa-spin mr-1" v-if="isFileLoading"></i>
                   <span>加入購物車</span>
-                </a>
+                </button>
               </div>
             </div>
             <div class="border border-primary rounded text-left p-2 mt-2">
@@ -108,8 +108,7 @@ export default {
       favoProduct: [],
       imgs: '',
       visible: false,
-      index: 0,
-      isPaying: false
+      index: 0
     }
   },
   methods: {
@@ -126,8 +125,8 @@ export default {
       })
     },
     addCart () {
-      if (this.isPaying === false && this.isFileLoading === false) {
-        this.isPaying = true
+      if (this.isFileLoading === false) {
+        document.getElementById('addCartButton').disabled = true
         this.$store.dispatch('addCart', this.product)
       }
     },
@@ -168,7 +167,7 @@ export default {
   watch: {
     isFileLoading () {
       if (this.isFileLoading === false) {
-        this.isPaying = false
+        document.getElementById('addCartButton').disabled = false
       }
     }
   },

@@ -49,10 +49,11 @@
           <div class="cartnum">{{cartNum}}</div>
           <i class="topicon fas fa-shopping-cart icon_cart"></i>
         </router-link>
-        <a class="" href="#" data-toggle="modal" data-target="#signin">
+        <a href="#" data-toggle="modal" data-target="#signin">
           <i class="topicon fas fa-user text-common"></i>
         </a>
-        <router-link class="topicon fas fa-user-cog text-common mx-md-3 mx-2 d-none d-md-block" to="/dashboard"></router-link>
+        <router-link class="topicon fas fa-user-cog text-common mx-md-3 mx-2 d-none d-md-block" to="/dashboard">
+        </router-link>
       </div>
       </div>
       <div class="d-flex search-form pt-2 mr-auto d-block d-sm-none" @keyup.enter="goSearch(searchText)">
