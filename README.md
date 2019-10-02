@@ -21,7 +21,6 @@
 * Javascript，Jquery，Ajax
 * Sass，Bootstrap，RWD
 * HTML，CSS
-* Git
 
 ```
 ### 使用到的工具
