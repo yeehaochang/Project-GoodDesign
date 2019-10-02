@@ -2,7 +2,7 @@
 
 ![image](img/myWebsite.png)
 
-### 我的GitPage
+### GitPage
 
 [MyGitPage](https://edward.yihao.nctu.me/#/home)
 
@@ -14,7 +14,7 @@
 帳號：s2995510@gmail.com
 密碼：ink660egg908
 ```
-### 使用到的技術
+### 使用的技術
 ```
 
 * Vue，Vuex
@@ -23,13 +23,13 @@
 * HTML，CSS
 
 ```
-### 使用到的工具
+### 使用的工具
 ```
 
 * Webpack，Vue-cli
 
 ```
-### 使用到的編輯器
+### 使用的編輯器
 ```
 
 * VS Code
