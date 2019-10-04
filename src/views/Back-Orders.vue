@@ -5,21 +5,21 @@
       <thead class="bg-general text-common">
         <tr>
           <th>create_at</th>
-          <th>id</th>
-          <th>is_paid</th>
-          <th>message</th>
-          <th>num</th>
-          <th>products</th>
+          <th class="text-center">ID</th>
+          <th class="text-center">是否付款</th>
+          <th>備註訊息</th>
+          <th class="text-center">編號</th>
+          <th>訂單商品</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in orderList" :key="item.id">
           <td>{{item.create_at}}</td>
-          <td>{{item.id}}</td>
-          <td>{{item.is_paid}}</td>
+          <td class="text-center">{{item.id}}</td>
+          <td class="text-center">{{item.is_paid}}</td>
           <td>{{item.message}}</td>
-          <td>{{item.num}}</td>
+          <td class="text-center">{{item.num}}</td>
           <td>
             <ul class="list-group">
               <li

@@ -6,13 +6,13 @@
       <thead class="bg-general text-common">
         <tr>
           <th></th>
-          <th>code</th>
-          <th class="d-none d-md-block">due_date</th>
-          <th>id</th>
-          <th width="100">is_enabled</th>
-          <th>num</th>
-          <th>percent</th>
-          <th>title</th>
+          <th>折扣碼 code</th>
+          <th>due_date</th>
+          <th>ID</th>
+          <th class="text-correct text-center" width="100">啟用</th>
+          <th class="text-center">編號</th>
+          <th class="text-center">折扣數</th>
+          <th>名稱</th>
           <th></th>
         </tr>
       </thead>
@@ -24,11 +24,11 @@
             </a>
           </td>
           <td>{{item.code}}</td>
-          <td class="d-none d-md-block">{{item.due_date}}</td>
+          <td>{{item.due_date}}</td>
           <td>{{item.id}}</td>
-          <th>{{item.is_enabled}}</th>
-          <th>{{item.num}}</th>
-          <th>{{item.percent}}</th>
+          <th class="text-center">{{item.is_enabled}}</th>
+          <th class="text-center">{{item.num}}</th>
+          <th class="text-center">{{item.percent}}</th>
           <th>{{item.title}}</th>
           <th>
             <a

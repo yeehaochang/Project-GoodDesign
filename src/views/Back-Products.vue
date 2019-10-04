@@ -11,18 +11,18 @@
     <table class="table bg-common text-general text-left">
       <thead class="bg-general text-common">
         <tr>
-          <th width="50"></th>
-          <th class="d-none d-md-block border-0 text-center">圖片</th>
-          <th width="150">標題</th>
-          <th width="100">種類</th>
+          <th class="text-center" width="50"></th>
+          <th class="text-center">圖片</th>
+          <th class="text-center" width="150">標題</th>
+          <th class="text-center">種類</th>
           <!-- <th>內容</th> -->
           <!-- <th>描述</th> -->
-          <th width="220px">ID</th>
+          <th class="text-center" width="220px">ID</th>
           <!-- <th>圖片</th> -->
-          <th class="text-correct">啟用</th>
+          <th class="text-correct text-center" width="75">啟用</th>
           <!-- <th>原價</th> -->
-          <th width="80">定價</th>
-          <th>數量</th>
+          <th class="text-center" width="80">定價</th>
+          <th width="75">數量</th>
           <th>單位</th>
 
           <th></th>
@@ -32,23 +32,23 @@
         <tr v-for="item in products" :key="item.id">
           <td>
             <a href="#" class="text-general" @click.prevent="removeProduct(item.id)">
-              <i class="fas fa-trash-alt text-common"></i>
+              <i class="fas fa-trash-alt"></i>
             </a>
           </td>
           <td class="d-none d-md-block text-center">
-            <img :src="item.imageUrl" class="bg-cover border border-common" alt width="100px" height="100px" srcset />
+            <img :src="item.imageUrl" class="bg-cover border border-common" alt width="100" height="100" srcset />
           </td>
           <td>{{item.title}}</td>
-          <td>{{item.category}}</td>
+          <td class="text-center">{{item.category}}</td>
           <!-- <td>{{item.content}}</td> -->
           <!-- <td>{{item.description}}</td> -->
           <td>{{item.id}}</td>
           <!-- <td>{{item.image}}</td> -->
-          <td>{{item.is_enabled}}</td>
+          <td class="text-center">{{item.is_enabled}}</td>
           <!-- <td>{{item.origin_price}}</td> -->
-          <td>{{item.price|currency}}</td>
-          <td>{{item.num}}</td>
-          <td>{{item.unit}}</td>
+          <td class="text-right">{{item.price|currency}}</td>
+          <td class="text-center">{{item.num}}</td>
+          <td class="text-center" width="75">{{item.unit}}</td>
 
           <td width="80">
             <a href="#" class="text-general" @click.prevent="openModal(false,item)">
