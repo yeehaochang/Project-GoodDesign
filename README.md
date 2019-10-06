@@ -1,9 +1,7 @@
 # 我的專案作品 My SPA Project
 ![image](img/myWebsite.png)
 ### GitPage
-```
 [Demo](https://edward.yihao.nctu.me/#/home)
-```
 ### 關於網站測試及開發
 使用的API：[六角API](https://github.com/hexschool/vue-course-api-wiki/wiki)
 ```
