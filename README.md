@@ -13,8 +13,7 @@
 ```
 * Vue，Vuex
 * Javascript，JQuery，Ajax
-* Sass，Bootstrap，RWD
-* HTML，CSS
+* Sass，Bootstrap，RWD，HTML
 ```
 ### 使用的工具
 ```
