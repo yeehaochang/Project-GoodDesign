@@ -12,7 +12,7 @@
 ### 使用的技術
 ```
 * Vue，Vuex
-* Javascript，Jquery，Ajax
+* Javascript，JQuery，Ajax
 * Sass，Bootstrap，RWD
 * HTML，CSS
 ```
